@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=FoxNAS
+Exec=FoxNAS
+Icon=icon
+Terminal=false
+Categories=Utility;

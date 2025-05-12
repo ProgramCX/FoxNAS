@@ -39,7 +39,9 @@ private:
 
     QHash<QString, QString> getStoredServer();
 
-    void storeServerInfo(QString name, QString fullhost);
+    void storeServerInfo(const QString &name, const QString &fullhost);
+
+    void deleteServerInfo(const QString &name);
 
     bool detectServer();
 
@@ -47,5 +49,10 @@ private slots:
     void onReadyReadDatagram();
     void on_btnChangePort_clicked();
     void onSelectChanged(QListWidgetItem *current, QListWidgetItem *previous);
+    void on_btnAddServer_clicked();
+    void on_btnDeleteServer_clicked();
+    void on_btnConnect_clicked();
+    void on_btnDetail_clicked();
+    void on_btnEditServer_clicked();
 };
 #endif // LOGINDIALOG_H

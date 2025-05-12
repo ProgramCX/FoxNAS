@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>680</width>
-    <height>469</height>
+    <width>914</width>
+    <height>501</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>680</width>
+    <width>900</width>
     <height>409</height>
    </size>
   </property>
@@ -20,8 +20,8 @@
    <string>连接至NAS服务器</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="main.qrc">
-    <normaloff>:/main/resource/favicon/FoxNAS.png</normaloff>:/main/resource/favicon/FoxNAS.png</iconset>
+   <iconset>
+    <normaloff>resource/favicon/FoxNAS.png</normaloff>resource/favicon/FoxNAS.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -103,7 +103,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnSearchServer">
+      <widget class="QPushButton" name="btnDetail">
        <property name="minimumSize">
         <size>
          <width>100</width>
@@ -116,10 +116,31 @@
         </font>
        </property>
        <property name="text">
-        <string>搜索(&amp;S)</string>
+        <string>查看详情(&amp;D)</string>
        </property>
        <property name="checkable">
-        <bool>true</bool>
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnConnect">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>连接NAS(&amp;C)</string>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -144,12 +165,31 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="btnSearchServer">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>搜索(&amp;S)</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="main.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
