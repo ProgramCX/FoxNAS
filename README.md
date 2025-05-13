@@ -12,7 +12,7 @@
 
 >
 
-[English](README.md) | 中文
+English | [中文](README-zh.md)
 
 FoxNAS Management Client is a cross-platform NAS administration tool developed with **Qt 6.8**, supporting core features such as **UDP-based device discovery**, **SSH remote access**, **real-time media playback**, and **file management**. It also provides **automatic DDNS updates** and **email notifications** upon IP changes. Designed for embedded systems, home NAS setups, and private server gateways, this client works in tandem with the [FoxNAS Server](https://github.com/ProgramCX/FoxNAServer) to help users manage and utilize their NAS devices more efficiently.
 
