@@ -1,6 +1,8 @@
 #include "LoginDialog.h"
 #include "Addnasdialog.h"
 #include "DetailDialog.h"
+#include "LoadingDialog.h"
+#include "NASLoginDialog.h"
 #include "ui_LoginDialog.h"
 
 #include <QInputDialog>
@@ -9,6 +11,9 @@
 #include <QListWidgetItem>
 #include <QMessageBox>
 #include <QtNetwork/QUdpSocket>
+
+#include <ApiRequest.h>
+#include <ApiUrl.h>
 
 enum ServerRole { ServerRoleName = Qt::UserRole + 1, ServerRoleFullHost, ServerRoleStored };
 
@@ -181,6 +186,8 @@ void LoginDialog::onSelectChanged(QListWidgetItem *current, QListWidgetItem * /*
     bool isStored = current && current->data(ServerRoleStored).toBool();
     ui->btnEditServer->setEnabled(isStored);
     ui->btnDeleteServer->setEnabled(isStored);
+    ui->btnDetail->setEnabled(true);
+    ui->btnConnect->setEnabled(true);
 }
 
 // 手动添加服务器
@@ -230,7 +237,28 @@ void LoginDialog::on_btnDeleteServer_clicked()
     }
 }
 
-void LoginDialog::on_btnConnect_clicked() {}
+void LoginDialog::on_btnConnect_clicked()
+{
+    QString fullApi = ui->listWidget->currentItem()->data(ServerRoleFullHost).toString();
+    ApiRequest *apiRequest = new ApiRequest(getFullApiPath(fullApi, NASSTATUSAPI), ApiRequest::GET);
+    apiRequest->sendRequest();
+    LoadingDialog *loadingDialog = new LoadingDialog(tr("正在连接到 NAS 服务器...(") + fullApi
+                                                     + ")");
+    connect(apiRequest,
+            &ApiRequest::responseRecieved,
+            this,
+            [=](QString &rawContent, bool hasError, qint16 statusCode) {
+                loadingDialog->close();
+                if (hasError) {
+                    QMessageBox::critical(this, tr("连接失败"), tr("无法连接到服务器"));
+                    return;
+                } else {
+                    NASLoginDialog nasLoginDialog(fullApi);
+                    nasLoginDialog.exec();
+                }
+            });
+    loadingDialog->show();
+}
 
 void LoginDialog::on_btnDetail_clicked()
 {

@@ -16,6 +16,11 @@ qt_add_executable(FoxNAS
     src/util/IniSettings.hpp
     src/Addnasdialog.h src/Addnasdialog.cpp src/Addnasdialog.ui
     src/DetailDialog.h src/DetailDialog.cpp src/DetailDialog.ui
+    src/util/ApiRequest.h src/util/ApiRequest.cpp
+    src/NASLoginDialog.h src/NASLoginDialog.cpp src/NASLoginDialog.ui
+    src/util/ApiUrl.h
+    src/LoadingDialog.h src/LoadingDialog.cpp src/LoadingDialog.ui
+    src/util/ApiUrl.cpp
 )
 
 qt_add_translations(
