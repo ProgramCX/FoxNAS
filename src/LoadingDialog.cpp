@@ -9,7 +9,7 @@ LoadingDialog::LoadingDialog(QString textShow, QWidget *parent)
     ui->setupUi(this);
     ui->labelInfo->setText(textShow);
     this->setWindowTitle(textShow);
-    setAttribute(Qt::WA_DeleteOnClose);
+    // setAttribute(Qt::WA_DeleteOnClose);
 }
 
 LoadingDialog::~LoadingDialog()

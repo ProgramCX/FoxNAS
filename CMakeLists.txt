@@ -5,6 +5,10 @@ find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network LinguistTools)
 
 qt_standard_project_setup()
 
+set(RESOURCES src/main.qrc)
+
+qt_add_resources(RESOURCES_CPP ${RESOURCES})
+
 qt_add_executable(FoxNAS
     WIN32 MACOSX_BUNDLE
     icon.rc
@@ -21,12 +25,26 @@ qt_add_executable(FoxNAS
     src/util/ApiUrl.h
     src/LoadingDialog.h src/LoadingDialog.cpp src/LoadingDialog.ui
     src/util/ApiUrl.cpp
+    src/MainWindow.h src/MainWindow.cpp src/MainWindow.ui
+    src/util/MemStore.h src/util/MemStore.cpp
+    ${RESOURCES_CPP}
+    src/MainTabWidgets/OverViewForm.h src/MainTabWidgets/OverViewForm.cpp src/MainTabWidgets/OverViewForm.ui
+    src/MainTabWidgets/FileManagementForm.h src/MainTabWidgets/FileManagementForm.cpp src/MainTabWidgets/FileManagementForm.ui
+    src/MainTabWidgets/SSHForm.h src/MainTabWidgets/SSHForm.cpp src/MainTabWidgets/SSHForm.ui
+
+    src/MainTabWidgets/UserManagementForm.h src/MainTabWidgets/UserManagementForm.cpp src/MainTabWidgets/UserManagementForm.ui
+    src/MainTabWidgets/SettingsForm.h src/MainTabWidgets/SettingsForm.cpp src/MainTabWidgets/SettingsForm.ui
+    src/MainTabWidgets/InfoForm.h src/MainTabWidgets/InfoForm.cpp src/MainTabWidgets/InfoForm.ui
+    src/MainTabWidgets/DDNSForm.h src/MainTabWidgets/DDNSForm.cpp src/MainTabWidgets/DDNSForm.ui
 )
+
+
 
 qt_add_translations(
     TARGETS FoxNAS
     TS_FILES FoxNAS_zh_CN.ts
 )
+
 
 target_link_libraries(FoxNAS
     PRIVATE

@@ -1,5 +1,7 @@
 #include "NASLoginDialog.h"
 #include "LoadingDialog.h"
+#include "MainWindow.h"
+#include "MemStore.h"
 #include "ui_NASLoginDialog.h"
 
 #include <QMessageBox>
@@ -9,7 +11,6 @@
 #include <ApiRequest.h>
 #include <ApiUrl.h>
 #include <IniSettings.hpp>
-
 NASLoginDialog::NASLoginDialog(const QString &fullHost, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::NASLoginDialog)
@@ -22,6 +23,7 @@ NASLoginDialog::NASLoginDialog(const QString &fullHost, QWidget *parent)
     QSettings &settings = IniSettings::getGlobalSettingsInstance();
     ui->lineEditUserName->setText(settings.value("Secret/userName").toString());
     ui->lineEditPassword->setText(settings.value("Secret/password").toString());
+    ui->checkBox->setChecked(settings.value("Secret/remember").toBool());
 
     connect(ui->buttonLogin, &QPushButton::clicked, this, &NASLoginDialog::login);
 }
@@ -53,18 +55,27 @@ void NASLoginDialog::login()
             [=](QString &rawContent, bool hasError, qint16 statusCode) {
                 loadingDialog->close();
                 if (statusCode == 200) {
-                    QMessageBox::information(this,
-                                             "登录成功！",
-                                             "登录成功，token为\n" + rawContent,
-                                             QMessageBox::Ok);
-                    //存储token
+                    // QMessageBox::information(this,
+                    //                          "登录成功！",
+                    //                          "登录成功，token为\n" + rawContent,
+                    //                          QMessageBox::Ok);
+                    NASTOKEN = rawContent; //存储token
+                    FULLHOST = this->fullHost;
+                    USERNAME = userName;
+
                     QSettings &settings = IniSettings::getGlobalSettingsInstance();
-                    settings.setValue("Secret/token", rawContent);
+                    settings.setValue("Secret/remember", ui->checkBox->isChecked());
 
                     if (ui->checkBox->isChecked()) {
                         settings.setValue("Secret/userName", userName);
                         settings.setValue("Secret/password", password);
                     }
+
+                    MainWindow *mainWindow = new MainWindow;
+                    mainWindow->show();
+
+                    logined = true;
+                    this->close();
 
                 } else if (statusCode == 401) {
                     QMessageBox::critical(this,
@@ -81,4 +92,13 @@ void NASLoginDialog::login()
                 }
             });
     loadingDialog->exec();
+}
+
+void NASLoginDialog::on_buttonShowPassword_clicked(bool checked)
+{
+    if (checked) {
+        ui->lineEditPassword->setEchoMode(QLineEdit::Normal);
+    } else {
+        ui->lineEditPassword->setEchoMode(QLineEdit::Password);
+    }
 }

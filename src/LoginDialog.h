@@ -32,7 +32,7 @@ private:
 
     QUdpSocket udpSocket;
 
-    quint16 bindPort = 8845;
+    quint16 bindPort = 25522;
 
 private:
     void getServerDatagram();
@@ -44,6 +44,10 @@ private:
     void deleteServerInfo(const QString &name);
 
     bool detectServer();
+
+    QString getCurrentFullHost();
+
+    void iniAdmin();
 
 private slots:
     void onReadyReadDatagram();

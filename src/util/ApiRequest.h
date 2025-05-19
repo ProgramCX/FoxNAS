@@ -31,6 +31,7 @@ private:
 
 public:
     void sendRequest();
+    void loginAgain(qint16 statusCode);
 
 signals:
     void responseRecieved(QString &rawContent, bool hasError, qint16 statusCode);

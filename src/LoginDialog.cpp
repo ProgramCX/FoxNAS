@@ -5,6 +5,7 @@
 #include "NASLoginDialog.h"
 #include "ui_LoginDialog.h"
 
+#include <QClipboard>
 #include <QInputDialog>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -112,6 +113,37 @@ void LoginDialog::deleteServerInfo(const QString &name)
     settings.endGroup();
 }
 
+QString LoginDialog::getCurrentFullHost()
+{
+    return ui->listWidget->currentItem()->data(ServerRoleFullHost).toString();
+}
+
+void LoginDialog::iniAdmin()
+{
+    ApiRequest *apiRequest = new ApiRequest(getFullApiPath(getCurrentFullHost(), NASINIADMIN),
+                                            ApiRequest::POST);
+    apiRequest->sendRequest();
+    connect(apiRequest,
+            &ApiRequest::responseRecieved,
+            this,
+            [=](QString &rawContent, bool hasError, qint16 statusCode) {
+                if (statusCode == 200) {
+                    int code = QMessageBox::information(
+                        this,
+                        tr("创建 NAS 管理员用户成功！"),
+                        tr("创建 NAS 管理员用户成功！\n用户名：admin\n密码：") + rawContent,
+                        tr("确定"),
+                        tr("将密码复制到剪贴板"),
+                        0,
+                        1);
+                    if (code) {
+                        QClipboard *clipboard = QApplication::clipboard();
+                        clipboard->setText(rawContent);
+                    }
+                }
+            });
+}
+
 // 接收UDP广播数据
 void LoginDialog::onReadyReadDatagram()
 {
@@ -178,6 +210,9 @@ void LoginDialog::on_btnChangePort_clicked()
     if (value > 0) {
         bindPort = value;
     }
+    disconnect(&udpSocket, &QUdpSocket::readyRead, this, &LoginDialog::onReadyReadDatagram);
+    udpSocket.close();
+    getServerDatagram();
 }
 
 // 切换选择项时启用/禁用编辑和删除按钮
@@ -239,8 +274,10 @@ void LoginDialog::on_btnDeleteServer_clicked()
 
 void LoginDialog::on_btnConnect_clicked()
 {
-    QString fullApi = ui->listWidget->currentItem()->data(ServerRoleFullHost).toString();
-    ApiRequest *apiRequest = new ApiRequest(getFullApiPath(fullApi, NASSTATUSAPI), ApiRequest::GET);
+    iniAdmin();
+    QString fullApi = getCurrentFullHost();
+    ApiRequest *apiRequest = new ApiRequest(getFullApiPath(getCurrentFullHost(), NASSTATUSAPI),
+                                            ApiRequest::GET);
     apiRequest->sendRequest();
     LoadingDialog *loadingDialog = new LoadingDialog(tr("正在连接到 NAS 服务器...(") + fullApi
                                                      + ")");
@@ -249,12 +286,17 @@ void LoginDialog::on_btnConnect_clicked()
             this,
             [=](QString &rawContent, bool hasError, qint16 statusCode) {
                 loadingDialog->close();
+                loadingDialog->deleteLater();
                 if (hasError) {
                     QMessageBox::critical(this, tr("连接失败"), tr("无法连接到服务器"));
                     return;
                 } else {
                     NASLoginDialog nasLoginDialog(fullApi);
                     nasLoginDialog.exec();
+
+                    if (nasLoginDialog.getLogined()) {
+                        this->close();
+                    }
                 }
             });
     loadingDialog->show();
@@ -290,7 +332,7 @@ void LoginDialog::on_btnEditServer_clicked()
     qint16 port = fullHost.mid(fullHost.indexOf(":") + 1).toInt();
     QString host = fullHost.mid(0, fullHost.indexOf(":"));
 
-    port = (port == -1) ? 21358 : port;
+    port = (port == -1) ? 25522 : port;
     detail.setIp(host);
 
     detail.setName(currentItem->data(ServerRoleName).toString());
