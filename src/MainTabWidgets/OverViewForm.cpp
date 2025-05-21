@@ -12,17 +12,18 @@
 #include <QLineSeries>
 #include <QToolTip>
 #include <QValueAxis>
+
+#include "OverviewDiskItem.h"
+
 OverViewForm::OverViewForm(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::OverViewForm)
 {
+    ui->setupUi(this);
     socket = new QWebSocket;
 
     startGetResourceStatus();
     qDebug() << "正在连接WebSocket...\n";
-    ui->setupUi(this);
-
-    // createCharts();
 }
 
 OverViewForm::~OverViewForm()
@@ -53,9 +54,14 @@ void OverViewForm::stopGetResourceStatus() {}
 
 void OverViewForm::updateChart()
 {
+    if (!cpuSeries || !cpuChart || !netChart)
+        return;
+
     updateCPUChart();
     updateMemoryChart();
     updateNetworkChart();
+
+    updateDiskList();
 }
 
 void OverViewForm::updateCPUChart()
@@ -128,7 +134,8 @@ void OverViewForm::updateNetworkChart()
 {
     double totalDownload = 0;
     double totalUpload = 0;
-
+    double max = 0;
+    double min = 0;
     if (netSentStatisticsQueue.length() >= 50) {
         netSentStatisticsQueue.pop_front();
     }
@@ -147,11 +154,11 @@ void OverViewForm::updateNetworkChart()
     QList<QList<QPointF>> recvPointsList(netCardCount);
 
     for (const QMap<QString, QString> &map : netList) {
-        double sent = getDataAccordingUnit(map["sentSpeed"].toDouble(), "KB");
-        double recv = getDataAccordingUnit(map["recvSpeed"].toDouble(), "KB");
+        double sent = map["sentSpeed"].toDouble();
+        double recv = map["recvSpeed"].toDouble();
 
-        sentSpeedList.append(sent);
-        recvSpeedList.append(recv);
+        sentSpeedList.append(getDataAccordingUnit(sent, "KB"));
+        recvSpeedList.append(getDataAccordingUnit(recv, "KB"));
 
         totalUpload += sent;
         totalDownload += recv;
@@ -169,15 +176,22 @@ void OverViewForm::updateNetworkChart()
     for (int i = 0; i < netSentStatisticsQueue.length(); i++) {
         for (int j = 0; j < netSentStatisticsQueue[i].length(); j++) {
             sentPointsList[j].append(QPointF(i, netSentStatisticsQueue[i][j]));
+            max = netSentStatisticsQueue[i][j] > max ? netSentStatisticsQueue[i][j] : max;
+            min = netSentStatisticsQueue[i][j] < min ? netSentStatisticsQueue[i][j] : min;
         }
     }
 
     for (int i = 0; i < netRecvStatisticsQueue.length(); i++) {
         for (int j = 0; j < netRecvStatisticsQueue[i].length(); j++) {
             recvPointsList[j].append(QPointF(i, netRecvStatisticsQueue[i][j]));
+            max = netRecvStatisticsQueue[i][j] > max ? netRecvStatisticsQueue[i][j] : max;
+            min = netRecvStatisticsQueue[i][j] < min ? netRecvStatisticsQueue[i][j] : min;
         }
     }
 
+    auto *netAxisY = qobject_cast<QValueAxis *>(netChart->axisY());
+    netAxisY->setMax(max);
+    netAxisY->setMin(min);
     // 更新图表
     for (int i = 0; i < sentPointsList.size(); i++) {
         netSentSerieses[i]->replace(sentPointsList[i]);
@@ -191,11 +205,51 @@ void OverViewForm::updateNetworkChart()
     int maxX = qMax(49, netSentStatisticsQueue.size() - 1);
     netAxisX->setRange(maxX - 49, maxX);
 
-    ui->labelDownloadSpeed->setText(QString("%1 KB/s").arg(QString::number(totalDownload, 'f', 2)));
-    ui->labelUploadSpeed->setText(QString("%1 KB/s").arg(QString::number(totalUpload, 'f', 2)));
+    QPair<double, QString> totalDownloadSpeed = getReasonaleDataUnit(totalDownload);
+    QPair<double, QString> totalUploadSpeed = getReasonaleDataUnit(totalUpload);
+
+    ui->labelDownloadSpeed->setText(QString("%1 %2/s")
+                                        .arg(QString::number(totalDownloadSpeed.first, 'f', 2))
+                                        .arg(totalDownloadSpeed.second));
+    ui->labelUploadSpeed->setText(QString("%1 %2/s")
+                                      .arg(QString::number(totalUploadSpeed.first, 'f', 2))
+                                      .arg(totalUploadSpeed.second));
 }
 
-void OverViewForm::updateDiskChart() {}
+void OverViewForm::updateDiskList()
+{
+    for (int i = 0; i < ui->listWidget->count(); ++i) {
+        QListWidgetItem *item = ui->listWidget->item(i);
+        QWidget *widget = ui->listWidget->itemWidget(item);
+
+        if (widget) {
+            delete widget;
+        }
+
+        delete item;
+    }
+    ui->listWidget->clear();
+
+    for (QMap<QString, QString> &map : diskList) {
+        OverviewDiskItem *overView = new OverviewDiskItem;
+
+        QPair<double, QString> totalSpace = getReasonaleDataUnit(map["total"].toDouble());
+        QPair<double, QString> usedSpace = getReasonaleDataUnit(map["used"].toDouble());
+
+        overView->setDiskName(map["name"]);
+        overView->setProgressbar(map["used"].toDouble() / map["total"].toDouble() * 100.0, 100);
+
+        overView->setDiskCondition(
+            QString("%1 %2").arg(QString::number(usedSpace.first, 'f', 2)).arg(usedSpace.second),
+            QString("%1 %2").arg(QString::number(totalSpace.first, 'f', 2)).arg(totalSpace.second));
+
+        QListWidgetItem *item = new QListWidgetItem;
+        item->setFlags(item->flags() & ~Qt::ItemIsSelectable);
+        item->setSizeHint(overView->sizeHint());
+        ui->listWidget->addItem(item);
+        ui->listWidget->setItemWidget(item, overView);
+    }
+}
 
 void OverViewForm::parseJSONString(const QString &jsonString)
 {
@@ -216,9 +270,9 @@ void OverViewForm::parseJSONString(const QString &jsonString)
         QJsonObject disk = diskVal.toObject();
         QMap<QString, QString> map;
         map.insert("name", disk["name"].toString());
-        map.insert("total", disk["total"].toString());
-        map.insert("used", disk["used"].toString());
-        map.insert("free", disk["free"].toString());
+        map.insert("total", QString::number(disk["total"].toDouble(), 'f', 2));
+        map.insert("used", QString::number(disk["used"].toDouble(), 'f', 2));
+        map.insert("free", QString::number(disk["free"].toDouble(), 'f', 2));
         diskList.append(map);
 
         qDebug() << "磁盘名称:" << disk["name"].toString();
@@ -292,7 +346,7 @@ void OverViewForm::createMemoryChart()
 
     auto *memAxisX = new QValueAxis;
     memAxisX->setRange(0, 49);
-    // memAxisX->setLabelsVisible(false);
+    memAxisX->setLabelsVisible(false);
     memChart->addAxis(memAxisX, Qt::AlignBottom);
     memSeries->attachAxis(memAxisX);
 
@@ -324,31 +378,29 @@ void OverViewForm::createMemoryChart()
 void OverViewForm::createNetworkChart()
 {
     netChart = new QChart;
-    netChart->setTitle(tr("网络传输速率"));
-
+    netChart->setTitle(tr("网络传输速率(KB)"));
     auto *netAxisX = new QValueAxis;
     netAxisX->setRange(0, 49);
-    // netAxisX->setLabelsVisible(false);
+    netAxisX->setLabelsVisible(false);
     netChart->addAxis(netAxisX, Qt::AlignBottom);
 
     auto *netAxisY = new QValueAxis;
-    netAxisY->setMax(1024);
-
+    netAxisY->setTitleText("KB");
     netChart->addAxis(netAxisY, Qt::AlignLeft);
 
     for (const QMap<QString, QString> &map : netList) {
         QLineSeries *sentSeries = new QLineSeries;
         sentSeries->setName(QString("%1 (%2-%3)").arg(tr("上传速度"), map["name"], map["ipv4"]));
+        netChart->addSeries(sentSeries);
         sentSeries->attachAxis(netAxisX);
         sentSeries->attachAxis(netAxisY);
-        sentSeries->setPointsVisible(true);          // 显示点
-        sentSeries->setPointLabelsVisible(true);     // 如果你还希望显示数值标签
-        sentSeries->setPointLabelsFormat("@yPoint"); // 设置标签格式
-        sentSeries->setPointLabelsColor(Qt::red);
+
         QLineSeries *receiveSeries = new QLineSeries;
         receiveSeries->setName(QString("%1 (%2-%3)").arg(tr("下载速度"), map["name"], map["ipv4"]));
+        netChart->addSeries(receiveSeries);
         receiveSeries->attachAxis(netAxisX);
         receiveSeries->attachAxis(netAxisY);
+
         connect(sentSeries, &QLineSeries::hovered, this, [=](const QPointF &point, bool state) {
             if (state) {
                 QToolTip::showText(QCursor::pos(),
@@ -370,8 +422,9 @@ void OverViewForm::createNetworkChart()
         netSentSerieses.append(sentSeries);
         netRecieveSerieses.append(receiveSeries);
 
-        netChart->addSeries(sentSeries);
-        netChart->addSeries(receiveSeries);
+        QLegend *legend = netChart->legend();
+        legend->setVisible(true);
+        legend->setAlignment(Qt::AlignRight);
     }
 
     QChartView *netChartView = new QChartView(netChart);
@@ -379,8 +432,6 @@ void OverViewForm::createNetworkChart()
     QVBoxLayout *netLayout = new QVBoxLayout(ui->networkWidget);
     netLayout->addWidget(netChartView);
 }
-
-void OverViewForm::createDiskChart() {}
 
 void OverViewForm::createCPUChart()
 {

@@ -36,6 +36,8 @@ qt_add_executable(FoxNAS
     src/MainTabWidgets/SettingsForm.h src/MainTabWidgets/SettingsForm.cpp src/MainTabWidgets/SettingsForm.ui
     src/MainTabWidgets/InfoForm.h src/MainTabWidgets/InfoForm.cpp src/MainTabWidgets/InfoForm.ui
     src/MainTabWidgets/DDNSForm.h src/MainTabWidgets/DDNSForm.cpp src/MainTabWidgets/DDNSForm.ui
+    src/MainTabWidgets/OverviewDiskItem.h src/MainTabWidgets/OverviewDiskItem.cpp src/MainTabWidgets/OverviewDiskItem.ui
+
 )
 
 

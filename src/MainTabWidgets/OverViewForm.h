@@ -52,7 +52,7 @@ private:
     void updateCPUChart();
     void updateMemoryChart();
     void updateNetworkChart();
-    void updateDiskChart();
+    void updateDiskList();
 
     void parseJSONString(const QString &jsonString);
     void onRecieveMessage(const QString &message);
@@ -62,7 +62,6 @@ private:
     void createMemoryChart();
     void extracted();
     void createNetworkChart();
-    void createDiskChart();
 
     QString getFullWebsocketUrl();
     QPair<double, QString> getReasonaleDataUnit(double bytes);
