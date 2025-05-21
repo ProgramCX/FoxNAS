@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 project(FoxNAS LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network LinguistTools)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network WebSockets LinguistTools Charts)
 
 qt_standard_project_setup()
 
@@ -51,6 +51,8 @@ target_link_libraries(FoxNAS
         Qt::Core
         Qt::Widgets
         Qt::Network
+        Qt::WebSockets
+        Qt::Charts
 )
 
 target_include_directories(FoxNAS
