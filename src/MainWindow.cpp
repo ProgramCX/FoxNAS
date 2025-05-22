@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->showMaximized();
     setAttribute(Qt::WA_DeleteOnClose);
     getPermissions();
 }

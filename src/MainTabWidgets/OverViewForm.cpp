@@ -40,12 +40,23 @@ void OverViewForm::startGetResourceStatus()
     // connect(socket, &QWebSocket::connected, this, [] {
     //     QMessageBox::information(nullptr, "连接", "链接成功");
     // });
-    connect(socket, &QWebSocket::textMessageReceived, this, &OverViewForm::onRecieveMessage);
+    connect(socket,
+            &QWebSocket::textMessageReceived,
+            this,
+            &OverViewForm::onRecieveMessage,
+            Qt::UniqueConnection);
 
-    connect(socket, &QWebSocket::errorOccurred, this, [=](QAbstractSocket::SocketError error) {
-        QMessageBox::critical(nullptr, "失败", "连接失败！");
-        qDebug() << "连接失败:" << socket->errorString();
-    });
+    connect(socket,
+            &QWebSocket::errorOccurred,
+            this,
+            &OverViewForm::handleError,
+            Qt::UniqueConnection);
+
+    connect(socket,
+            &QWebSocket::disconnected,
+            this,
+            &OverViewForm::handleDisconnected,
+            Qt::UniqueConnection);
 
     socket->open(QUrl(getFullWebsocketUrl()));
 }
@@ -218,6 +229,9 @@ void OverViewForm::updateNetworkChart()
 
 void OverViewForm::updateDiskList()
 {
+    double totalTotalSpace = 0;
+    double totalTotalUsed = 0;
+
     for (int i = 0; i < ui->listWidget->count(); ++i) {
         QListWidgetItem *item = ui->listWidget->item(i);
         QWidget *widget = ui->listWidget->itemWidget(item);
@@ -236,6 +250,9 @@ void OverViewForm::updateDiskList()
         QPair<double, QString> totalSpace = getReasonaleDataUnit(map["total"].toDouble());
         QPair<double, QString> usedSpace = getReasonaleDataUnit(map["used"].toDouble());
 
+        totalTotalSpace += map["total"].toDouble();
+        totalTotalUsed += map["used"].toDouble();
+
         overView->setDiskName(map["name"]);
         overView->setProgressbar(map["used"].toDouble() / map["total"].toDouble() * 100.0, 100);
 
@@ -249,6 +266,17 @@ void OverViewForm::updateDiskList()
         ui->listWidget->addItem(item);
         ui->listWidget->setItemWidget(item, overView);
     }
+
+    QPair<double, QString> totalTotalSpacePair = getReasonaleDataUnit(totalTotalSpace);
+    QPair<double, QString> totalUsedSpacePair = getReasonaleDataUnit(totalTotalUsed);
+
+    ui->labelDiskRate->setText(
+        QString("%1 %").arg(QString::number(totalTotalUsed / totalTotalSpace * 100.0, 'f', 2)));
+    ui->labelCondition->setText(QString("%1 %2/%3 %4")
+                                    .arg(QString::number(totalUsedSpacePair.first, 'f', 2))
+                                    .arg(totalUsedSpacePair.second)
+                                    .arg(QString::number(totalTotalSpacePair.first, 'f', 2))
+                                    .arg(totalTotalSpacePair.second));
 }
 
 void OverViewForm::parseJSONString(const QString &jsonString)
@@ -315,6 +343,7 @@ void OverViewForm::parseJSONString(const QString &jsonString)
 
 void OverViewForm::onRecieveMessage(const QString &message)
 {
+    reconnectTime = 0;
     qDebug() << "有新消息";
     parseJSONString(message);
     if (!received) {
@@ -431,6 +460,30 @@ void OverViewForm::createNetworkChart()
     netChartView->setRenderHint(QPainter::Antialiasing);
     QVBoxLayout *netLayout = new QVBoxLayout(ui->networkWidget);
     netLayout->addWidget(netChartView);
+}
+
+void OverViewForm::handleError()
+{
+    disconnect(socket, &QWebSocket::textMessageReceived, this, &OverViewForm::onRecieveMessage);
+    disconnect(socket, &QWebSocket::errorOccurred, this, &OverViewForm::handleError);
+    disconnect(socket, &QWebSocket::disconnected, this, &OverViewForm::handleDisconnected);
+    reconnectTime++;
+    qDebug() << "连接失败:" << socket->errorString();
+    if (reconnectTime >= 10) {
+        QMessageBox::critical(this, tr("失败"), tr("十次重连失败！请检查你的网络！"), tr("确定"));
+        disconnect(socket, &QWebSocket::textMessageReceived, this, &OverViewForm::onRecieveMessage);
+        disconnect(socket, &QWebSocket::errorOccurred, this, &OverViewForm::handleError);
+        disconnect(socket, &QWebSocket::disconnected, this, &OverViewForm::handleDisconnected);
+        return;
+    }
+
+    qDebug() << "正在进行第" << reconnectTime << "次重连...";
+    startGetResourceStatus();
+}
+
+void OverViewForm::handleDisconnected()
+{
+    handleError();
 }
 
 void OverViewForm::createCPUChart()

@@ -44,6 +44,8 @@ private:
 
     bool received = false;
 
+    qint16 reconnectTime = 0;
+
 private:
     void startGetResourceStatus();
     void stopGetResourceStatus();
@@ -63,6 +65,9 @@ private:
     void extracted();
     void createNetworkChart();
 
+    void handleError();
+
+    void handleDisconnected();
     QString getFullWebsocketUrl();
     QPair<double, QString> getReasonaleDataUnit(double bytes);
     double getDataAccordingUnit(double bytes, QString unit);
