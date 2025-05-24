@@ -2,11 +2,15 @@
 
 #include <QApplication>
 #include <QLocale>
+#include <QStyleFactory>
 #include <QTranslator>
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+#ifdef Q_OS_WIN
+    a.setStyle(QStyleFactory::create("WindowsVista"));
+#endif
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

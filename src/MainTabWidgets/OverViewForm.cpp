@@ -173,9 +173,6 @@ void OverViewForm::updateNetworkChart()
 
         totalUpload += sent;
         totalDownload += recv;
-
-        qDebug() << "S:" << sent;
-        qDebug() << "R" << recv;
     }
 
     netSentStatisticsQueue.enqueue(sentSpeedList);
@@ -303,11 +300,11 @@ void OverViewForm::parseJSONString(const QString &jsonString)
         map.insert("free", QString::number(disk["free"].toDouble(), 'f', 2));
         diskList.append(map);
 
-        qDebug() << "磁盘名称:" << disk["name"].toString();
-        qDebug() << "总大小:" << disk["total"].toDouble();
-        qDebug() << "已用:" << disk["used"].toDouble();
-        qDebug() << "可用:" << disk["free"].toDouble();
-        qDebug() << "------------------------";
+        // qDebug() << "磁盘名称:" << disk["name"].toString();
+        // qDebug() << "总大小:" << disk["total"].toDouble();
+        // qDebug() << "已用:" << disk["used"].toDouble();
+        // qDebug() << "可用:" << disk["free"].toDouble();
+        // qDebug() << "------------------------";
     }
 
     // 读取内存信息
@@ -315,12 +312,12 @@ void OverViewForm::parseJSONString(const QString &jsonString)
     memoryInfo.insert("total", memory["total"].toDouble());
     memoryInfo.insert("used", memory["used"].toDouble());
 
-    qDebug() << "内存总量:" << memory["total"].toDouble();
-    qDebug() << "已用内存:" << memory["used"].toDouble();
+    // qDebug() << "内存总量:" << memory["total"].toDouble();
+    // qDebug() << "已用内存:" << memory["used"].toDouble();
 
     // 读取CPU使用率
     cpuUsage = root["cpu"].toDouble();
-    qDebug() << "CPU 使用率:" << cpuUsage;
+    // qDebug() << "CPU 使用率:" << cpuUsage;
 
     // 读取网络信息
     QJsonArray networkArray = root["network"].toArray();
@@ -332,12 +329,12 @@ void OverViewForm::parseJSONString(const QString &jsonString)
         map.insert("recvSpeed", QString::number(net["recvSpeed"].toDouble(), 'f', 2));
         map.insert("sentSpeed", QString::number(net["sentSpeed"].toDouble(), 'f', 2));
         netList.append(map);
-        qDebug() << "origin:" << net["recvSpeed"].toString();
-        qDebug() << "网卡名称:" << net["name"].toString();
-        qDebug() << "IPv4 地址:" << net["ipv4"].toArray().first().toString();
-        qDebug() << "接收速率:" << net["recvSpeed"].toDouble();
-        qDebug() << "发送速率:" << net["sentSpeed"].toDouble();
-        qDebug() << "------------------------";
+        // qDebug() << "origin:" << net["recvSpeed"].toString();
+        // qDebug() << "网卡名称:" << net["name"].toString();
+        // qDebug() << "IPv4 地址:" << net["ipv4"].toArray().first().toString();
+        // qDebug() << "接收速率:" << net["recvSpeed"].toDouble();
+        // qDebug() << "发送速率:" << net["sentSpeed"].toDouble();
+        // qDebug() << "------------------------";
     }
 }
 

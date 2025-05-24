@@ -2,4 +2,8 @@
     <qresource prefix="/main">
         <file>resource/favicon/FoxNAS.png</file>
     </qresource>
+    <qresource prefix="/file">
+        <file>resource/favicon/file_text.svg</file>
+        <file>resource/favicon/folder.svg</file>
+    </qresource>
 </RCC>

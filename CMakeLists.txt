@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 project(FoxNAS LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network WebSockets LinguistTools Charts)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network WebSockets LinguistTools Charts Svg)
 
 qt_standard_project_setup()
 
@@ -37,6 +37,9 @@ qt_add_executable(FoxNAS
     src/MainTabWidgets/InfoForm.h src/MainTabWidgets/InfoForm.cpp src/MainTabWidgets/InfoForm.ui
     src/MainTabWidgets/DDNSForm.h src/MainTabWidgets/DDNSForm.cpp src/MainTabWidgets/DDNSForm.ui
     src/MainTabWidgets/OverviewDiskItem.h src/MainTabWidgets/OverviewDiskItem.cpp src/MainTabWidgets/OverviewDiskItem.ui
+    src/MainTabWidgets/FileManagement/FileManagementTabForm.h src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp src/MainTabWidgets/FileManagement/FileManagementTabForm.ui
+    src/model/FileSystemRemoteModel.h src/model/FileSystemRemoteModel.cpp
+    src/model/RemoteFileSystemNode.h
 
 )
 
@@ -55,11 +58,15 @@ target_link_libraries(FoxNAS
         Qt::Network
         Qt::WebSockets
         Qt::Charts
+        Qt::Svg
 )
 
 target_include_directories(FoxNAS
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src/util
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/model
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/FileManagement
 )
 
 include(GNUInstallDirs)
