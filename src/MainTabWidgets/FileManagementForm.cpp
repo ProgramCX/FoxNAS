@@ -8,7 +8,6 @@ FileManagementForm::FileManagementForm(QWidget *parent)
     ui->setupUi(this);
 
     addWidgets();
-    addNewTab("");
 }
 
 FileManagementForm::~FileManagementForm()
@@ -33,12 +32,18 @@ void FileManagementForm::addWidgets()
     });
 }
 
+int FileManagementForm::getTabCount() const
+{
+    return tabCount;
+}
+
 void FileManagementForm::addNewTab(QString path)
 {
     if (path == "") {
         FileManagementTabForm *fileManagementTabForm = new FileManagementTabForm(this);
         ui->tabWidget->addTab(fileManagementTabForm, "主页");
         ui->tabWidget->setCurrentWidget(fileManagementTabForm);
+        fileManagementTabForm->showSelectDirDialog();
     }
     tabCount++;
 }

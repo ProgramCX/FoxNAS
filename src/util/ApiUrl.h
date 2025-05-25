@@ -8,6 +8,7 @@ const QString NASINIADMIN = "/api/auth/iniAdmin";
 const QString NASPERMISSIONAPI = "/api/common/permissions";
 
 const QString NASFILEDIRLISTAPI = "/api/file/info/getList";
+const QString NASFILEAUTHEDDIRSAPI = "/api/filePermission/getAuthedDirs";
 
 const QString NASRESOURCESTATUSSOCKET = "/ws/overview";
 QString getFullApiPath(QString host, QString api);

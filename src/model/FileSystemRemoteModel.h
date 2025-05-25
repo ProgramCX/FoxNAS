@@ -46,6 +46,9 @@ private:
     QString order = "asc";
     QString sortBy = "name";
     QString currentDirectory;
+
+signals:
+    QString currentPathChanged(QString &path) const;
 };
 
 #endif // FILESYSTEMREMOTEMODEL_H

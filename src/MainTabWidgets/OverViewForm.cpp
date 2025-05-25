@@ -341,7 +341,6 @@ void OverViewForm::parseJSONString(const QString &jsonString)
 void OverViewForm::onRecieveMessage(const QString &message)
 {
     reconnectTime = 0;
-    qDebug() << "有新消息";
     parseJSONString(message);
     if (!received) {
         received = true;

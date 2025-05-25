@@ -17,6 +17,8 @@ class FileManagementForm : public QWidget
 public:
     explicit FileManagementForm(QWidget *parent = nullptr);
     ~FileManagementForm();
+    void addNewTab(QString path);
+    int getTabCount() const;
 
 private:
     Ui::FileManagementForm *ui;
@@ -24,7 +26,6 @@ private:
 
 private:
     void addWidgets();
-    void addNewTab(QString path);
 
     int tabCount = 0;
 };

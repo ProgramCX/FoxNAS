@@ -160,12 +160,12 @@ void FileSystemRemoteModel::fetchDirectory(QString directory)
 
     QString fullApiPath = getFullApiPath(FULLHOST, NASFILEDIRLISTAPI);
     fullApiPath += "?path=" + directory;
-    // fullApiPath += "&order=" + order;
-    // fullApiPath += "&sortBy=" + sortBy;
+    fullApiPath += "&order=" + order;
+    fullApiPath += "&sortBy=" + sortBy;
 
     bool isCurrent = directory == currentDirectory;
 
-    if (isCurrent) {
+    if (!isCurrent) {
         totalPage = 0;
         currentPage = 0;
         from = 0;
@@ -183,17 +183,21 @@ void FileSystemRemoteModel::fetchDirectory(QString directory)
     connect(request,
             &ApiRequest::responseRecieved,
             this,
-            [this, request, isCurrent](QString &rawContent, bool hasError, qint16 statusCode) {
+            [this, request, isCurrent, directory](QString &rawContent,
+                                                  bool hasError,
+                                                  qint16 statusCode) {
                 if (statusCode == 200) {
                     beginResetModel();
-                    if (isCurrent) {
+
+                    if (!isCurrent) {
                         qDeleteAll(rootNode->children);
                         rootNode->children.clear();
+                        currentDirectory = directory;
                     }
 
                     QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
                     QJsonObject obj = doc.object();
-                    totalPage = obj["pageSize"].toInt();
+                    totalPage = obj["totalPage"].toInt();
                     currentPage = obj["page"].toInt();
 
                     from = obj["from"].toInt();
@@ -214,6 +218,7 @@ void FileSystemRemoteModel::fetchDirectory(QString directory)
                         rootNode->children.append(newNode);
                     }
                     endResetModel();
+                    emit currentPathChanged(currentDirectory);
                 } else {
                     QMessageBox::critical(nullptr,
                                           "失败",
@@ -221,7 +226,6 @@ void FileSystemRemoteModel::fetchDirectory(QString directory)
                                           tr("确定"));
                 }
                 request->deleteLater();
-                qDebug() << rawContent;
             });
 }
 

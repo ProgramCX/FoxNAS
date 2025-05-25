@@ -24,6 +24,17 @@ MainWindow::MainWindow(QWidget *parent)
     this->showMaximized();
     setAttribute(Qt::WA_DeleteOnClose);
     getPermissions();
+
+    connect(ui->tabWidget, &QTabWidget::currentChanged, [this](int index) {
+        QWidget *widget = ui->tabWidget->widget(index); // 获取当前 tab 页的 widget
+
+        FileManagementForm *form = qobject_cast<FileManagementForm *>(widget);
+        if (form) {
+            if (!form->getTabCount()) {
+                form->addNewTab("");
+            }
+        }
+    });
 }
 
 MainWindow::~MainWindow()

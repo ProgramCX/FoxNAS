@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+#include <QStack>
 #include <FileSystemRemoteModel.h>
 #include <RemoteFileSystemNode.h>
 
@@ -18,13 +19,32 @@ public:
     explicit FileManagementTabForm(QWidget *parent = nullptr);
     ~FileManagementTabForm();
 
+    void showSelectDirDialog();
+private slots:
+    void on_pushButtonSwitch_clicked();
+
 private:
     Ui::FileManagementTabForm *ui;
     FileSystemRemoteModel *model;
 
+    QString currentPath;
+    bool back = 0;
+    bool forward = 0;
+    QStack<QString> backHistoryStack;
+    QStack<QString> forwardHistoryStack;
+
 private:
     void onScrollBarValueChanged(int value);
     void iniTreeView();
+    void connectSlots();
+    void handleItemDoubleClicked(const QModelIndex &index);
+
+    void updateNavButtonState();
+
+    void backHistoryDir();
+    void forwardHistoryDir();
+
+    void backTopDir();
 };
 
 #endif // FILEMANAGEMENTTABFORM_H
