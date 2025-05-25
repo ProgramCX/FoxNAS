@@ -27,3 +27,28 @@ QString LoadingDialog::getInfoText()
 {
     return ui->labelInfo->text();
 }
+
+qint64 LoadingDialog::getTotal() const
+{
+    return total;
+}
+
+void LoadingDialog::setTotal(qint64 newTotal)
+{
+    total = newTotal;
+    ui->progressBar->setMaximum(total);
+    if (newTotal > 0) {
+        ui->progressBar->setTextVisible(true);
+    }
+}
+
+qint64 LoadingDialog::getNow() const
+{
+    return now;
+}
+
+void LoadingDialog::setNow(qint64 newNow)
+{
+    now = newNow;
+    ui->progressBar->setValue(now);
+}

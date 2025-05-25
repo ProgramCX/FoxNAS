@@ -10,7 +10,7 @@ class ApiRequest : public QObject
 {
     Q_OBJECT
 public:
-    enum METHOD { GET = 0, POST };
+    enum METHOD { GET = 0, POST, DELETE, PUT, PATCH };
     ApiRequest(QString apiAddress,
                METHOD httpMethod,
                QJsonDocument requestBody,
@@ -19,12 +19,14 @@ public:
 
 private:
     QString api;
+    QUrl urlApi;
     QJsonDocument body;
     METHOD method;
     bool hasError = false;
 
     QNetworkAccessManager manager;
     QNetworkReply *reply;
+    QNetworkRequest request;
 
 private:
     QString getToken();
@@ -33,6 +35,10 @@ public:
     void sendRequest();
     void loginAgain(qint16 statusCode);
 
+    QString getApi() const;
+    void setApi(const QString &newApi);
+    void addQueryParam(QString name, QString value);
+    void setUrlQuery(QUrlQuery &query);
 signals:
     void responseRecieved(QString &rawContent, bool hasError, qint16 statusCode);
 };

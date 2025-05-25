@@ -7,7 +7,12 @@
 #include <QJsonObject>
 #include <QMessageBox>
 
+#include <QThread>
+#include <QUrlQuery>
 #include <MemStore.h>
+
+#include "../LoadingDialog.h"
+
 FileSystemRemoteModel::FileSystemRemoteModel(QObject *parent)
     : QAbstractItemModel{parent}
 {}
@@ -152,44 +157,45 @@ void FileSystemRemoteModel::setRootNode(RemoteFileSystemNode *node)
     endResetModel();
 }
 
-void FileSystemRemoteModel::fetchDirectory(QString directory)
+void FileSystemRemoteModel::fetchDirectory(QString directory, bool refresh)
 {
-    if (directory == currentDirectory && totalPage == currentPage) {
+    if (directory == currentDirectory && totalPage == currentPage && !refresh) {
         return;
     }
 
     QString fullApiPath = getFullApiPath(FULLHOST, NASFILEDIRLISTAPI);
-    fullApiPath += "?path=" + directory;
-    fullApiPath += "&order=" + order;
-    fullApiPath += "&sortBy=" + sortBy;
 
+    ApiRequest *request = new ApiRequest(fullApiPath, ApiRequest::GET, this);
+
+    request->addQueryParam("path", directory);
+    request->addQueryParam("order", "asc");
+    request->addQueryParam("sortBy", "name");
     bool isCurrent = directory == currentDirectory;
 
-    if (!isCurrent) {
+    if (!isCurrent || refresh) {
         totalPage = 0;
         currentPage = 0;
         from = 0;
         to = 0;
     } else {
-        fullApiPath += "&page=" + QString::number(++currentPage);
+        request->addQueryParam("page", QString::number(++currentPage));
     }
     if (!rootNode) {
         return;
     }
 
-    ApiRequest *request = new ApiRequest(fullApiPath, ApiRequest::GET, this);
     request->sendRequest();
 
     connect(request,
             &ApiRequest::responseRecieved,
             this,
-            [this, request, isCurrent, directory](QString &rawContent,
-                                                  bool hasError,
-                                                  qint16 statusCode) {
+            [this, request, isCurrent, directory, refresh](QString &rawContent,
+                                                           bool hasError,
+                                                           qint16 statusCode) {
                 if (statusCode == 200) {
                     beginResetModel();
 
-                    if (!isCurrent) {
+                    if (!isCurrent || refresh) {
                         qDeleteAll(rootNode->children);
                         rootNode->children.clear();
                         currentDirectory = directory;
@@ -219,10 +225,16 @@ void FileSystemRemoteModel::fetchDirectory(QString directory)
                     }
                     endResetModel();
                     emit currentPathChanged(currentDirectory);
+                } else if (statusCode == 403) {
+                    QMessageBox::critical(nullptr,
+                                          "失败",
+                                          "你可能没有权限访问该目录！请联系管理员",
+                                          tr("确定"));
                 } else {
                     QMessageBox::critical(nullptr,
                                           "失败",
-                                          "获取文件列表失败：" + rawContent,
+                                          QString::number(statusCode) + "获取文件列表失败："
+                                              + rawContent,
                                           tr("确定"));
                 }
                 request->deleteLater();
@@ -248,3 +260,49 @@ void FileSystemRemoteModel::setSortBy(const QString &newSortBy)
 {
     sortBy = newSortBy;
 }
+
+void FileSystemRemoteModel::deleteFiles(QList<QString> &pathList)
+{
+    if (pathList.isEmpty())
+        return;
+    ApiRequest *apiRequest = new ApiRequest(nullptr, ApiRequest::DELETE, this);
+
+    QString baseFullApi = getFullApiPath(FULLHOST, NASDIELETEFILEAPI);
+    apiRequest->setApi(baseFullApi);
+
+    LoadingDialog *loadingDialog = new LoadingDialog("正在删除文件...");
+
+    qint64 total = pathList.count();
+
+    loadingDialog->setTotal(total);
+    loadingDialog->setNow(0);
+
+    connect(apiRequest,
+            &ApiRequest::responseRecieved,
+            this,
+            [loadingDialog, this](QString &rawContent, bool hasError, qint16 statusCode) {
+                if (statusCode == 200) {
+                } else if (statusCode != 0) {
+                    QMessageBox::critical(nullptr,
+                                          "删除时发生错误！",
+                                          QString("%1:删除 %2时出现错误！")
+                                              .arg(QString::number(statusCode), rawContent));
+                }
+                loadingDialog->setNow(loadingDialog->getNow() + 1);
+                if (loadingDialog->getNow() == loadingDialog->getTotal()) {
+                    loadingDialog->close();
+                    loadingDialog->deleteLater();
+                    fetchDirectory(currentDirectory, true);
+                }
+            });
+
+    loadingDialog->show();
+    for (const QString &path : pathList) {
+        apiRequest->addQueryParam("path", path);
+
+        apiRequest->sendRequest();
+        // QThread::sleep(100);
+    }
+}
+
+void FileSystemRemoteModel::copyFiles(QList<QString> &filesList) {}

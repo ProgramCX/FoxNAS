@@ -26,13 +26,16 @@ public:
 
     void setRootNode(RemoteFileSystemNode *node);
 
-    void fetchDirectory(QString directory);
+    void fetchDirectory(QString directory, bool refresh = 0);
 
     QString getOrder() const;
     void setOrder(const QString &newOrder);
 
     QString getSortBy() const;
     void setSortBy(const QString &newSortBy);
+
+    void deleteFiles(QList<QString> &pathList);
+    void copyFiles(QList<QString> &filesList);
 
 private:
     RemoteFileSystemNode *rootNode = nullptr;

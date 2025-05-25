@@ -62,7 +62,7 @@ void FileManagementTabForm::iniTreeView()
             &FileManagementTabForm::onScrollBarValueChanged);
 
     connect(model, &FileSystemRemoteModel::currentPathChanged, [this](const QString &path) {
-        if (!currentPath.isEmpty() && !back && !forward) {
+        if (!currentPath.isEmpty() && !back && !forward && currentPath != path) {
             backHistoryStack.push(currentPath);
         }
 
@@ -95,6 +95,8 @@ void FileManagementTabForm::connectSlots()
             this,
             &FileManagementTabForm::backHistoryDir);
     connect(ui->toolButtonUp, &QToolButton::clicked, this, &FileManagementTabForm::backTopDir);
+    connect(ui->toolButtonRefresh, &QToolButton::clicked, this, &FileManagementTabForm::refresh);
+    connect(ui->pushButtonDelete, &QToolButton::clicked, this, &FileManagementTabForm::deleteFiles);
 }
 
 void FileManagementTabForm::handleItemDoubleClicked(const QModelIndex &index)
@@ -123,6 +125,7 @@ void FileManagementTabForm::updateNavButtonState()
     QDir dir(currentPath);
 
     ui->toolButtonUp->setEnabled(!dir.isRoot());
+    ui->toolButtonRefresh->setEnabled(!currentPath.isEmpty());
 }
 
 void FileManagementTabForm::backHistoryDir()
@@ -162,7 +165,46 @@ void FileManagementTabForm::backTopDir()
     updateNavButtonState();
 }
 
+void FileManagementTabForm::refresh()
+{
+    if (currentPath.isEmpty())
+        return;
+    model->fetchDirectory(currentPath, true);
+}
+
+void FileManagementTabForm::deleteFiles()
+{
+    QModelIndexList selectedIndexes = ui->treeView->selectionModel()->selectedRows(0);
+    QList<QString> selectedItemPaths;
+    for (const QModelIndex &index : selectedIndexes) {
+        RemoteFileSystemNode *node = static_cast<RemoteFileSystemNode *>(index.internalPointer());
+        if (node) {
+            selectedItemPaths.append(node->path);
+        }
+    }
+
+    model->deleteFiles(selectedItemPaths);
+}
+
 void FileManagementTabForm::on_pushButtonSwitch_clicked()
 {
     showSelectDirDialog();
+}
+
+void FileManagementTabForm::on_pushButtonDeselectAll_clicked()
+{
+    ui->treeView->clearSelection();
+}
+
+void FileManagementTabForm::on_pushButtonSelectAll_clicked()
+{
+    ui->treeView->selectAll();
+}
+
+void FileManagementTabForm::on_toolButtonGo_clicked()
+{
+    if (ui->comboBoxPath->currentText().isEmpty())
+        return;
+
+    model->fetchDirectory(ui->comboBoxPath->currentText());
 }

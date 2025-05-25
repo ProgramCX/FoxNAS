@@ -23,6 +23,12 @@ public:
 private slots:
     void on_pushButtonSwitch_clicked();
 
+    void on_pushButtonDeselectAll_clicked();
+
+    void on_pushButtonSelectAll_clicked();
+
+    void on_toolButtonGo_clicked();
+
 private:
     Ui::FileManagementTabForm *ui;
     FileSystemRemoteModel *model;
@@ -30,6 +36,7 @@ private:
     QString currentPath;
     bool back = 0;
     bool forward = 0;
+
     QStack<QString> backHistoryStack;
     QStack<QString> forwardHistoryStack;
 
@@ -45,6 +52,9 @@ private:
     void forwardHistoryDir();
 
     void backTopDir();
+
+    void refresh();
+    void deleteFiles();
 };
 
 #endif // FILEMANAGEMENTTABFORM_H

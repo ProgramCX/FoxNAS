@@ -5,6 +5,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <QUrlQuery>
 #include <IniSettings.hpp>
 #include <MemStore.h>
 
@@ -16,13 +17,58 @@ ApiRequest::ApiRequest(QString apiAddress,
     , api(apiAddress)
     , body(requestBody)
     , method(httpMethod)
-{}
+{
+    urlApi.setUrl(apiAddress);
+    request.setUrl(urlApi);
+}
 
 ApiRequest::ApiRequest(QString apiAddress, METHOD httpMethod, QObject *parent)
     : QObject{parent}
     , api(apiAddress)
     , method(httpMethod)
-{}
+{
+    urlApi.setUrl(apiAddress);
+    request.setUrl(QUrl(urlApi.toString(QUrl::FullyEncoded)));
+}
+
+QString ApiRequest::getApi() const
+{
+    return api;
+}
+
+void ApiRequest::setApi(const QString &newApi)
+{
+    api = newApi;
+    urlApi.setUrl(api);
+    request.setUrl(QUrl(urlApi.toString(QUrl::FullyEncoded)));
+}
+
+void ApiRequest::addQueryParam(QString name, QString value)
+{
+    QUrlQuery query(urlApi.query());
+
+    // 移除已存在的参数
+    QList<QPair<QString, QString>> items = query.queryItems();
+    for (const auto &item : items) {
+        if (item.first == name) {
+            query.removeAllQueryItems(name);
+            break;
+        }
+    }
+
+    // 添加新参数
+    QByteArray encodedValue = QUrl::toPercentEncoding(value);
+    query.addQueryItem(name, QString(encodedValue));
+
+    urlApi.setQuery(query);
+    request.setUrl(QUrl(urlApi.toString(QUrl::FullyEncoded)));
+}
+
+void ApiRequest::setUrlQuery(QUrlQuery &query)
+{
+    urlApi.setQuery(query);
+    request.setUrl(QUrl(urlApi.toString(QUrl::FullyEncoded)));
+}
 
 QString ApiRequest::getToken()
 {
@@ -37,18 +83,23 @@ void ApiRequest::sendRequest()
     }
 
     QString token = getToken();
-    QNetworkRequest request{QUrl(api)};
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     request.setRawHeader("Authorization", QString("Bearer " + token).toUtf8());
 
     qDebug() << "正在发送API请求..\n"
-             << "请求token:" << token << "\n请求Url：" << api << "\n请求体：" << body.toJson()
-             << "\n";
+             << "请求token:" << token << "\n请求Url：" << urlApi.toString() << "\n请求体："
+             << body.toJson() << "\n";
     if (method == POST) {
         reply = manager.post(request, body.toJson());
     } else if (method == GET) {
         reply = manager.get(request);
+    } else if (method == DELETE) {
+        reply = manager.deleteResource(request);
+    } else if (method == PUT) {
+        reply = manager.put(request, body.toJson());
+    } else if (method == PATCH) {
+        reply = manager.sendCustomRequest(request, "PATCH", body.toJson());
     } else {
         qDebug() << "未知的Http请求方法";
     }
