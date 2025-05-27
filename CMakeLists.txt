@@ -41,6 +41,7 @@ qt_add_executable(FoxNAS
     src/model/FileSystemRemoteModel.h src/model/FileSystemRemoteModel.cpp
     src/model/RemoteFileSystemNode.h
     src/MainTabWidgets/FileManagement/DirsAuthedSelectDialog.h src/MainTabWidgets/FileManagement/DirsAuthedSelectDialog.cpp src/MainTabWidgets/FileManagement/DirsAuthedSelectDialog.ui
+    src/MainTabWidgets/FileManagement/FileOperationFailedDialog.h src/MainTabWidgets/FileManagement/FileOperationFailedDialog.cpp src/MainTabWidgets/FileManagement/FileOperationFailedDialog.ui
 
 )
 

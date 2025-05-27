@@ -6,9 +6,11 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
-
 #include <QThread>
 #include <QUrlQuery>
+
+#include <FileOperationFailedDialog.h>
+
 #include <MemStore.h>
 
 #include "../LoadingDialog.h"
@@ -228,7 +230,7 @@ void FileSystemRemoteModel::fetchDirectory(QString directory, bool refresh)
                 } else if (statusCode == 403) {
                     QMessageBox::critical(nullptr,
                                           "失败",
-                                          "你可能没有权限访问该目录！请联系管理员",
+                                          "你可能没有权限访问该目录！请联系管理员！",
                                           tr("确定"));
                 } else {
                     QMessageBox::critical(nullptr,
@@ -263,46 +265,106 @@ void FileSystemRemoteModel::setSortBy(const QString &newSortBy)
 
 void FileSystemRemoteModel::deleteFiles(QList<QString> &pathList)
 {
-    if (pathList.isEmpty())
+    if (pathList.isEmpty()) {
         return;
-    ApiRequest *apiRequest = new ApiRequest(nullptr, ApiRequest::DELETE, this);
+    }
 
+    //构造JSON请求体
+    QJsonDocument requestJson;
+    QJsonArray jsonArray = QJsonArray::fromStringList(pathList);
+    requestJson.setArray(jsonArray);
+
+    ApiRequest *apiRequest = new ApiRequest(nullptr, ApiRequest::DELETE, requestJson, this);
     QString baseFullApi = getFullApiPath(FULLHOST, NASDIELETEFILEAPI);
     apiRequest->setApi(baseFullApi);
 
     LoadingDialog *loadingDialog = new LoadingDialog("正在删除文件...");
 
-    qint64 total = pathList.count();
-
-    loadingDialog->setTotal(total);
-    loadingDialog->setNow(0);
-
     connect(apiRequest,
             &ApiRequest::responseRecieved,
             this,
             [loadingDialog, this](QString &rawContent, bool hasError, qint16 statusCode) {
+                loadingDialog->close();
+                loadingDialog->deleteLater();
                 if (statusCode == 200) {
-                } else if (statusCode != 0) {
-                    QMessageBox::critical(nullptr,
-                                          "删除时发生错误！",
-                                          QString("%1:删除 %2时出现错误！")
-                                              .arg(QString::number(statusCode), rawContent));
-                }
-                loadingDialog->setNow(loadingDialog->getNow() + 1);
-                if (loadingDialog->getNow() == loadingDialog->getTotal()) {
-                    loadingDialog->close();
-                    loadingDialog->deleteLater();
                     fetchDirectory(currentDirectory, true);
+                } else if (statusCode == 403) {
+                    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+                    QMessageBox::critical(nullptr, "权限不足！", doc.object()["message"].toString());
+                } else {
+                    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+
+                    QJsonObject obj = doc.object();
+
+                    qint64 totalCount = obj["totalCount"].toInt();
+                    qint64 failedCount = obj["failedCount"].toInt();
+
+                    QJsonArray failedPathsJson = obj["failedPaths"].toArray();
+
+                    QList<QString> failedPaths;
+
+                    for (const auto &path : failedPathsJson) {
+                        QJsonObject singleFailedPathObj = path.toObject();
+                        failedPaths.append(singleFailedPathObj["path"].toString());
+                    }
+
+                    FileOperationFailedDialog *fileOpFiDialog
+                        = new FileOperationFailedDialog(totalCount, failedCount, "删除文件失败");
+                    fileOpFiDialog->addFileLists(failedPaths);
+                    if (fileOpFiDialog->exec() == QDialog::Accepted) {
+                        QList<QString> list = fileOpFiDialog->getResult();
+                        deleteFiles(list);
+                    }
+                    fileOpFiDialog->deleteLater();
                 }
             });
 
-    loadingDialog->show();
-    for (const QString &path : pathList) {
-        apiRequest->addQueryParam("path", path);
-
-        apiRequest->sendRequest();
-        // QThread::sleep(100);
-    }
+    apiRequest->sendRequest();
+    loadingDialog->exec();
 }
+
+// void FileSystemRemoteModel::deleteFiles(QList<QString> &pathList)
+// {
+//     if (pathList.isEmpty())
+//         return;
+//     ApiRequest *apiRequest = new ApiRequest(nullptr, ApiRequest::DELETE, this);
+
+//     QString baseFullApi = getFullApiPath(FULLHOST, NASDIELETEFILEAPI);
+//     apiRequest->setApi(baseFullApi);
+
+//     LoadingDialog *loadingDialog = new LoadingDialog("正在删除文件...");
+
+//     qint64 total = pathList.count();
+
+//     loadingDialog->setTotal(total);
+//     loadingDialog->setNow(0);
+
+//     connect(apiRequest,
+//             &ApiRequest::responseRecieved,
+//             this,
+//             [loadingDialog, this](QString &rawContent, bool hasError, qint16 statusCode) {
+//                 if (statusCode == 200) {
+//                 } else if (statusCode != 0) {
+//                     QMessageBox::critical(nullptr,
+//                                           "删除时发生错误！",
+//                                           QString("%1:删除 %2时出现错误！")
+//                                               .arg(QString::number(statusCode), rawContent));
+//                 }
+//                 loadingDialog->setNow(loadingDialog->getNow() + 1);
+//                 if (loadingDialog->getNow() == loadingDialog->getTotal()) {
+//                     loadingDialog->close();
+//                     loadingDialog->deleteLater();
+//                     fetchDirectory(currentDirectory, true);
+//                 }
+//             });
+
+//     loadingDialog->show();
+//     for (const QString &path : pathList) {
+//         apiRequest->addQueryParam("path", path);
+
+//         apiRequest->sendRequest();
+//         // QThread::sleep(100);
+//     }
+// }
 
 void FileSystemRemoteModel::copyFiles(QList<QString> &filesList) {}
