@@ -20,6 +20,12 @@ public:
 
 public:
     void addFileLists(QList<QString> fileList);
+    void addFileLists(QList<QMap<QString, QString>> fileList);
+
+    QList<QMap<QString, QString>> mapList;
+    QList<QString> list;
+
+    QList<QMap<QString, QString>> getMapResult();
     QList<QString> getResult();
 
 private:

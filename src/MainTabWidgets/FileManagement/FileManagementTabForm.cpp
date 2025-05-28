@@ -1,8 +1,11 @@
 #include "FileManagementTabForm.h"
+#include <ClipboardManager.h>
 #include <DirsAuthedSelectDialog.h>
 
 #include <QDateTime>
 #include <QDir>
+#include <QInputDialog>
+#include <QMessageBox>
 #include <QScrollBar>
 #include <QTreeView>
 
@@ -38,6 +41,38 @@ void FileManagementTabForm::onScrollBarValueChanged(int value)
 
     if (value == maxValue) {
         model->fetchDirectory(currentPath);
+    }
+}
+
+void FileManagementTabForm::onSelectionChanged(const QItemSelection &selected,
+                                               const QItemSelection &deselected)
+{
+    ui->pushButtonDelete->setEnabled(selected.indexes().size() > 0);
+    ui->pushButtonCopy->setEnabled(selected.indexes().size() > 0);
+    ui->pushButtonCut->setEnabled(selected.indexes().size() > 0);
+
+    QModelIndex index = ui->treeView->currentIndex();
+    RemoteFileSystemNode *node = static_cast<RemoteFileSystemNode *>(index.internalPointer());
+
+    if (node) {
+        ui->pushButtonEdit->setEnabled(node->type == "file");
+        ui->pushButtonDownload->setEnabled(node->type == "file");
+        ui->pushButtonDownload->setEnabled(node->type == "file");
+
+        ui->pushButtonCopy->setEnabled(true);
+        ui->pushButtonCut->setEnabled(true);
+        ui->pushButtonDelete->setEnabled(true);
+        ui->pushButtonOpen->setEnabled(true);
+        ui->pushButtonProperty->setEnabled(true);
+        ui->pushButtonRename->setEnabled(true);
+    } else {
+        ui->pushButtonEdit->setEnabled(false);
+        ui->pushButtonCopy->setEnabled(false);
+        ui->pushButtonCut->setEnabled(false);
+        ui->pushButtonDelete->setEnabled(false);
+        ui->pushButtonOpen->setEnabled(false);
+        ui->pushButtonProperty->setEnabled(false);
+        ui->pushButtonRename->setEnabled(false);
     }
 }
 
@@ -96,7 +131,31 @@ void FileManagementTabForm::connectSlots()
             &FileManagementTabForm::backHistoryDir);
     connect(ui->toolButtonUp, &QToolButton::clicked, this, &FileManagementTabForm::backTopDir);
     connect(ui->toolButtonRefresh, &QToolButton::clicked, this, &FileManagementTabForm::refresh);
-    connect(ui->pushButtonDelete, &QToolButton::clicked, this, &FileManagementTabForm::deleteFiles);
+    connect(ui->pushButtonDelete, &QPushButton::clicked, this, &FileManagementTabForm::deleteFiles);
+
+    connect(ui->pushButtonCopy, &QPushButton::clicked, this, &FileManagementTabForm::copyFiles);
+    connect(ui->pushButtonCut, &QPushButton::clicked, this, &FileManagementTabForm::cutFiles);
+    connect(ui->pushButtonPaste, &QPushButton::clicked, this, &FileManagementTabForm::pasteFiles);
+    connect(ui->pushButtonRename, &QPushButton::clicked, this, &FileManagementTabForm::renameFile);
+
+    connect(&ClipboardManager::instance(), &ClipboardManager::clipboardCopyChanged, this, [this] {
+        if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::COPY) {
+            bool hasContent = !ClipboardManager::instance().getCopiedFiles().isEmpty();
+            ui->pushButtonPaste->setEnabled(hasContent);
+        }
+    });
+
+    connect(&ClipboardManager::instance(), &ClipboardManager::clipboardCutChanged, this, [this] {
+        if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::CUT) {
+            bool hasContent = !ClipboardManager::instance().getCutFiles().isEmpty();
+            ui->pushButtonPaste->setEnabled(hasContent);
+        }
+    });
+
+    connect(ui->treeView->selectionModel(),
+            &QItemSelectionModel::selectionChanged,
+            this,
+            &FileManagementTabForm::onSelectionChanged);
 }
 
 void FileManagementTabForm::handleItemDoubleClicked(const QModelIndex &index)
@@ -126,6 +185,12 @@ void FileManagementTabForm::updateNavButtonState()
 
     ui->toolButtonUp->setEnabled(!dir.isRoot());
     ui->toolButtonRefresh->setEnabled(!currentPath.isEmpty());
+
+    ui->pushButtonDeselectAll->setEnabled(!currentPath.isEmpty());
+    ui->pushButtonSelectAll->setEnabled(!currentPath.isEmpty());
+
+    ui->pushButtonUpload->setEnabled(!currentPath.isEmpty());
+    ui->comboBoxSort->setEnabled(!currentPath.isEmpty());
 }
 
 void FileManagementTabForm::backHistoryDir()
@@ -174,6 +239,79 @@ void FileManagementTabForm::refresh()
 
 void FileManagementTabForm::deleteFiles()
 {
+    QList<QString> selectedItemPaths = getSelectedFiles();
+
+    if (QMessageBox::question(
+            this,
+            "是否删除",
+            QString("你将删除%1个文件和目录，是否继续？删除过程中无法取消操作，此操作不可逆！")
+                .arg(selectedItemPaths.size()))
+        == QMessageBox::Yes) {
+        model->deleteFiles(selectedItemPaths);
+    }
+}
+
+void FileManagementTabForm::copyFiles()
+{
+    QList<QString> selectedItemPaths = getSelectedFiles();
+    ClipboardManager::instance().setCopiedFiles(selectedItemPaths);
+}
+
+void FileManagementTabForm::pasteFiles()
+{
+    QList<QMap<QString, QString>> pathList;
+    QList<QString> sourceFilePathList;
+    if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::COPY) {
+        sourceFilePathList = ClipboardManager::instance().getCopiedFiles();
+    } else if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::CUT) {
+        sourceFilePathList = ClipboardManager::instance().getCutFiles();
+    }
+
+    if (sourceFilePathList.isEmpty()) {
+        return;
+    }
+
+    for (const QString sourceFilePath : sourceFilePathList) {
+        QMap<QString, QString> copyMap;
+        QFileInfo sourceFile(sourceFilePath);
+        QString fileName = sourceFile.fileName();
+        copyMap.insert("oldPath", sourceFilePath);
+        copyMap.insert("newPath", QDir(currentPath).filePath(fileName));
+        pathList.append(copyMap);
+    }
+
+    if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::COPY) {
+        model->copyFiles(pathList);
+    } else if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::CUT) {
+        model->moveFiles(pathList);
+    }
+}
+
+void FileManagementTabForm::cutFiles()
+{
+    QList<QString> selectedItemPaths = getSelectedFiles();
+    ClipboardManager::instance().setCutFiles(selectedItemPaths);
+}
+
+void FileManagementTabForm::renameFile()
+{
+    QModelIndex index = ui->treeView->currentIndex();
+    RemoteFileSystemNode *node = static_cast<RemoteFileSystemNode *>(index.internalPointer());
+
+    if (node) {
+        QString newName = QInputDialog::getText(this,
+                                                QString("重命名%1")
+                                                    .arg(node->type == "file" ? tr("文件")
+                                                                              : tr("文件夹")),
+                                                QString("请输入%1文件的新名称：").arg(node->name));
+        if (!newName.trimmed().isEmpty()) {
+            model->renameFile(node->path, newName);
+        }
+    }
+}
+
+QList<QString> FileManagementTabForm::getSelectedFiles()
+{
     QModelIndexList selectedIndexes = ui->treeView->selectionModel()->selectedRows(0);
     QList<QString> selectedItemPaths;
     for (const QModelIndex &index : selectedIndexes) {
@@ -182,8 +320,7 @@ void FileManagementTabForm::deleteFiles()
             selectedItemPaths.append(node->path);
         }
     }
-
-    model->deleteFiles(selectedItemPaths);
+    return selectedItemPaths;
 }
 
 void FileManagementTabForm::on_pushButtonSwitch_clicked()

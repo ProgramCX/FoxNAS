@@ -292,14 +292,9 @@ void FileSystemRemoteModel::deleteFiles(QList<QString> &pathList)
                     QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
                     QMessageBox::critical(nullptr, "权限不足！", doc.object()["message"].toString());
                 } else {
-                    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
-
-                    QJsonObject obj = doc.object();
-
-                    qint64 totalCount = obj["totalCount"].toInt();
-                    qint64 failedCount = obj["failedCount"].toInt();
-
-                    QJsonArray failedPathsJson = obj["failedPaths"].toArray();
+                    qint64 totalCount, failedCount = 0;
+                    QJsonArray failedPathsJson;
+                    getFailedInfo(rawContent, failedCount, totalCount, failedPathsJson);
 
                     QList<QString> failedPaths;
 
@@ -323,48 +318,208 @@ void FileSystemRemoteModel::deleteFiles(QList<QString> &pathList)
     loadingDialog->exec();
 }
 
-// void FileSystemRemoteModel::deleteFiles(QList<QString> &pathList)
-// {
-//     if (pathList.isEmpty())
-//         return;
-//     ApiRequest *apiRequest = new ApiRequest(nullptr, ApiRequest::DELETE, this);
+void FileSystemRemoteModel::copyFiles(QList<QMap<QString, QString>> &filesList)
+{
+    if (filesList.isEmpty()) {
+        return;
+    }
 
-//     QString baseFullApi = getFullApiPath(FULLHOST, NASDIELETEFILEAPI);
-//     apiRequest->setApi(baseFullApi);
+    QJsonDocument requestJson;
+    QJsonArray requestArray;
 
-//     LoadingDialog *loadingDialog = new LoadingDialog("正在删除文件...");
+    for (const QMap<QString, QString> &aFileCopyMap : filesList) {
+        QVariantMap variantMap;
+        for (auto it = aFileCopyMap.begin(); it != aFileCopyMap.end(); ++it) {
+            variantMap.insert(it.key(), it.value());
+        }
+        QJsonObject requestPathObject = QJsonObject::fromVariantMap(variantMap);
+        requestArray.append(requestPathObject);
+    }
 
-//     qint64 total = pathList.count();
+    requestJson.setArray(requestArray);
 
-//     loadingDialog->setTotal(total);
-//     loadingDialog->setNow(0);
+    ApiRequest *apiRequest = new ApiRequest(nullptr, ApiRequest::POST, requestJson, this);
+    QString baseFullApi = getFullApiPath(FULLHOST, NASCOPYAPI);
+    apiRequest->setApi(baseFullApi);
 
-//     connect(apiRequest,
-//             &ApiRequest::responseRecieved,
-//             this,
-//             [loadingDialog, this](QString &rawContent, bool hasError, qint16 statusCode) {
-//                 if (statusCode == 200) {
-//                 } else if (statusCode != 0) {
-//                     QMessageBox::critical(nullptr,
-//                                           "删除时发生错误！",
-//                                           QString("%1:删除 %2时出现错误！")
-//                                               .arg(QString::number(statusCode), rawContent));
-//                 }
-//                 loadingDialog->setNow(loadingDialog->getNow() + 1);
-//                 if (loadingDialog->getNow() == loadingDialog->getTotal()) {
-//                     loadingDialog->close();
-//                     loadingDialog->deleteLater();
-//                     fetchDirectory(currentDirectory, true);
-//                 }
-//             });
+    LoadingDialog *loadingDialog = new LoadingDialog("正在复制文件...");
 
-//     loadingDialog->show();
-//     for (const QString &path : pathList) {
-//         apiRequest->addQueryParam("path", path);
+    connect(apiRequest,
+            &ApiRequest::responseRecieved,
+            this,
+            [loadingDialog, this, apiRequest](QString &rawContent, bool hasError, qint16 statusCode) {
+                loadingDialog->close();
+                loadingDialog->deleteLater();
+                if (statusCode == 200) {
+                    fetchDirectory(currentDirectory, true);
+                } else if (statusCode == 403) {
+                    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+                    QMessageBox::critical(nullptr, "权限不足！", doc.object()["message"].toString());
+                } else {
+                    qint64 totalCount, failedCount = 0;
+                    QJsonArray failedPathsJson;
+                    getFailedInfo(rawContent, failedCount, totalCount, failedPathsJson);
 
-//         apiRequest->sendRequest();
-//         // QThread::sleep(100);
-//     }
-// }
+                    QList<QMap<QString, QString>> failedPaths;
 
-void FileSystemRemoteModel::copyFiles(QList<QString> &filesList) {}
+                    for (const auto &path : failedPathsJson) {
+                        QJsonObject singleFailedPathObj = path.toObject();
+
+                        QJsonArray array = singleFailedPathObj["path"].toArray();
+                        QMap<QString, QString> pathMap;
+                        if (array.size() == 2) {
+                            pathMap.insert("oldPath", array[0].toString());
+                            pathMap.insert("newPath", array[1].toString());
+                        }
+                        failedPaths.append(pathMap);
+                    }
+
+                    FileOperationFailedDialog *fileOpFiDialog
+                        = new FileOperationFailedDialog(totalCount, failedCount, "复制文件失败");
+
+                    fileOpFiDialog->addFileLists(failedPaths);
+                    if (fileOpFiDialog->exec() == QDialog::Accepted) {
+                        QList<QMap<QString, QString>> list = fileOpFiDialog->getMapResult();
+                        copyFiles(list);
+                    }
+                    fileOpFiDialog->deleteLater();
+                }
+                apiRequest->deleteLater();
+            });
+
+    apiRequest->sendRequest();
+    loadingDialog->exec();
+}
+
+void FileSystemRemoteModel::moveFiles(QList<QMap<QString, QString>> &filesList)
+{
+    if (filesList.isEmpty()) {
+        return;
+    }
+
+    QJsonDocument requestJson;
+    QJsonArray requestArray;
+
+    for (const QMap<QString, QString> &aFileCopyMap : filesList) {
+        QVariantMap variantMap;
+        for (auto it = aFileCopyMap.begin(); it != aFileCopyMap.end(); ++it) {
+            variantMap.insert(it.key(), it.value());
+        }
+        QJsonObject requestPathObject = QJsonObject::fromVariantMap(variantMap);
+        requestArray.append(requestPathObject);
+    }
+
+    requestJson.setArray(requestArray);
+
+    ApiRequest *apiRequest = new ApiRequest(nullptr, ApiRequest::PUT, requestJson, this);
+    QString baseFullApi = getFullApiPath(FULLHOST, NASMOVEAPI);
+    apiRequest->setApi(baseFullApi);
+
+    LoadingDialog *loadingDialog = new LoadingDialog("正在移动文件...");
+
+    connect(apiRequest,
+            &ApiRequest::responseRecieved,
+            this,
+            [loadingDialog, this, apiRequest](QString &rawContent, bool hasError, qint16 statusCode) {
+                loadingDialog->close();
+                loadingDialog->deleteLater();
+                if (statusCode == 200) {
+                    fetchDirectory(currentDirectory, true);
+                } else if (statusCode == 403) {
+                    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+                    QMessageBox::critical(nullptr, "权限不足！", doc.object()["message"].toString());
+                } else {
+                    qint64 totalCount, failedCount = 0;
+                    QJsonArray failedPathsJson;
+                    getFailedInfo(rawContent, failedCount, totalCount, failedPathsJson);
+
+                    QList<QMap<QString, QString>> failedPaths;
+
+                    for (const auto &path : failedPathsJson) {
+                        QJsonObject singleFailedPathObj = path.toObject();
+
+                        QJsonArray array = singleFailedPathObj["path"].toArray();
+                        QMap<QString, QString> pathMap;
+                        if (array.size() == 2) {
+                            pathMap.insert("oldPath", array[0].toString());
+                            pathMap.insert("newPath", array[1].toString());
+                        }
+                        failedPaths.append(pathMap);
+                    }
+
+                    FileOperationFailedDialog *fileOpFiDialog
+                        = new FileOperationFailedDialog(totalCount, failedCount, "移动文件失败");
+
+                    fileOpFiDialog->addFileLists(failedPaths);
+                    if (fileOpFiDialog->exec() == QDialog::Accepted) {
+                        QList<QMap<QString, QString>> list = fileOpFiDialog->getMapResult();
+                        moveFiles(list);
+                    }
+                    fileOpFiDialog->deleteLater();
+                }
+                apiRequest->deleteLater();
+            });
+
+    apiRequest->sendRequest();
+    loadingDialog->exec();
+}
+
+void FileSystemRemoteModel::renameFile(QString path, QString newName)
+{
+    QString apiRequestPath = getFullApiPath(FULLHOST, NASRENAMEFILEAPI);
+
+    ApiRequest *apiRequest = new ApiRequest(apiRequestPath, ApiRequest::PUT, this);
+    apiRequest->addQueryParam("path", path);
+    apiRequest->addQueryParam("newName", newName);
+
+    connect(apiRequest,
+            &ApiRequest::responseRecieved,
+            this,
+            [this, path, apiRequest](QString &rawContent, bool hasError, qint16 statusCode) {
+                if (statusCode == 200) {
+                    fetchDirectory(currentDirectory, true);
+                } else if (statusCode == 403) {
+                    QMessageBox::information(nullptr,
+                                             "重命名失败",
+                                             "暂无权限修改 " + path + " 名称！请联系管理员。",
+                                             tr("确定"));
+                } else if (statusCode == 500) {
+                    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+                    if (doc.isObject()) {
+                        QJsonObject obj = doc.object();
+                        QMessageBox::information(nullptr,
+                                                 "重命名失败",
+                                                 QString("无法将 %1 重命名为 %2!")
+                                                     .arg(obj["path"].toString(),
+                                                          obj["renameTo"].toString()),
+                                                 tr("确定"));
+
+                    } else {
+                        QMessageBox::information(nullptr,
+                                                 "重命名失败",
+                                                 "无法重命名文件！",
+                                                 tr("确定"));
+                    }
+
+                } else {
+                    QMessageBox::information(nullptr, "重命名失败", "无法重命名文件！", tr("确定"));
+                }
+                apiRequest->deleteLater();
+            });
+    apiRequest->sendRequest();
+}
+
+void FileSystemRemoteModel::getFailedInfo(QString &rawContent,
+                                          qint64 &failedCount,
+                                          qint64 &totalCount,
+                                          QJsonArray &failedPathsJson)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+
+    QJsonObject obj = doc.object();
+
+    totalCount = obj["totalCount"].toInt();
+    failedCount = obj["failedCount"].toInt();
+
+    failedPathsJson = obj["failedPaths"].toArray();
+}

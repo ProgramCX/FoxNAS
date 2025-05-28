@@ -22,8 +22,20 @@ FileOperationFailedDialog::~FileOperationFailedDialog()
 
 void FileOperationFailedDialog::addFileLists(QList<QString> fileList)
 {
+    list = fileList;
     for (const QString &file : fileList) {
         QListWidgetItem *item = new QListWidgetItem(file, ui->listWidget);
+        item->setCheckState(Qt::Checked);
+        ui->listWidget->addItem(item);
+    }
+}
+
+void FileOperationFailedDialog::addFileLists(QList<QMap<QString, QString>> fileList)
+{
+    mapList = fileList;
+    for (const QMap<QString, QString> &file : fileList) {
+        QListWidgetItem *item = new QListWidgetItem(file["oldPath"] + " -> " + file["newPath"],
+                                                    ui->listWidget);
         item->setCheckState(Qt::Checked);
         ui->listWidget->addItem(item);
     }
@@ -35,7 +47,19 @@ QList<QString> FileOperationFailedDialog::getResult()
     for (int i = 0; i < ui->listWidget->count(); i++) {
         QListWidgetItem *item = ui->listWidget->item(i);
         if (item->checkState() == Qt::Checked || item->isSelected()) {
-            selectedPaths.append(item->text());
+            selectedPaths.append(list[i]);
+        }
+    }
+    return selectedPaths;
+}
+
+QList<QMap<QString, QString>> FileOperationFailedDialog::getMapResult()
+{
+    QList<QMap<QString, QString>> selectedPaths;
+    for (int i = 0; i < ui->listWidget->count(); i++) {
+        QListWidgetItem *item = ui->listWidget->item(i);
+        if (item->checkState() == Qt::Checked || item->isSelected()) {
+            selectedPaths.append(mapList[i]);
         }
     }
     return selectedPaths;
