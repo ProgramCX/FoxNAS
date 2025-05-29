@@ -90,12 +90,13 @@ void ApiRequest::sendRequest()
     qDebug() << "正在发送API请求..\n"
              << "请求token:" << token << "\n请求Url：" << urlApi.toString() << "\n请求体："
              << body.toJson() << "\n";
+
     if (method == POST) {
         reply = manager.post(request, body.toJson());
     } else if (method == GET) {
         reply = manager.get(request);
     } else if (method == DELETE) {
-        reply = manager.deleteResource(request);
+        reply = manager.sendCustomRequest(request, "DELETE", body.toJson());
     } else if (method == PUT) {
         reply = manager.put(request, body.toJson());
     } else if (method == PATCH) {
@@ -107,12 +108,12 @@ void ApiRequest::sendRequest()
     connect(reply, &QNetworkReply::finished, [&]() {
         QString response;
         if (reply->error() == QNetworkReply::NoError) {
-            response = reply->readAll();
             hasError = false;
         } else {
             hasError = true;
         }
 
+        response = reply->readAll();
         qint16 statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         emit responseRecieved(response, hasError, statusCode);
     });

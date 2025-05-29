@@ -3,9 +3,9 @@
 
 #include <QWidget>
 
+#include <QItemSelection>
 #include <QStack>
 #include <FileSystemRemoteModel.h>
-#include <RemoteFileSystemNode.h>
 
 namespace Ui {
 class FileManagementTabForm;
@@ -42,6 +42,7 @@ private:
 
 private:
     void onScrollBarValueChanged(int value);
+    void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void iniTreeView();
     void connectSlots();
     void handleItemDoubleClicked(const QModelIndex &index);
@@ -55,6 +56,12 @@ private:
 
     void refresh();
     void deleteFiles();
+
+    void copyFiles();
+    void pasteFiles();
+    void cutFiles();
+    void renameFile();
+    QList<QString> getSelectedFiles();
 };
 
 #endif // FILEMANAGEMENTTABFORM_H

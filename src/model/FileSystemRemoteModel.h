@@ -35,7 +35,9 @@ public:
     void setSortBy(const QString &newSortBy);
 
     void deleteFiles(QList<QString> &pathList);
-    void copyFiles(QList<QString> &filesList);
+    void copyFiles(QList<QMap<QString, QString>> &filesList);
+    void moveFiles(QList<QMap<QString, QString>> &filesList);
+    void renameFile(QString path, QString newName);
 
 private:
     RemoteFileSystemNode *rootNode = nullptr;
@@ -49,7 +51,10 @@ private:
     QString order = "asc";
     QString sortBy = "name";
     QString currentDirectory;
-
+    void getFailedInfo(QString &rawContent,
+                       qint64 &failedCount,
+                       qint64 &totalCount,
+                       QJsonArray &failedPathsJson);
 signals:
     QString currentPathChanged(QString &path) const;
 };
