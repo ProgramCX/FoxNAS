@@ -15,7 +15,8 @@ const QString NASCOPYAPI = "/api/file/op/copy";
 const QString NASMOVEAPI = "/api/file/op/move";
 
 const QString NASRENAMEFILEAPI = "/api/file/op/rename";
-
+const QString NASDOWNLOADFILEAPI = "/api/file/op/get";
+const QString NASUPLOADFILEAPI = "/api/file/op/upload";
 const QString NASRESOURCESTATUSSOCKET = "/ws/overview";
 
 QString getFullApiPath(QString host, QString api);

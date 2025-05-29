@@ -17,6 +17,7 @@ public:
     QStringList getCutFiles() const;
     CLIPBOARDMODE getClipboardMode() const;
 
+    void clearClipboard();
 signals:
     void clipboardCopyChanged();
     void clipboardCutChanged();

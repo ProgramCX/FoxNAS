@@ -43,6 +43,10 @@ qt_add_executable(FoxNAS
     src/MainTabWidgets/FileManagement/DirsAuthedSelectDialog.h src/MainTabWidgets/FileManagement/DirsAuthedSelectDialog.cpp src/MainTabWidgets/FileManagement/DirsAuthedSelectDialog.ui
     src/MainTabWidgets/FileManagement/FileOperationFailedDialog.h src/MainTabWidgets/FileManagement/FileOperationFailedDialog.cpp src/MainTabWidgets/FileManagement/FileOperationFailedDialog.ui
     src/util/ClipboardManager.h src/util/ClipboardManager.cpp
+    src/MainTabWidgets/FileManagement/FileTreeView.h src/MainTabWidgets/FileManagement/FileTreeView.cpp
+
+    src/util/FileTranferListItem.h src/util/FileTranferListItem.cpp src/util/FileTranferListItem.ui
+    src/util/BytesConvertorUtil.h src/util/BytesConvertorUtil.cpp
 
 )
 

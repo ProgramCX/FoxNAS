@@ -8,6 +8,8 @@
 #include <QWidget>
 #include <QtWebSockets/QtWebSockets>
 
+#include <BytesConvertorUtil.h>
+
 namespace Ui {
 class OverViewForm;
 }
@@ -69,8 +71,6 @@ private:
 
     void handleDisconnected();
     QString getFullWebsocketUrl();
-    QPair<double, QString> getReasonaleDataUnit(double bytes);
-    double getDataAccordingUnit(double bytes, QString unit);
 };
 
 #endif // OVERVIEWFORM_H

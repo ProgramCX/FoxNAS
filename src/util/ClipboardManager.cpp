@@ -34,6 +34,14 @@ QStringList ClipboardManager::getCutFiles() const
     return cutFiles;
 }
 
+void ClipboardManager::clearClipboard()
+{
+    this->copiedFiles = QStringList();
+    this->cutFiles = QStringList();
+    this->clipboardMode = COPY;
+    emit clipboardCopyChanged();
+}
+
 ClipboardManager::ClipboardManager(QObject *parent)
     : QObject{parent}
 {}

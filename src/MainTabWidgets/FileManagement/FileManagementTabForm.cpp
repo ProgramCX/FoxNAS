@@ -4,8 +4,10 @@
 
 #include <QDateTime>
 #include <QDir>
+#include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QMutex>
 #include <QScrollBar>
 #include <QTreeView>
 
@@ -47,9 +49,21 @@ void FileManagementTabForm::onScrollBarValueChanged(int value)
 void FileManagementTabForm::onSelectionChanged(const QItemSelection &selected,
                                                const QItemSelection &deselected)
 {
-    ui->pushButtonDelete->setEnabled(selected.indexes().size() > 0);
-    ui->pushButtonCopy->setEnabled(selected.indexes().size() > 0);
-    ui->pushButtonCut->setEnabled(selected.indexes().size() > 0);
+    if (selected.indexes().size() == 0) {
+        ui->pushButtonDelete->setEnabled(false);
+        ui->pushButtonCopy->setEnabled(false);
+        ui->pushButtonCut->setEnabled(false);
+        ui->pushButtonOpen->setEnabled(false);
+        ui->pushButtonProperty->setEnabled(false);
+        ui->pushButtonRename->setEnabled(false);
+        return;
+    }
+    ui->pushButtonDelete->setEnabled(true);
+    ui->pushButtonCopy->setEnabled(true);
+    ui->pushButtonCut->setEnabled(true);
+    ui->pushButtonOpen->setEnabled(true);
+    ui->pushButtonProperty->setEnabled(true);
+    ui->pushButtonRename->setEnabled(true);
 
     QModelIndex index = ui->treeView->currentIndex();
     RemoteFileSystemNode *node = static_cast<RemoteFileSystemNode *>(index.internalPointer());
@@ -58,21 +72,6 @@ void FileManagementTabForm::onSelectionChanged(const QItemSelection &selected,
         ui->pushButtonEdit->setEnabled(node->type == "file");
         ui->pushButtonDownload->setEnabled(node->type == "file");
         ui->pushButtonDownload->setEnabled(node->type == "file");
-
-        ui->pushButtonCopy->setEnabled(true);
-        ui->pushButtonCut->setEnabled(true);
-        ui->pushButtonDelete->setEnabled(true);
-        ui->pushButtonOpen->setEnabled(true);
-        ui->pushButtonProperty->setEnabled(true);
-        ui->pushButtonRename->setEnabled(true);
-    } else {
-        ui->pushButtonEdit->setEnabled(false);
-        ui->pushButtonCopy->setEnabled(false);
-        ui->pushButtonCut->setEnabled(false);
-        ui->pushButtonDelete->setEnabled(false);
-        ui->pushButtonOpen->setEnabled(false);
-        ui->pushButtonProperty->setEnabled(false);
-        ui->pushButtonRename->setEnabled(false);
     }
 }
 
@@ -113,6 +112,18 @@ void FileManagementTabForm::iniTreeView()
     ui->treeView->setColumnWidth(1, 200);
     ui->treeView->setColumnWidth(2, 100);
     ui->treeView->setColumnWidth(3, 150);
+
+    if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::COPY) {
+        bool hasContent = !ClipboardManager::instance().getCopiedFiles().isEmpty();
+        ui->pushButtonPaste->setEnabled(hasContent);
+    } else if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::CUT) {
+        bool hasContent = !ClipboardManager::instance().getCutFiles().isEmpty();
+        ui->pushButtonPaste->setEnabled(hasContent);
+    }
+
+    ui->treeView->setAcceptDrops(true);
+    ui->treeView->setDragDropMode(QAbstractItemView::DropOnly);
+    ui->treeView->setDefaultDropAction(Qt::CopyAction);
 }
 
 void FileManagementTabForm::connectSlots()
@@ -170,7 +181,7 @@ void FileManagementTabForm::handleItemDoubleClicked(const QModelIndex &index)
     if (item) {
         if (item->type == "directory") {
             model->fetchDirectory(item->path);
-
+            onSelectionChanged(QItemSelection(), QItemSelection());
         } else if (item->type == "file") {
         }
     }
@@ -191,6 +202,12 @@ void FileManagementTabForm::updateNavButtonState()
 
     ui->pushButtonUpload->setEnabled(!currentPath.isEmpty());
     ui->comboBoxSort->setEnabled(!currentPath.isEmpty());
+}
+
+bool FileManagementTabForm::hasSection()
+{
+    QItemSelectionModel *selection = ui->treeView->selectionModel();
+    return selection->hasSelection();
 }
 
 void FileManagementTabForm::backHistoryDir()
@@ -285,6 +302,8 @@ void FileManagementTabForm::pasteFiles()
     } else if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::CUT) {
         model->moveFiles(pathList);
     }
+
+    ClipboardManager::instance().clearClipboard();
 }
 
 void FileManagementTabForm::cutFiles()
@@ -299,28 +318,136 @@ void FileManagementTabForm::renameFile()
     RemoteFileSystemNode *node = static_cast<RemoteFileSystemNode *>(index.internalPointer());
 
     if (node) {
-        QString newName = QInputDialog::getText(this,
-                                                QString("重命名%1")
-                                                    .arg(node->type == "file" ? tr("文件")
-                                                                              : tr("文件夹")),
-                                                QString("请输入%1文件的新名称：").arg(node->name));
+        QString newName = QInputDialog::getText(
+            this,
+            QString("重命名%1").arg(node->type == "file" ? tr("文件") : tr("文件夹")),
+            QString("请输入 %1 %2的新名称：")
+                .arg(node->name, node->type == "file" ? tr("文件") : tr("文件夹")));
         if (!newName.trimmed().isEmpty()) {
             model->renameFile(node->path, newName);
         }
     }
 }
 
-QList<QString> FileManagementTabForm::getSelectedFiles()
+void FileManagementTabForm::removeItemFromTransferList(FileTranferListItem *item)
+{
+    for (int i = 0; i < ui->listWidget->count(); ++i) {
+        QListWidgetItem *listItem = ui->listWidget->item(i);
+        if (ui->listWidget->itemWidget(listItem) == item) {
+            ui->listWidget->removeItemWidget(listItem);
+            delete listItem;
+            break;
+        }
+    }
+}
+
+void FileManagementTabForm::downloadFile(QList<QString> filesToDownload, QString savePath)
+{
+    for (const QString &file : filesToDownload) {
+        FileTranferListItem *widget = new FileTranferListItem(file,
+                                                              savePath,
+                                                              FileTranferListItem::DOWNLOAD,
+                                                              this);
+        taskQueue.append(widget);
+        waitingQueue.append(widget);
+
+        connect(widget,
+                &FileTranferListItem::transferCompleted,
+                this,
+                [this](FileTranferListItem *item) {
+                    taskQueue.removeOne(item);
+                    removeItemFromTransferList(item);
+                    item->deleteLater();
+
+                    {
+                        QMutexLocker locker(&inTaskMutex);
+                        inTaskFiles--;
+                    }
+
+                    tryStartDownloadNext();
+                });
+
+        connect(widget,
+                &FileTranferListItem::transferFailed,
+                this,
+                [this](FileTranferListItem *item) {
+                    {
+                        QMutexLocker locker(&inTaskMutex);
+                        inTaskFiles--;
+                    }
+                    item->setMessageText("下载失败！");
+                    tryStartDownloadNext();
+                });
+
+        QListWidgetItem *item = new QListWidgetItem;
+        item->setSizeHint(widget->sizeHint());
+        ui->listWidget->addItem(item);
+        ui->listWidget->setItemWidget(item, widget);
+
+        tryStartDownloadNext();
+    }
+}
+
+void FileManagementTabForm::tryStartDownloadNext()
+{
+    QMutexLocker locker(&inTaskMutex);
+    if (isStartingDownload) {
+        return;
+    }
+    isStartingDownload = true;
+
+    if (inTaskFiles < getMaxiumInTaskCount() && !waitingQueue.isEmpty()) {
+        FileTranferListItem *next = waitingQueue.dequeue(); //从等待队列拿
+        inTaskFiles++;
+        next->startTransfer();
+        qDebug() << "正在下载的" << inTaskFiles;
+    }
+    qDebug() << "正在下载的（可能最后）" << inTaskFiles;
+    isStartingDownload = false;
+}
+
+QList<QString> FileManagementTabForm::getSelectedFiles(bool hasDir)
 {
     QModelIndexList selectedIndexes = ui->treeView->selectionModel()->selectedRows(0);
     QList<QString> selectedItemPaths;
     for (const QModelIndex &index : selectedIndexes) {
         RemoteFileSystemNode *node = static_cast<RemoteFileSystemNode *>(index.internalPointer());
         if (node) {
-            selectedItemPaths.append(node->path);
+            if (hasDir || node->type == "file") {
+                selectedItemPaths.append(node->path);
+            }
         }
     }
     return selectedItemPaths;
+}
+
+int FileManagementTabForm::getMaxiumInTaskCount()
+{
+    QSettings &settings = IniSettings::getGlobalSettingsInstance();
+    return settings.value("file/maxQueue", 3).toInt();
+}
+
+void FileManagementTabForm::keyPressEvent(QKeyEvent *event)
+{
+    if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_C) {
+        if (hasSection()) {
+            copyFiles();
+        }
+    } else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_V) {
+            pasteFiles();
+    } else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_X) {
+        if (hasSection()) {
+            cutFiles();
+        }
+    } else if (event->key() == Qt::Key_Delete) {
+        if (hasSection()) {
+            deleteFiles();
+        }
+    } else if (event->key() == Qt::Key_F2) {
+        if (hasSection()) {
+            renameFile();
+        }
+    }
 }
 
 void FileManagementTabForm::on_pushButtonSwitch_clicked()
@@ -344,4 +471,16 @@ void FileManagementTabForm::on_toolButtonGo_clicked()
         return;
 
     model->fetchDirectory(ui->comboBoxPath->currentText());
+}
+
+void FileManagementTabForm::on_pushButtonDownload_clicked()
+{
+    QString savePath = QFileDialog::getExistingDirectory(this, tr("选择保存位置"));
+    if (savePath.isEmpty()) {
+        return;
+    }
+
+    QList<QString> selectedPaths = getSelectedFiles(false);
+
+    downloadFile(selectedPaths, savePath);
 }

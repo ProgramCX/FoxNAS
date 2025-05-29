@@ -104,7 +104,8 @@ void OverViewForm::updateMemoryChart()
     if (memStatisticsQueue.length() >= 50) {
         memStatisticsQueue.pop_front();
     }
-    QPair<double, QString> memTotal = getReasonaleDataUnit(memoryInfo["total"]);
+    QPair<double, QString> memTotal = BytesConvertorUtil::getInstance().getReasonaleDataUnit(
+        memoryInfo["total"]);
     auto *memAxisY = qobject_cast<QValueAxis *>(memChart->axisY());
 
     if (memAxisY) {
@@ -112,7 +113,9 @@ void OverViewForm::updateMemoryChart()
         memAxisY->setTitleText(memTotal.second);
     }
 
-    double memFree = getDataAccordingUnit(memoryInfo["total"] - memoryInfo["used"], memTotal.second);
+    double memFree = BytesConvertorUtil::getInstance()
+                         .getDataAccordingUnit(memoryInfo["total"] - memoryInfo["used"],
+                                               memTotal.second);
 
     memStatisticsQueue.enqueue(memFree);
 
@@ -134,7 +137,8 @@ void OverViewForm::updateMemoryChart()
     ui->labelMemoryRate->setText(
         QString::number(memoryInfo["used"] / memoryInfo["total"] * 100, 'f', 2) + " %");
 
-    QPair<double, QString> memUsed = getReasonaleDataUnit(memoryInfo["used"]);
+    QPair<double, QString> memUsed = BytesConvertorUtil::getInstance().getReasonaleDataUnit(
+        memoryInfo["used"]);
     ui->labelMemCondition->setText(QString("%1 %2 / %3 %4")
                                        .arg(QString::number(memUsed.first, 'f', 2),
                                             memUsed.second,
@@ -168,8 +172,8 @@ void OverViewForm::updateNetworkChart()
         double sent = map["sentSpeed"].toDouble();
         double recv = map["recvSpeed"].toDouble();
 
-        sentSpeedList.append(getDataAccordingUnit(sent, "KB"));
-        recvSpeedList.append(getDataAccordingUnit(recv, "KB"));
+        sentSpeedList.append(BytesConvertorUtil::getInstance().getDataAccordingUnit(sent, "KB"));
+        recvSpeedList.append(BytesConvertorUtil::getInstance().getDataAccordingUnit(recv, "KB"));
 
         totalUpload += sent;
         totalDownload += recv;
@@ -213,8 +217,10 @@ void OverViewForm::updateNetworkChart()
     int maxX = qMax(49, netSentStatisticsQueue.size() - 1);
     netAxisX->setRange(maxX - 49, maxX);
 
-    QPair<double, QString> totalDownloadSpeed = getReasonaleDataUnit(totalDownload);
-    QPair<double, QString> totalUploadSpeed = getReasonaleDataUnit(totalUpload);
+    QPair<double, QString> totalDownloadSpeed = BytesConvertorUtil::getInstance()
+                                                    .getReasonaleDataUnit(totalDownload);
+    QPair<double, QString> totalUploadSpeed = BytesConvertorUtil::getInstance().getReasonaleDataUnit(
+        totalUpload);
 
     ui->labelDownloadSpeed->setText(QString("%1 %2/s")
                                         .arg(QString::number(totalDownloadSpeed.first, 'f', 2))
@@ -244,8 +250,10 @@ void OverViewForm::updateDiskList()
     for (QMap<QString, QString> &map : diskList) {
         OverviewDiskItem *overView = new OverviewDiskItem;
 
-        QPair<double, QString> totalSpace = getReasonaleDataUnit(map["total"].toDouble());
-        QPair<double, QString> usedSpace = getReasonaleDataUnit(map["used"].toDouble());
+        QPair<double, QString> totalSpace = BytesConvertorUtil::getInstance().getReasonaleDataUnit(
+            map["total"].toDouble());
+        QPair<double, QString> usedSpace = BytesConvertorUtil::getInstance().getReasonaleDataUnit(
+            map["used"].toDouble());
 
         totalTotalSpace += map["total"].toDouble();
         totalTotalUsed += map["used"].toDouble();
@@ -264,8 +272,10 @@ void OverViewForm::updateDiskList()
         ui->listWidget->setItemWidget(item, overView);
     }
 
-    QPair<double, QString> totalTotalSpacePair = getReasonaleDataUnit(totalTotalSpace);
-    QPair<double, QString> totalUsedSpacePair = getReasonaleDataUnit(totalTotalUsed);
+    QPair<double, QString> totalTotalSpacePair = BytesConvertorUtil::getInstance()
+                                                     .getReasonaleDataUnit(totalTotalSpace);
+    QPair<double, QString> totalUsedSpacePair = BytesConvertorUtil::getInstance()
+                                                    .getReasonaleDataUnit(totalTotalUsed);
 
     ui->labelDiskRate->setText(
         QString("%1 %").arg(QString::number(totalTotalUsed / totalTotalSpace * 100.0, 'f', 2)));
@@ -393,7 +403,9 @@ void OverViewForm::createMemoryChart()
             QToolTip::showText(QCursor::pos(),
                                QString("内存剩余: %1 %2")
                                    .arg(point.y(), 0, 'f', 2)
-                                   .arg(getReasonaleDataUnit(memoryInfo["total"]).second));
+                                   .arg(BytesConvertorUtil::getInstance()
+                                            .getReasonaleDataUnit(memoryInfo["total"])
+                                            .second));
         } else {
             QToolTip::hideText();
         }
@@ -527,41 +539,3 @@ QString OverViewForm::getFullWebsocketUrl()
     return fullUrl;
 }
 
-QPair<double, QString> OverViewForm::getReasonaleDataUnit(double bytes)
-{
-    QPair<double, QString> ret;
-    if (bytes > 1024 * 1024 * 1024 * 1024.0) {
-        ret.first = bytes / (1024 * 1024 * 1024 * 1024.0);
-        ret.second = "TB";
-    } else if (bytes > 1024 * 1024 * 1024.0) {
-        ret.first = bytes / (1024 * 1024 * 1024.0);
-        ret.second = "GB";
-    } else if (bytes > 1024 * 1024.0) {
-        ret.first = bytes / (1024 * 1024.0);
-        ret.second = "MB";
-    } else if (bytes > 1024) {
-        ret.first = bytes / 1024.0;
-        ret.second = "KB";
-    } else {
-        ret.first = bytes;
-        ret.second = "B";
-    }
-    return ret;
-}
-
-double OverViewForm::getDataAccordingUnit(double bytes, QString unit)
-{
-    if (unit == "B") {
-        return bytes;
-    } else if (unit == "KB") {
-        return bytes / 1024.0;
-    } else if (unit == "MB") {
-        return bytes / 1024.0 / 1024;
-    } else if (unit == "GB") {
-        return bytes / 1024.0 / 1024 / 1024;
-    } else if (unit == "TB") {
-        return bytes / 1024.0 / 1024 / 1024 / 1024;
-    } else {
-        return -1;
-    }
-}
