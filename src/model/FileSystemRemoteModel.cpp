@@ -1,6 +1,7 @@
 #include "FileSystemRemoteModel.h"
 #include <QDateTime>
 #include <QDebug>
+#include <QFileIconProvider>
 #include <QIcon>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -109,10 +110,12 @@ QVariant FileSystemRemoteModel::data(const QModelIndex &index, int role) const
     }
 
     if (role == Qt::DecorationRole && index.column() == 0) {
+        QFileIconProvider iconProvider;
         if (node->type == "file") {
-            return QIcon(":/file/resource/favicon/file_text.svg");
+            QFileInfo fileInfo(node->name);
+            return iconProvider.icon(fileInfo);
         } else if (node->type == "directory") {
-            return QIcon(":/file/resource/favicon/folder.svg");
+            return iconProvider.icon(QFileIconProvider::Folder);
         } else {
             return QIcon();
         }

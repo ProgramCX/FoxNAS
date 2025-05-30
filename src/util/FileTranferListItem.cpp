@@ -5,10 +5,14 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QUrlQuery.h>
+#include <QFileDialog>
+
 #include <ApiUrl.h>
 #include <BytesConvertorUtil.h>
 
 #include <MemStore.h>
+#include <QHttpMultiPart>
+#include <QMessageBox>
 
 FileTranferListItem::FileTranferListItem(QString sourceFilePath,
                                          QString destinationPath,
@@ -105,9 +109,10 @@ void FileTranferListItem::startTransfer(bool isContinue)
         }
         netWorkReply = netWorkAccessManager.get(netWorkRequest);
 
-        if (!iniSlotConnected) {
-            connect(netWorkReply, &QNetworkReply::metaDataChanged, this, [=]() mutable {
-                if (!file) {
+        connect(netWorkReply,
+                &QNetworkReply::metaDataChanged,
+                this,
+                [=]() mutable {
                     QString contentDisposition = netWorkReply->rawHeader("Content-Disposition");
                     QRegularExpression re(
                         "filename\\*?=[^']*'(?:[^']*)'([^\";]+)|filename=\"?([^\";]+)\"?");
@@ -127,13 +132,14 @@ void FileTranferListItem::startTransfer(bool isContinue)
                     if (fileName.isEmpty())
                         fileName = "default_download.txt";
 
-                    QString savePath = QDir(destinationPath).filePath(fileName);
+                    const QString savePath = QDir(destinationPath).filePath(fileName);
 
-                    QString baseName = QFileInfo(fileName).completeBaseName();
-                    QString suffix = QFileInfo(fileName).suffix();
+                    const QString baseName = QFileInfo(fileName).completeBaseName();
+                    const QString suffix = QFileInfo(fileName).suffix();
                     QString finalName = fileName;
                     int index = 1;
-                    while (QFile::exists(QDir(destinationPath).filePath(finalName))) {
+                    while (QFile::exists(QDir(destinationPath).filePath(finalName))
+                           && !downloadStart) {
                         finalName = QString("%1-%2.%3").arg(baseName).arg(index++).arg(suffix);
                     }
 
@@ -144,48 +150,144 @@ void FileTranferListItem::startTransfer(bool isContinue)
                         netWorkReply->abort();
                         return;
                     }
-                }
-            });
 
-            connect(netWorkReply, &QNetworkReply::readyRead, this, [=]() {
-                if (file && file->isOpen()) {
-                    file->write(netWorkReply->readAll());
-                }
-            });
+                    ui->pushButtonCancel->setEnabled(true);
+                    ui->pushButtonContinue->setEnabled(false);
+                    ui->pushButtonPause->setEnabled(true);
+                    ui->pushButtonRetry->setEnabled(false);
 
-            connect(netWorkReply,
-                    &QNetworkReply::downloadProgress,
-                    this,
-                    &FileTranferListItem::handleDownloadProgress);
-            connect(netWorkReply, &QNetworkReply::finished, this, [=]() {
-                if (!isPause) {
-                    emit transferCompleted(this);
-                } else {
-                    if (file)
-                        existingBytes = file->size();
-                }
+                    downloadStart = true;
+                });
 
+        connect(netWorkReply, &QNetworkReply::readyRead, this, [=]() {
+            if (file && file->isOpen()) {
+                file->write(netWorkReply->readAll());
+            }
+        });
+
+        connect(netWorkReply,
+                &QNetworkReply::downloadProgress,
+                this,
+                &FileTranferListItem::handleDownloadProgress);
+        connect(netWorkReply, &QNetworkReply::finished, this, [=]() {
+            if (currentState != PAUSED && currentState != CANCELED) {
                 int statusCode = netWorkReply->attribute(QNetworkRequest::HttpStatusCodeAttribute)
                                      .toInt();
                 if (netWorkReply->error() || (statusCode != 200 && statusCode != 206)) {
-                    qDebug() << "状态码：" << statusCode;
-                    ui->labelMessage->setText("传输失败！");
-                    emit transferFailed(this);
+                    dealWithError();
+                } else if (currentState == TRANSFERING) {
+                    currentState = FINISHED;
+                    emit transferCompleted(this);
                 }
 
-                if (file) {
-                    file->flush();
-                    file->close();
-                    file->deleteLater();
-                }
-                netWorkReply->deleteLater();
-            });
+            } else if (currentState == PAUSED) {
+                emit transferPaused(this);
+                if (file != nullptr)
+                    existingBytes = file->size();
+            } else if (currentState == CANCELED) {
+                emit transferCanceled(this);
+            }
 
-            iniSlotConnected = true;
+            if (file != nullptr) {
+                file->flush();
+                file->close();
+                file->deleteLater();
+                file = nullptr;
+            }
+            netWorkReply->deleteLater();
+            netWorkReply = nullptr;
+        });
+
+        iniSlotConnected = true;
+
+
+    }else
+    {
+        if (destinationPath.isEmpty())
+        {
+
+           ui->labelMessage->setText("目标路径不能为空！");
+            ui->pushButtonCancel->setEnabled(true);
+            ui->pushButtonContinue->setEnabled(false);
+            ui->pushButtonPause->setEnabled(false);
+            ui->pushButtonRetry->setEnabled(false);
+            currentState = FAILED;
+            emit transferFailed(this);
+            return;
+        }
+        ui->labelMessage->setText(tr("正在上传文件:"));
+
+        ui->labelSourceFile->setText(QString("本地文件路径：%1").arg(sourceFilePath));
+        ui->labelDestinationFile->setText(QString("远程保存位置：%2").arg(destinationPath));
+
+        //打开文件
+        auto *file = new QFile(sourceFilePath);
+        if (!file->open(QIODevice::ReadOnly)) {
+            ui->labelMessage->setText("无法打开源文件！");
+            ui->pushButtonCancel->setEnabled(true);
+            ui->pushButtonContinue->setEnabled(false);
+            ui->pushButtonPause->setEnabled(false);
+            ui->pushButtonRetry->setEnabled(false);
+            currentState = FAILED;
+            emit transferFailed(this);
+            return;
         }
 
-        timer.start();
+        // 创建多部分表单数据
+        auto *multiPart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
+        QHttpPart filePart;
+        filePart.setHeader(QNetworkRequest::ContentDispositionHeader,
+                           QVariant(QString(R"(form-data; name="file"; filename="%1")")
+                                        .arg(QFileInfo(sourceFilePath).fileName())));
+        file->setParent(this);
+        filePart.setBodyDevice(file);
+        multiPart->append(filePart);
+
+        //设置认证Bear
+        netWorkRequest.setRawHeader("Authorization", QString("Bearer " + NASTOKEN).toUtf8());
+
+        QUrlQuery query;
+        query.addQueryItem("path", QUrl::toPercentEncoding(destinationPath));
+
+        QUrl url = QUrl(getFullApiPath(FULLHOST, NASUPLOADFILEAPI));
+        url.setQuery(query);
+        netWorkRequest.setUrl(url);
+
+        netWorkReply = netWorkAccessManager.post(netWorkRequest, multiPart);
+
+        multiPart->setParent(this);
+
+        connect(netWorkReply,&QNetworkReply::uploadProgress, this, &FileTranferListItem::handleUploadProgress);
+
+        connect(netWorkReply, &QNetworkReply::finished, this, [=]() {
+            if (currentState != CANCELED) {
+                int statusCode = netWorkReply->attribute(QNetworkRequest::HttpStatusCodeAttribute)
+                                     .toInt();
+                if (netWorkReply->error() || (statusCode != 200 && statusCode != 201)) {
+                    dealWithError();
+                } else if (currentState == TRANSFERING) {
+                    currentState = FINISHED;
+                    emit transferCompleted(this);
+                }
+            }  else if (currentState == CANCELED) {
+                emit transferCanceled(this);
+            }
+
+            file->close();
+            file->deleteLater();
+            netWorkReply->deleteLater();
+            netWorkReply = nullptr;
+        });
+
+        ui->labelMessage->setText(tr("正在上传文件"));
+        ui->pushButtonCancel->setEnabled(true);
+        ui->pushButtonContinue->setVisible(false);
+        ui->pushButtonPause->setVisible(false);
+        ui->pushButtonRetry->setEnabled(false);
+
     }
+    timer.start();
+    currentState = TRANSFERING;
 }
 
 void FileTranferListItem::setMessageText(const QString &message) const
@@ -193,15 +295,55 @@ void FileTranferListItem::setMessageText(const QString &message) const
     ui->labelMessage->setText(message);
 }
 
+void FileTranferListItem::dealWithError()
+{
+    ui->labelMessage->setText("传输失败！");
+
+    ui->pushButtonCancel->setEnabled(true);
+    ui->pushButtonContinue->setEnabled(false);
+    ui->pushButtonPause->setEnabled(false);
+    ui->pushButtonRetry->setEnabled(true);
+
+    currentState = FAILED;
+
+    emit transferFailed(this);
+}
+
+FileTranferListItem::TransferState FileTranferListItem::getCurrentState() const
+{
+    return currentState;
+}
+
+void FileTranferListItem::pauseTransfer()
+{
+    currentState = PAUSED;
+
+    netWorkReply->abort();
+
+    ui->labelMessage->setText(tr("已暂停"));
+
+    ui->pushButtonCancel->setEnabled(true);
+    ui->pushButtonContinue->setEnabled(true);
+    ui->pushButtonPause->setEnabled(false);
+    ui->pushButtonRetry->setEnabled(false);
+}
+
 void FileTranferListItem::continueTransfer()
 {
-    isPause = true; //表示再次启动是因为之前暂停
-    startTransfer(true);
+    ui->pushButtonContinue->setEnabled(false);
+    setMessageText(tr("正在准备下载"));
+    emit transferTryingContinue(this);
+    // startTransfer(true);
 }
 
 void FileTranferListItem::cancelTransfer()
 {
-    netWorkReply->abort();
+    currentState = CANCELED;
+    if (netWorkReply != nullptr) {
+        netWorkReply->abort();
+    } else {
+        emit transferCanceled(this);
+    }
 }
 
 void FileTranferListItem::handleDownloadProgress(qint64 received, qint64 total)
@@ -232,10 +374,67 @@ void FileTranferListItem::handleDownloadProgress(qint64 received, qint64 total)
         ui->labelSpeed->setText(
             QString(tr("%1速度：%2%3 /s"))
                 .arg(transferType == TransferType::DOWNLOAD ? tr("下载") : tr("上传"))
-                .arg(speed.first, 0, 'f', 2)
+                .arg(speed.first > 0 ? speed.first : 0.0, 0, 'f', 2)
                 .arg(speed.second));
 
         lastBytesReceived = received;
         timer.restart();
     }
 }
+
+void FileTranferListItem::handleUploadProgress(qint64 bytesSent, qint64 total)
+{
+    qint64 deltaBytes = bytesSent - lastBytesReceived;
+    qint64 elapsedMs = timer.elapsed();
+
+    if (elapsedMs > 500)
+    {
+        double speedKBps = deltaBytes / (elapsedMs / 1000.0);
+
+        QPair<double, QString> speed = BytesConvertorUtil::getInstance().getReasonaleDataUnit(
+            speedKBps);
+
+        QPair<double, QString> sentPair = BytesConvertorUtil::getInstance().getReasonaleDataUnit(
+            bytesSent);
+
+        QPair<double, QString> totalPair = BytesConvertorUtil::getInstance().getReasonaleDataUnit(
+            total);
+
+        ui->progressBar->setMaximum(100);
+        ui->progressBar->setValue(bytesSent * 100.0 / total);
+
+        ui->labelProgress->setText(QString("%1%2 / %3%4")
+                                       .arg(sentPair.first, 0, 'f', 2)
+                                       .arg(sentPair.second)
+                                       .arg(totalPair.first, 0, 'f', 2)
+                                       .arg(totalPair.second));
+        ui->labelSpeed->setText(QString(tr("上传速度：%1%2 /s"))
+                                    .arg(speed.first > 0 ? speed.first : 0.0, 0, 'f', 2)
+                                    .arg(speed.second));
+
+        lastBytesReceived = bytesSent;
+        timer.restart();
+    }
+}
+
+void FileTranferListItem::on_pushButtonPause_clicked()
+{
+    pauseTransfer();
+}
+
+void FileTranferListItem::on_pushButtonRetry_clicked()
+{
+    startTransfer(false);
+}
+
+void FileTranferListItem::on_pushButtonCancel_clicked()
+{
+    cancelTransfer();
+}
+
+void FileTranferListItem::on_pushButtonContinue_clicked()
+{
+    continueTransfer();
+}
+
+

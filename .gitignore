@@ -81,4 +81,7 @@ CMakeLists.txt.user*
 .uic/
 /build*/
 
+# CLION settings
+.idea/
+
 !icon.rc

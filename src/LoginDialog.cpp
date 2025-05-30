@@ -300,6 +300,7 @@ void LoginDialog::on_btnConnect_clicked()
                 }
             });
     loadingDialog->show();
+    udpSocket.close();
 }
 
 void LoginDialog::on_btnDetail_clicked()

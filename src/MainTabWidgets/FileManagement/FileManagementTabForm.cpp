@@ -5,6 +5,7 @@
 #include <QDateTime>
 #include <QDir>
 #include <QFileDialog>
+#include <QFileIconProvider>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QMutex>
@@ -140,6 +141,10 @@ void FileManagementTabForm::connectSlots()
             &QToolButton::clicked,
             this,
             &FileManagementTabForm::backHistoryDir);
+    connect(ui->treeView,
+            &FileTreeView::fileDirsDraggedDrop,
+            this,
+            &FileManagementTabForm::handleFileDirsDraggedDrop);
     connect(ui->toolButtonUp, &QToolButton::clicked, this, &FileManagementTabForm::backTopDir);
     connect(ui->toolButtonRefresh, &QToolButton::clicked, this, &FileManagementTabForm::refresh);
     connect(ui->pushButtonDelete, &QPushButton::clicked, this, &FileManagementTabForm::deleteFiles);
@@ -341,7 +346,7 @@ void FileManagementTabForm::removeItemFromTransferList(FileTranferListItem *item
     }
 }
 
-void FileManagementTabForm::downloadFile(QList<QString> filesToDownload, QString savePath)
+void FileManagementTabForm::downloadFile(const QList<QString>& filesToDownload, const QString& savePath)
 {
     for (const QString &file : filesToDownload) {
         FileTranferListItem *widget = new FileTranferListItem(file,
@@ -354,65 +359,96 @@ void FileManagementTabForm::downloadFile(QList<QString> filesToDownload, QString
         connect(widget,
                 &FileTranferListItem::transferCompleted,
                 this,
-                [this](FileTranferListItem *item) {
-                    taskQueue.removeOne(item);
-                    removeItemFromTransferList(item);
-                    item->deleteLater();
+                &FileManagementTabForm::handleTransferCompleted);
 
-                    {
-                        QMutexLocker locker(&inTaskMutex);
-                        inTaskFiles--;
-                    }
+        connect(widget,
+                &FileTranferListItem::transferPaused,
+                this,
+                &FileManagementTabForm::handleTransferPaused);
+        connect(widget,
+                &FileTranferListItem::transferTryingContinue,
+                this,
+                &FileManagementTabForm::handleTransferTryingResume);
 
-                    tryStartDownloadNext();
-                });
+        connect(widget,
+                &FileTranferListItem::transferCanceled,
+                this,
+                &FileManagementTabForm::handleTransferCancel);
 
         connect(widget,
                 &FileTranferListItem::transferFailed,
                 this,
-                [this](FileTranferListItem *item) {
-                    {
-                        QMutexLocker locker(&inTaskMutex);
-                        inTaskFiles--;
-                    }
-                    item->setMessageText("下载失败！");
-                    tryStartDownloadNext();
-                });
+                &FileManagementTabForm::handleTransferFailed);
 
-        QListWidgetItem *item = new QListWidgetItem;
+        auto *item = new QListWidgetItem;
         item->setSizeHint(widget->sizeHint());
         ui->listWidget->addItem(item);
         ui->listWidget->setItemWidget(item, widget);
 
-        tryStartDownloadNext();
+        tryStartTransferNext();
     }
 }
 
-void FileManagementTabForm::tryStartDownloadNext()
+void FileManagementTabForm::uploadFile(const QList<QString>& filesToUpload, const QString& savePath,const QString& basePath)
+{
+    QDir baseDir(basePath);
+    for (const QString &file : filesToUpload)
+    {
+        const QString relativePath = baseDir.relativeFilePath(file);
+        const QString destinationPath = QDir(QDir(savePath).filePath(relativePath)).absolutePath();
+        auto *widget = new FileTranferListItem(file,destinationPath,
+                                                              FileTranferListItem::UPLOAD,
+                                                              this);
+        taskQueue.append(widget);
+        waitingQueue.append(widget);
+        connect(widget,
+                &FileTranferListItem::transferCompleted,
+                this,
+                &FileManagementTabForm::handleTransferCompleted);
+        connect(widget,
+                &FileTranferListItem::transferFailed,
+                this,
+                &FileManagementTabForm::handleTransferFailed);
+        connect(widget,
+                &FileTranferListItem::transferCanceled,
+                this,
+                &FileManagementTabForm::handleTransferCancel);
+        auto *item = new QListWidgetItem;
+        item->setSizeHint(widget->sizeHint());
+        ui->listWidget->addItem(item);
+        ui->listWidget->setItemWidget(item, widget);
+
+        tryStartTransferNext();
+    }
+
+}
+
+void FileManagementTabForm::tryStartTransferNext()
 {
     QMutexLocker locker(&inTaskMutex);
-    if (isStartingDownload) {
+    if (isStartingTransfer) {
         return;
     }
-    isStartingDownload = true;
+    isStartingTransfer = true;
 
     if (inTaskFiles < getMaxiumInTaskCount() && !waitingQueue.isEmpty()) {
         FileTranferListItem *next = waitingQueue.dequeue(); //从等待队列拿
         inTaskFiles++;
-        next->startTransfer();
+        next->startTransfer(next->getCurrentState() == FileTranferListItem::PAUSED);
         qDebug() << "正在下载的" << inTaskFiles;
     }
     qDebug() << "正在下载的（可能最后）" << inTaskFiles;
-    isStartingDownload = false;
+    isStartingTransfer = false;
+
+    model->fetchDirectory(currentPath, true);
 }
 
-QList<QString> FileManagementTabForm::getSelectedFiles(bool hasDir)
+QList<QString> FileManagementTabForm::getSelectedFiles(const bool hasDir) const
 {
     QModelIndexList selectedIndexes = ui->treeView->selectionModel()->selectedRows(0);
     QList<QString> selectedItemPaths;
     for (const QModelIndex &index : selectedIndexes) {
-        RemoteFileSystemNode *node = static_cast<RemoteFileSystemNode *>(index.internalPointer());
-        if (node) {
+        if (auto *node = static_cast<RemoteFileSystemNode *>(index.internalPointer())) {
             if (hasDir || node->type == "file") {
                 selectedItemPaths.append(node->path);
             }
@@ -425,6 +461,101 @@ int FileManagementTabForm::getMaxiumInTaskCount()
 {
     QSettings &settings = IniSettings::getGlobalSettingsInstance();
     return settings.value("file/maxQueue", 3).toInt();
+}
+
+QList<QString> FileManagementTabForm::getFilePathRecursively(const QString& path) const
+{
+    // 获取指定路径下的所有文件
+    QDir dir(path);
+    QList<QString> filePaths;
+    if (!dir.exists()) {
+        return filePaths; // 如果目录不存在，返回空列表
+    }
+    QFileInfoList fileInfoList = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
+    for (const QFileInfo &fileInfo : fileInfoList) {
+        filePaths.append(fileInfo.absoluteFilePath());
+    }
+    // 获取子目录
+    QFileInfoList dirInfoList = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
+    for (const QFileInfo &dirInfo : dirInfoList) {
+        QString subDirPath = dirInfo.absoluteFilePath();
+        // 递归获取子目录中的文件
+        QList<QString> subFilePaths = getFilePathRecursively(subDirPath);
+        filePaths.append(subFilePaths);
+    }
+    return filePaths;
+}
+
+void FileManagementTabForm::handleTransferCompleted(FileTranferListItem *item)
+{
+    taskQueue.removeOne(item);
+    removeItemFromTransferList(item);
+    item->deleteLater();
+
+    {
+        QMutexLocker locker(&inTaskMutex);
+        inTaskFiles--;
+    }
+
+    tryStartTransferNext();
+}
+
+void FileManagementTabForm::handleTransferPaused(FileTranferListItem *item)
+{
+    taskQueue.removeOne(item);
+    {
+        QMutexLocker locker(&inTaskMutex);
+        inTaskFiles--;
+    }
+
+    tryStartTransferNext();
+}
+
+void FileManagementTabForm::handleTransferFailed(FileTranferListItem *item)
+{
+    taskQueue.removeOne(item);
+    {
+        QMutexLocker locker(&inTaskMutex);
+        inTaskFiles--;
+    }
+
+    item->setMessageText("下载失败！");
+    tryStartTransferNext();
+}
+
+void FileManagementTabForm::handleTransferTryingResume(FileTranferListItem *item)
+{
+    taskQueue.enqueue(item);
+    waitingQueue.enqueue(item);
+
+    tryStartTransferNext();
+}
+
+void FileManagementTabForm::handleTransferCancel(FileTranferListItem* item)
+{
+    taskQueue.removeOne(item);
+    removeItemFromTransferList(item);
+    item->deleteLater();
+
+    {
+        QMutexLocker locker(&inTaskMutex);
+        inTaskFiles--;
+    }
+
+    tryStartTransferNext();
+}
+
+void FileManagementTabForm::handleFileDirsDraggedDrop(const QList<QString> &filesPath,
+                                                      const QList<QString> dirsPath)
+{
+    uploadFile(filesPath, currentPath, QFileInfo(filesPath[0]).dir().absolutePath());
+    for (const QString &dirPath : dirsPath) {
+        QList<QString> filePath = getFilePathRecursively(dirPath);
+        if (!filePath.isEmpty()) {
+            QString basePath = QFileInfo(dirPath).dir().absolutePath();
+            uploadFile(filePath, currentPath, basePath);
+        }
+    }
 }
 
 void FileManagementTabForm::keyPressEvent(QKeyEvent *event)
@@ -483,4 +614,36 @@ void FileManagementTabForm::on_pushButtonDownload_clicked()
     QList<QString> selectedPaths = getSelectedFiles(false);
 
     downloadFile(selectedPaths, savePath);
+}
+
+void FileManagementTabForm::on_pushButtonUpload_clicked()
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("请选择类型");
+    msgBox.setText("你要选择文件还是目录？");
+
+    QPushButton* fileButton = msgBox.addButton("选择文件", QMessageBox::AcceptRole);
+    QPushButton* dirButton = msgBox.addButton("选择目录", QMessageBox::RejectRole);
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == fileButton) {
+        QList<QString> filePath = QFileDialog::getOpenFileNames(nullptr, "选择文件");
+        if (!filePath.isEmpty()) {
+            uploadFile(filePath, currentPath, QFileInfo(filePath[0]).dir().absolutePath());
+        }
+    } else if (msgBox.clickedButton() == dirButton) {
+        QString dirPath = QFileDialog::getExistingDirectory(nullptr, "选择目录",
+                                                            QDir::homePath(),
+                                                            QFileDialog::ShowDirsOnly);
+        if (!dirPath.isEmpty()) {
+            QList<QString> filePath = getFilePathRecursively(dirPath);
+            if (!filePath.isEmpty()) {
+                QString basePath = QFileInfo(dirPath).dir().absolutePath();
+                uploadFile(filePath, currentPath, basePath);
+            } else {
+                QMessageBox::warning(this, "警告", "所选目录中没有文件可上传！");
+            }
+        }
+    }
 }

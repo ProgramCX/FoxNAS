@@ -1,6 +1,9 @@
 #include "FileTreeView.h"
 #include <qevent.h>
 
+#include <QDir>
+#include <QFileInfo>
+
 FileTreeView::FileTreeView(QWidget* parent)
     : QTreeView(parent)
 {}
@@ -19,12 +22,21 @@ void FileTreeView::dragMoveEvent(QDragMoveEvent* event)
 
 void FileTreeView::dropEvent(QDropEvent* event)
 {
+    QList<QString> filesPath;
+    QList<QString> pathsPath;
+
     if (event->mimeData()->hasUrls()) {
         for (const QUrl& url : event->mimeData()->urls()) {
             QString path = url.toLocalFile();
-            qDebug() << "拖入文件：" << path;
-            // 你可以在这里更新模型
+
+            QFileInfo info(path);
+            if (info.isFile()) {
+                filesPath.append(path);
+            } else {
+                pathsPath.append(path);
+            }
         }
+        emit fileDirsDraggedDrop(filesPath, pathsPath);
         event->acceptProposedAction();
     }
 }

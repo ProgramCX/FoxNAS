@@ -19,6 +19,7 @@ class FileTranferListItem : public QWidget
 
 public:
     enum TransferType { UPLOAD, DOWNLOAD };
+    enum TransferState { PENDING, TRANSFERING, FAILED, PAUSED, CANCELED, FINISHED };
     explicit FileTranferListItem(QString sourceFilePath,
                                  QString destinationPath,
                                  FileTranferListItem::TransferType type,
@@ -46,6 +47,12 @@ public:
 
     void setMessageText(const QString &message) const;
 
+    TransferState getCurrentState() const;
+
+    bool downloadStart = 0;
+
+    void dealWithError();
+
 private:
     Ui::FileTranferListItem *ui;
     QString sourceFilePath;
@@ -54,11 +61,10 @@ private:
     qint64 totalBytes = 0;
     qint64 transferedBytes = 0;
 
-    bool isPause = false;
-
     bool iniSlotConnected = false;
 
     TransferType transferType = TransferType::DOWNLOAD;
+    TransferState currentState = TransferState::PENDING;
 
     QNetworkAccessManager netWorkAccessManager;
 
@@ -77,10 +83,20 @@ private:
     void cancelTransfer();
 
     void handleDownloadProgress(qint64 received, qint64 total);
+    void handleUploadProgress(qint64 received, qint64 total);
 
 signals:
     void transferCompleted(FileTranferListItem *item);
     void transferFailed(FileTranferListItem *item);
+    void transferCanceled(FileTranferListItem *item);
+    void transferPaused(FileTranferListItem *item);
+    void transferTryingContinue(FileTranferListItem *item);
+private slots:
+    void on_pushButtonPause_clicked();
+    void on_pushButtonRetry_clicked();
+    void on_pushButtonCancel_clicked();
+    void on_pushButtonContinue_clicked();
+
 };
 
 #endif // FILETRANFERLISTITEM_H

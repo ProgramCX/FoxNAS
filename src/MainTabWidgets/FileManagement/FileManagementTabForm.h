@@ -38,6 +38,8 @@ private slots:
 
     void on_pushButtonDownload_clicked();
 
+    void on_pushButtonUpload_clicked();
+
 private:
     Ui::FileManagementTabForm *ui;
     FileSystemRemoteModel *model;
@@ -54,7 +56,7 @@ private:
     QQueue<FileTranferListItem *> waitingQueue;
 
     QMutex inTaskMutex;
-    bool isStartingDownload = false;
+    bool isStartingTransfer = false;
 
 private:
     void onScrollBarValueChanged(int value);
@@ -79,12 +81,26 @@ private:
     void renameFile();
 
     void removeItemFromTransferList(FileTranferListItem *item);
-    void downloadFile(QList<QString> filesToDownload, QString savePath);
+    void downloadFile(const QList<QString>& filesToDownload, const QString& savePath);
 
-    void tryStartDownloadNext();
+    void uploadFile(const QList<QString>& filesToUpload, const QString& savePath, const QString& basePath);
+    void tryStartTransferNext();
 
-    QList<QString> getSelectedFiles(bool hasDir = true);
+    QList<QString> getSelectedFiles(bool hasDir = true) const;
     int getMaxiumInTaskCount();
+    QList<QString> getFilePathRecursively(const QString &path) const;
+
+    void handleTransferCompleted(FileTranferListItem *item);
+
+    void handleTransferPaused(FileTranferListItem *item);
+
+    void handleTransferFailed(FileTranferListItem *item);
+
+    void handleTransferTryingResume(FileTranferListItem *item);
+
+    void handleTransferCancel(FileTranferListItem *item);
+
+    void handleFileDirsDraggedDrop(const QList<QString> &filesPath, const QList<QString> dirsPath);
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

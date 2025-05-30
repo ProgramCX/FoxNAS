@@ -52,6 +52,7 @@ void DirsAuthedSelectDialog::getAuthedDirs()
                         treeItem->setText(1, map["permissions"].toString());
                         treeItem->setIcon(0, QIcon(":/file/resource/favicon/folder.svg"));
                     }
+                    ui->treeWidget->resizeColumnToContents(0);
                 }
             });
 }
