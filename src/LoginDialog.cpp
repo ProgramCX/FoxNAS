@@ -269,6 +269,7 @@ void LoginDialog::on_btnDeleteServer_clicked()
         ui->listWidget->takeItem(ui->listWidget->row(item));
 
         deleteServerInfo(name);
+        hashServer.remove(name);
     }
 }
 

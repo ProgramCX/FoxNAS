@@ -112,10 +112,19 @@ QVariant FileSystemRemoteModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DecorationRole && index.column() == 0) {
         QFileIconProvider iconProvider;
         if (node->type == "file") {
+#ifdef Q_OS_WIN
+            return QIcon(":/file/resource/favicon/file_text.svg");
+#elif
             QFileInfo fileInfo(node->name);
             return iconProvider.icon(fileInfo);
+#endif
+
         } else if (node->type == "directory") {
+#ifdef Q_OS_WIN
+            return QIcon(":/file/resource/favicon/folder.svg");
+#elif
             return iconProvider.icon(QFileIconProvider::Folder);
+#endif
         } else {
             return QIcon();
         }

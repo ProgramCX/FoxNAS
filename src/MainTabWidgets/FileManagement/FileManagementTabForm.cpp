@@ -395,7 +395,7 @@ void FileManagementTabForm::uploadFile(const QList<QString>& filesToUpload, cons
     for (const QString &file : filesToUpload)
     {
         const QString relativePath = baseDir.relativeFilePath(file);
-        const QString destinationPath = QDir(QDir(savePath).filePath(relativePath)).absolutePath();
+        const QString destinationPath = QDir::cleanPath(QDir(savePath).filePath(relativePath));
         auto *widget = new FileTranferListItem(file,destinationPath,
                                                               FileTranferListItem::UPLOAD,
                                                               this);
@@ -548,7 +548,10 @@ void FileManagementTabForm::handleTransferCancel(FileTranferListItem* item)
 void FileManagementTabForm::handleFileDirsDraggedDrop(const QList<QString> &filesPath,
                                                       const QList<QString> dirsPath)
 {
-    uploadFile(filesPath, currentPath, QFileInfo(filesPath[0]).dir().absolutePath());
+    if (!filesPath.isEmpty()) {
+        uploadFile(filesPath, currentPath, QFileInfo(filesPath[0]).dir().absolutePath());
+    }
+
     for (const QString &dirPath : dirsPath) {
         QList<QString> filePath = getFilePathRecursively(dirPath);
         if (!filePath.isEmpty()) {
@@ -623,7 +626,7 @@ void FileManagementTabForm::on_pushButtonUpload_clicked()
     msgBox.setText("你要选择文件还是目录？");
 
     QPushButton* fileButton = msgBox.addButton("选择文件", QMessageBox::AcceptRole);
-    QPushButton* dirButton = msgBox.addButton("选择目录", QMessageBox::RejectRole);
+    QPushButton *dirButton = msgBox.addButton("选择目录", QMessageBox::ApplyRole);
 
     msgBox.exec();
 

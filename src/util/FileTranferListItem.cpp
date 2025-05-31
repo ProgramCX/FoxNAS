@@ -2,10 +2,10 @@
 #include "ui_FileTranferListItem.h"
 
 #include <QDir>
+#include <QFileDialog>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
-#include <QUrlQuery.h>
-#include <QFileDialog>
+#include <QUrlQuery>
 
 #include <ApiUrl.h>
 #include <BytesConvertorUtil.h>
@@ -331,7 +331,7 @@ void FileTranferListItem::pauseTransfer()
 void FileTranferListItem::continueTransfer()
 {
     ui->pushButtonContinue->setEnabled(false);
-    setMessageText(tr("正在准备下载"));
+    setMessageText(tr("正在准备传输"));
     emit transferTryingContinue(this);
     // startTransfer(true);
 }
