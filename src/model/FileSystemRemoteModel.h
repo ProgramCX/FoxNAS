@@ -38,6 +38,7 @@ public:
     void copyFiles(QList<QMap<QString, QString>> &filesList);
     void moveFiles(QList<QMap<QString, QString>> &filesList);
     void renameFile(QString path, QString newName);
+    void createDir(QString path);
 
 private:
     RemoteFileSystemNode *rootNode = nullptr;

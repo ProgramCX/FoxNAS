@@ -521,6 +521,51 @@ void FileSystemRemoteModel::renameFile(QString path, QString newName)
     apiRequest->sendRequest();
 }
 
+void FileSystemRemoteModel::createDir(QString path)
+{
+    QString apiCreateDir = getFullApiPath(FULLHOST, NASCREATEDIRAPI);
+    auto *apiRequest = new ApiRequest(apiCreateDir, ApiRequest::POST, this);
+    apiRequest->addQueryParam("path", path);
+
+    connect(apiRequest,
+            &ApiRequest::responseRecieved,
+            this,
+            [this, apiRequest, path](QString &rawContent, bool hasError, qint16 statusCode) {
+                if (statusCode == 200) {
+                    fetchDirectory(currentDirectory, true);
+                } else if (statusCode == 403) {
+                    QMessageBox::information(nullptr,
+                                             "创建目录失败",
+                                             "暂无权限创建文件夹 " + path + " ！请联系管理员。",
+                                             tr("确定"));
+                } else if (statusCode == 500) {
+                    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+                    if (doc.isObject()) {
+                        QJsonObject obj = doc.object();
+                        QMessageBox::information(nullptr,
+                                                 "创建目录失败",
+                                                 QString(" %1：%2").arg(obj["path"].toString(),
+                                                                        obj["message"].toString()),
+                                                 tr("确定"));
+
+                    } else {
+                        QMessageBox::information(nullptr,
+                                                 "创建目录失败",
+                                                 "无法创建文件夹！",
+                                                 tr("确定"));
+                    }
+
+                } else {
+                    QMessageBox::information(nullptr,
+                                             "创建目录失败",
+                                             "无法创建文件夹！",
+                                             tr("确定"));
+                }
+                apiRequest->deleteLater();
+            });
+    apiRequest->sendRequest();
+}
+
 void FileSystemRemoteModel::getFailedInfo(QString &rawContent,
                                           qint64 &failedCount,
                                           qint64 &totalCount,

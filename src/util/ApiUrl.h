@@ -13,6 +13,7 @@ const QString NASDIELETEFILEAPI = "/api/file/op/delete";
 
 const QString NASCOPYAPI = "/api/file/op/copy";
 const QString NASMOVEAPI = "/api/file/op/move";
+const QString NASCREATEDIRAPI = "/api/file/op/createDir";
 
 const QString NASRENAMEFILEAPI = "/api/file/op/rename";
 const QString NASDOWNLOADFILEAPI = "/api/file/op/get";

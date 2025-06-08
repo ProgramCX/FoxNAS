@@ -40,6 +40,10 @@ private slots:
 
     void on_pushButtonUpload_clicked();
 
+    void on_comboBoxSort_currentIndexChanged(int index);
+
+    void on_pushButtonCreateDir_clicked();
+
 private:
     Ui::FileManagementTabForm *ui;
     FileSystemRemoteModel *model;
@@ -48,6 +52,9 @@ private:
     bool back = 0;
     bool forward = 0;
     int inTaskFiles = 0;
+
+    QString currentOrder;
+    QString currentSortBy;
 
     QStack<QString> backHistoryStack;
     QStack<QString> forwardHistoryStack;
@@ -74,6 +81,7 @@ private:
 
     void refresh();
     void deleteFiles();
+    void createDir();
 
     void copyFiles();
     void pasteFiles();

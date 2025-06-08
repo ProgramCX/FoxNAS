@@ -201,6 +201,7 @@ void FileManagementTabForm::updateNavButtonState()
 
     ui->toolButtonUp->setEnabled(!dir.isRoot());
     ui->toolButtonRefresh->setEnabled(!currentPath.isEmpty());
+    ui->pushButtonCreateDir->setEnabled(!currentPath.isEmpty());
 
     ui->pushButtonDeselectAll->setEnabled(!currentPath.isEmpty());
     ui->pushButtonSelectAll->setEnabled(!currentPath.isEmpty());
@@ -271,6 +272,20 @@ void FileManagementTabForm::deleteFiles()
         == QMessageBox::Yes) {
         model->deleteFiles(selectedItemPaths);
     }
+}
+
+void FileManagementTabForm::createDir()
+{
+    QString name = QInputDialog::getText(this, "创建文件夹", "新文件夹名称：");
+    if (name.trimmed().isEmpty()) {
+        QMessageBox::critical(this, "错误", "文件夹名称不能为空！", tr("确定"));
+        return;
+    }
+
+    QDir baseDir(currentPath);
+
+    QString fullPath = baseDir.filePath(name);
+    model->createDir(fullPath);
 }
 
 void FileManagementTabForm::copyFiles()
@@ -649,4 +664,36 @@ void FileManagementTabForm::on_pushButtonUpload_clicked()
             }
         }
     }
+}
+
+void FileManagementTabForm::on_comboBoxSort_currentIndexChanged(int index)
+{
+    if (index % 2 == 0) {
+        this->currentOrder = "asc";
+    } else {
+        this->currentOrder = "desc";
+    }
+
+    int i = index / 2;
+
+    switch (i) {
+    case 0: {
+        this->currentSortBy = "name";
+        break;
+    }
+    case 1: {
+        this->currentSortBy = "time";
+    }
+    case 2: {
+        this->currentSortBy = "type";
+    }
+    case 3: {
+        this->currentSortBy = "size";
+    }
+    }
+}
+
+void FileManagementTabForm::on_pushButtonCreateDir_clicked()
+{
+    createDir();
 }
