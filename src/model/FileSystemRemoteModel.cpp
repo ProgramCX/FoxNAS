@@ -171,7 +171,10 @@ void FileSystemRemoteModel::setRootNode(RemoteFileSystemNode *node)
     endResetModel();
 }
 
-void FileSystemRemoteModel::fetchDirectory(QString directory, bool refresh)
+void FileSystemRemoteModel::fetchDirectory(QString directory,
+                                           bool refresh,
+                                           QString order,
+                                           QString sortBy)
 {
     if (directory == currentDirectory && totalPage == currentPage && !refresh) {
         return;
@@ -182,8 +185,8 @@ void FileSystemRemoteModel::fetchDirectory(QString directory, bool refresh)
     ApiRequest *request = new ApiRequest(fullApiPath, ApiRequest::GET, this);
 
     request->addQueryParam("path", directory);
-    request->addQueryParam("order", "asc");
-    request->addQueryParam("sortBy", "name");
+    request->addQueryParam("order", order);
+    request->addQueryParam("sortBy", sortBy);
     bool isCurrent = directory == currentDirectory;
 
     if (!isCurrent || refresh) {

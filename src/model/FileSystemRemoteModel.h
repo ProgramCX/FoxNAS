@@ -26,7 +26,10 @@ public:
 
     void setRootNode(RemoteFileSystemNode *node);
 
-    void fetchDirectory(QString directory, bool refresh = 0);
+    void fetchDirectory(QString directory,
+                        bool refresh = 0,
+                        QString order = "asc",
+                        QString sortBy = "name");
 
     QString getOrder() const;
     void setOrder(const QString &newOrder);

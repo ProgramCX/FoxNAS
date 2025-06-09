@@ -44,6 +44,8 @@ private slots:
 
     void on_pushButtonCreateDir_clicked();
 
+    void on_treeView_customContextMenuRequested(const QPoint &pos);
+
 private:
     Ui::FileManagementTabForm *ui;
     FileSystemRemoteModel *model;
@@ -53,8 +55,8 @@ private:
     bool forward = 0;
     int inTaskFiles = 0;
 
-    QString currentOrder;
-    QString currentSortBy;
+    QString currentOrder = "asc";
+    QString currentSortBy = "name";
 
     QStack<QString> backHistoryStack;
     QStack<QString> forwardHistoryStack;
@@ -65,10 +67,14 @@ private:
     QMutex inTaskMutex;
     bool isStartingTransfer = false;
 
+    QMenu *contextMenu;
+    QMenu *sortOrderSubMenu;
+
 private:
     void onScrollBarValueChanged(int value);
     void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
     void iniTreeView();
+    void iniContextMenu();
     void connectSlots();
     void handleItemDoubleClicked(const QModelIndex &index);
 

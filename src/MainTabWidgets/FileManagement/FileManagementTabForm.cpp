@@ -2,11 +2,13 @@
 #include <ClipboardManager.h>
 #include <DirsAuthedSelectDialog.h>
 
+#include <QActionGroup>
 #include <QDateTime>
 #include <QDir>
 #include <QFileDialog>
 #include <QFileIconProvider>
 #include <QInputDialog>
+#include <QMenu>
 #include <QMessageBox>
 #include <QMutex>
 #include <QScrollBar>
@@ -21,6 +23,7 @@ FileManagementTabForm::FileManagementTabForm(QWidget *parent)
 
     iniTreeView();
     connectSlots();
+    iniContextMenu();
 }
 
 FileManagementTabForm::~FileManagementTabForm()
@@ -32,7 +35,7 @@ void FileManagementTabForm::showSelectDirDialog()
 {
     DirsAuthedSelectDialog *dialog = new DirsAuthedSelectDialog;
     if (dialog->exec() == QDialog::Accepted) {
-        model->fetchDirectory(dialog->getSelectedPath());
+        model->fetchDirectory(dialog->getSelectedPath(), false, currentOrder, currentSortBy);
     }
     dialog->deleteLater();
 }
@@ -43,7 +46,7 @@ void FileManagementTabForm::onScrollBarValueChanged(int value)
     int maxValue = scrollBar->maximum();
 
     if (value == maxValue) {
-        model->fetchDirectory(currentPath);
+        model->fetchDirectory(currentPath, false, currentOrder, currentSortBy);
     }
 }
 
@@ -57,6 +60,13 @@ void FileManagementTabForm::onSelectionChanged(const QItemSelection &selected,
         ui->pushButtonOpen->setEnabled(false);
         ui->pushButtonProperty->setEnabled(false);
         ui->pushButtonRename->setEnabled(false);
+
+        ui->actionDelete->setEnabled(false);
+        ui->actionCopy->setEnabled(false);
+        ui->actionCut->setEnabled(false);
+        ui->actionOpen->setEnabled(false);
+        ui->actionProperty->setEnabled(false);
+        ui->actionRename->setEnabled(false);
         return;
     }
     ui->pushButtonDelete->setEnabled(true);
@@ -66,18 +76,27 @@ void FileManagementTabForm::onSelectionChanged(const QItemSelection &selected,
     ui->pushButtonProperty->setEnabled(true);
     ui->pushButtonRename->setEnabled(true);
 
+    ui->actionDelete->setEnabled(true);
+    ui->actionCopy->setEnabled(true);
+    ui->actionCut->setEnabled(true);
+    ui->actionOpen->setEnabled(true);
+    ui->actionProperty->setEnabled(true);
+    ui->actionRename->setEnabled(true);
     QModelIndex index = ui->treeView->currentIndex();
     RemoteFileSystemNode *node = static_cast<RemoteFileSystemNode *>(index.internalPointer());
 
     if (node) {
         ui->pushButtonEdit->setEnabled(node->type == "file");
+        ui->actionEdit->setVisible(node->type == "file");
         ui->pushButtonDownload->setEnabled(node->type == "file");
-        ui->pushButtonDownload->setEnabled(node->type == "file");
+        ui->actionDownload->setVisible(node->type == "file");
     }
 }
 
 void FileManagementTabForm::iniTreeView()
 {
+    ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+
     RemoteFileSystemNode *root = new RemoteFileSystemNode;
     root->name = "/";
     root->type = "directory";
@@ -109,6 +128,14 @@ void FileManagementTabForm::iniTreeView()
         updateNavButtonState();
     });
 
+    // connect(ui->treeView, &QTreeView::customContextMenuRequested, this, [=](const QPoint &pos) {
+    //     if (getSelectedFiles().size() == 0) {
+    //         return;
+    //     }
+
+    //     contextMenu->exec(ui->treeView->viewport()->mapFromGlobal(pos));
+    // });
+
     ui->treeView->setColumnWidth(0, 300);
     ui->treeView->setColumnWidth(1, 200);
     ui->treeView->setColumnWidth(2, 100);
@@ -125,6 +152,69 @@ void FileManagementTabForm::iniTreeView()
     ui->treeView->setAcceptDrops(true);
     ui->treeView->setDragDropMode(QAbstractItemView::DropOnly);
     ui->treeView->setDefaultDropAction(Qt::CopyAction);
+}
+
+void FileManagementTabForm::iniContextMenu()
+{
+    ui->actionAsc->setChecked(true);
+    ui->actionName->setChecked(true);
+    contextMenu = new QMenu(this);
+    contextMenu->addAction(ui->actionOpen);
+    contextMenu->addAction(ui->actionEdit);
+    contextMenu->addAction(ui->actionDownload);
+    contextMenu->addAction(ui->actionUpload);
+    contextMenu->addAction(ui->actionRefresh);
+    contextMenu->addAction(ui->actionCopy);
+    contextMenu->addAction(ui->actionCut);
+    contextMenu->addAction(ui->actionPaste);
+    contextMenu->addAction(ui->actionDelete);
+
+    sortOrderSubMenu = new QMenu("排列依据");
+
+    QActionGroup *sortByActionGroup = new QActionGroup(sortOrderSubMenu);
+    sortByActionGroup->setExclusive(true);
+    sortByActionGroup->addAction(ui->actionName);
+    sortByActionGroup->addAction(ui->actionSize);
+    sortByActionGroup->addAction(ui->actionType);
+    sortByActionGroup->addAction(ui->actionLastModified);
+
+    sortOrderSubMenu->addActions(sortByActionGroup->actions());
+    sortOrderSubMenu->addSeparator();
+
+    QActionGroup *orderActionGroup = new QActionGroup(sortOrderSubMenu);
+    orderActionGroup->setExclusive(true);
+    orderActionGroup->addAction(ui->actionAsc);
+    orderActionGroup->addAction(ui->actionDesc);
+    sortOrderSubMenu->addActions(orderActionGroup->actions());
+
+    contextMenu->addMenu(sortOrderSubMenu);
+    contextMenu->addAction(ui->actionRename);
+    contextMenu->addAction(ui->actionProperty);
+
+    connect(ui->actionOpen, &QAction::triggered, this, [this] {
+
+    });
+
+    connect(ui->actionEdit, &QAction::triggered, this, [this] {
+
+    });
+
+    connect(ui->actionDownload,
+            &QAction::triggered,
+            this,
+            &FileManagementTabForm::on_pushButtonDownload_clicked);
+    connect(ui->actionUpload,
+            &QAction::triggered,
+            this,
+            &FileManagementTabForm::on_pushButtonUpload_clicked);
+    connect(ui->actionRefresh, &QAction::triggered, this, &FileManagementTabForm::refresh);
+    connect(ui->actionCopy, &QAction::triggered, this, &FileManagementTabForm::copyFiles);
+    connect(ui->actionCut, &QAction::triggered, this, &FileManagementTabForm::cutFiles);
+    connect(ui->actionPaste, &QAction::triggered, this, &FileManagementTabForm::pasteFiles);
+    connect(ui->actionDelete, &QAction::triggered, this, &FileManagementTabForm::deleteFiles);
+    connect(ui->actionProperty, &QAction::triggered, this, [this] {
+
+    });
 }
 
 void FileManagementTabForm::connectSlots()
@@ -185,7 +275,7 @@ void FileManagementTabForm::handleItemDoubleClicked(const QModelIndex &index)
 
     if (item) {
         if (item->type == "directory") {
-            model->fetchDirectory(item->path);
+            model->fetchDirectory(item->path, false, currentOrder, currentSortBy);
             onSelectionChanged(QItemSelection(), QItemSelection());
         } else if (item->type == "file") {
         }
@@ -207,6 +297,7 @@ void FileManagementTabForm::updateNavButtonState()
     ui->pushButtonSelectAll->setEnabled(!currentPath.isEmpty());
 
     ui->pushButtonUpload->setEnabled(!currentPath.isEmpty());
+    ui->actionUpload->setVisible(!currentPath.isEmpty());
     ui->comboBoxSort->setEnabled(!currentPath.isEmpty());
 }
 
@@ -224,7 +315,7 @@ void FileManagementTabForm::backHistoryDir()
     back = 1;
 
     QString lastDir = backHistoryStack.pop();
-    model->fetchDirectory(lastDir);
+    model->fetchDirectory(lastDir, false, currentOrder, currentSortBy);
 
     forwardHistoryStack.push(currentPath);
     updateNavButtonState();
@@ -238,7 +329,7 @@ void FileManagementTabForm::forwardHistoryDir()
     forward = 1;
 
     QString forDir = forwardHistoryStack.pop();
-    model->fetchDirectory(forDir);
+    model->fetchDirectory(forDir, false, currentOrder, currentSortBy);
 
     backHistoryStack.push(currentPath);
     updateNavButtonState();
@@ -248,7 +339,7 @@ void FileManagementTabForm::backTopDir()
 {
     QDir dir(currentPath);
     if (!dir.isRoot() && dir.cdUp()) {
-        model->fetchDirectory(dir.absolutePath());
+        model->fetchDirectory(dir.absolutePath(), false, currentOrder, currentSortBy);
     }
     updateNavButtonState();
 }
@@ -257,7 +348,7 @@ void FileManagementTabForm::refresh()
 {
     if (currentPath.isEmpty())
         return;
-    model->fetchDirectory(currentPath, true);
+    model->fetchDirectory(currentPath, true, currentOrder, currentSortBy);
 }
 
 void FileManagementTabForm::deleteFiles()
@@ -691,9 +782,20 @@ void FileManagementTabForm::on_comboBoxSort_currentIndexChanged(int index)
         this->currentSortBy = "size";
     }
     }
+
+    model->fetchDirectory(currentPath, true, currentOrder, currentSortBy);
 }
 
 void FileManagementTabForm::on_pushButtonCreateDir_clicked()
 {
     createDir();
+}
+
+void FileManagementTabForm::on_treeView_customContextMenuRequested(const QPoint &pos)
+{
+    if (getSelectedFiles().size() == 0) {
+        return;
+    }
+
+    contextMenu->exec(pos);
 }
