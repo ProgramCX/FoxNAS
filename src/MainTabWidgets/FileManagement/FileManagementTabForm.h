@@ -53,6 +53,7 @@ private:
     QString currentPath;
     bool back = 0;
     bool forward = 0;
+    bool isStartingTransfer = false;
     int inTaskFiles = 0;
 
     QString currentOrder = "asc";
@@ -65,7 +66,6 @@ private:
     QQueue<FileTranferListItem *> waitingQueue;
 
     QMutex inTaskMutex;
-    bool isStartingTransfer = false;
 
     QMenu *contextMenu;
     QMenu *sortOrderSubMenu;
@@ -100,10 +100,6 @@ private:
     void uploadFile(const QList<QString>& filesToUpload, const QString& savePath, const QString& basePath);
     void tryStartTransferNext();
 
-    QList<QString> getSelectedFiles(bool hasDir = true) const;
-    int getMaxiumInTaskCount();
-    QList<QString> getFilePathRecursively(const QString &path) const;
-
     void handleTransferCompleted(FileTranferListItem *item);
 
     void handleTransferPaused(FileTranferListItem *item);
@@ -115,6 +111,12 @@ private:
     void handleTransferCancel(FileTranferListItem *item);
 
     void handleFileDirsDraggedDrop(const QList<QString> &filesPath, const QList<QString> dirsPath);
+
+    int getMaxiumInTaskCount();
+
+    QList<QString> getSelectedFiles(bool hasDir = true) const;
+
+    QList<QString> getFilePathRecursively(const QString &path) const;
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
