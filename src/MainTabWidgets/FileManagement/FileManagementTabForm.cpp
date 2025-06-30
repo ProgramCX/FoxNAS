@@ -1,4 +1,6 @@
 #include "FileManagementTabForm.h"
+#include <vector>
+
 #include <ClipboardManager.h>
 #include <DirsAuthedSelectDialog.h>
 
@@ -36,6 +38,7 @@ void FileManagementTabForm::showSelectDirDialog()
     DirsAuthedSelectDialog *dialog = new DirsAuthedSelectDialog;
     if (dialog->exec() == QDialog::Accepted) {
         model->fetchDirectory(dialog->getSelectedPath(), false, currentOrder, currentSortBy);
+        onSelectionChanged(QItemSelection(), QItemSelection());
     }
     dialog->deleteLater();
 }
@@ -67,6 +70,11 @@ void FileManagementTabForm::onSelectionChanged(const QItemSelection &selected,
         ui->actionOpen->setEnabled(false);
         ui->actionProperty->setEnabled(false);
         ui->actionRename->setEnabled(false);
+
+        ui->pushButtonEdit->setEnabled(false);
+        ui->actionEdit->setVisible(false);
+        ui->pushButtonDownload->setEnabled(false);
+        ui->actionDownload->setVisible(false);
         return;
     }
     ui->pushButtonDelete->setEnabled(true);
@@ -144,14 +152,18 @@ void FileManagementTabForm::iniTreeView()
     if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::COPY) {
         bool hasContent = !ClipboardManager::instance().getCopiedFiles().isEmpty();
         ui->pushButtonPaste->setEnabled(hasContent);
+        ui->actionPaste->setEnabled(hasContent);
     } else if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::CUT) {
         bool hasContent = !ClipboardManager::instance().getCutFiles().isEmpty();
         ui->pushButtonPaste->setEnabled(hasContent);
+        ui->actionPaste->setEnabled(hasContent);
     }
 
     ui->treeView->setAcceptDrops(true);
     ui->treeView->setDragDropMode(QAbstractItemView::DropOnly);
     ui->treeView->setDefaultDropAction(Qt::CopyAction);
+
+    onSelectionChanged(QItemSelection(), QItemSelection());
 }
 
 void FileManagementTabForm::iniContextMenu()
@@ -215,6 +227,30 @@ void FileManagementTabForm::iniContextMenu()
     connect(ui->actionProperty, &QAction::triggered, this, [this] {
 
     });
+
+    connect(ui->actionAsc, &QAction::triggered, this, [this] {
+        updateComboBox(currentSortBy, "asc");
+    });
+
+    connect(ui->actionDesc, &QAction::triggered, this, [this] {
+        updateComboBox(currentSortBy, "desc");
+    });
+
+    connect(ui->actionName, &QAction::triggered, this, [this] {
+        updateComboBox("name", currentOrder);
+    });
+
+    connect(ui->actionSize, &QAction::triggered, this, [this] {
+        updateComboBox("size", currentOrder);
+    });
+
+    connect(ui->actionType, &QAction::triggered, this, [this] {
+        updateComboBox("type", currentOrder);
+    });
+
+    connect(ui->actionLastModified, &QAction::triggered, this, [this] {
+        updateComboBox("time", currentOrder);
+    });
 }
 
 void FileManagementTabForm::connectSlots()
@@ -248,6 +284,7 @@ void FileManagementTabForm::connectSlots()
         if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::COPY) {
             bool hasContent = !ClipboardManager::instance().getCopiedFiles().isEmpty();
             ui->pushButtonPaste->setEnabled(hasContent);
+            ui->actionPaste->setEnabled(hasContent);
         }
     });
 
@@ -255,6 +292,7 @@ void FileManagementTabForm::connectSlots()
         if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::CUT) {
             bool hasContent = !ClipboardManager::instance().getCutFiles().isEmpty();
             ui->pushButtonPaste->setEnabled(hasContent);
+            ui->actionPaste->setEnabled(hasContent);
         }
     });
 
@@ -369,7 +407,6 @@ void FileManagementTabForm::createDir()
 {
     QString name = QInputDialog::getText(this, "创建文件夹", "新文件夹名称：");
     if (name.trimmed().isEmpty()) {
-        QMessageBox::critical(this, "错误", "文件夹名称不能为空！", tr("确定"));
         return;
     }
 
@@ -592,6 +629,23 @@ QList<QString> FileManagementTabForm::getFilePathRecursively(const QString& path
     return filePaths;
 }
 
+void FileManagementTabForm::updateComboBox(QString sortBy, QString order)
+{
+    std::vector<std::string> sortByList{"name", "time", "type", "size"};
+
+    auto it = std::find(sortByList.begin(), sortByList.end(), sortBy.toStdString());
+
+    if (it == sortByList.end()) {
+        return;
+    }
+
+    int sortByIndex = std::distance(sortByList.begin(), it);
+
+    int finalIndex = sortByIndex * 2 + (order == "asc" ? 0 : 1);
+
+    ui->comboBoxSort->setCurrentIndex(finalIndex);
+}
+
 void FileManagementTabForm::handleTransferCompleted(FileTranferListItem *item)
 {
     taskQueue.removeOne(item);
@@ -625,7 +679,7 @@ void FileManagementTabForm::handleTransferFailed(FileTranferListItem *item)
         inTaskFiles--;
     }
 
-    item->setMessageText("下载失败！");
+    // item->setMessageText("传输失败！");
     tryStartTransferNext();
 }
 
@@ -728,11 +782,12 @@ void FileManagementTabForm::on_pushButtonDownload_clicked()
 void FileManagementTabForm::on_pushButtonUpload_clicked()
 {
     QMessageBox msgBox;
-    msgBox.setWindowTitle("请选择类型");
-    msgBox.setText("你要选择文件还是目录？");
+    msgBox.setWindowTitle(tr("请选择类型"));
+    msgBox.setText(tr("你要选择文件还是目录？"));
 
-    QPushButton* fileButton = msgBox.addButton("选择文件", QMessageBox::AcceptRole);
-    QPushButton *dirButton = msgBox.addButton("选择目录", QMessageBox::ApplyRole);
+    QPushButton *fileButton = msgBox.addButton(tr("选择文件"), QMessageBox::AcceptRole);
+    QPushButton *dirButton = msgBox.addButton(tr("选择目录"), QMessageBox::ApplyRole);
+    QPushButton *cancelButton = msgBox.addButton(tr("取消"), QMessageBox::RejectRole);
 
     msgBox.exec();
 
@@ -742,7 +797,8 @@ void FileManagementTabForm::on_pushButtonUpload_clicked()
             uploadFile(filePath, currentPath, QFileInfo(filePath[0]).dir().absolutePath());
         }
     } else if (msgBox.clickedButton() == dirButton) {
-        QString dirPath = QFileDialog::getExistingDirectory(nullptr, "选择目录",
+        QString dirPath = QFileDialog::getExistingDirectory(nullptr,
+                                                            "选择目录",
                                                             QDir::homePath(),
                                                             QFileDialog::ShowDirsOnly);
         if (!dirPath.isEmpty()) {
@@ -759,29 +815,13 @@ void FileManagementTabForm::on_pushButtonUpload_clicked()
 
 void FileManagementTabForm::on_comboBoxSort_currentIndexChanged(int index)
 {
-    if (index % 2 == 0) {
-        this->currentOrder = "asc";
-    } else {
-        this->currentOrder = "desc";
-    }
+    std::vector<std::string> sortByList{"name", "time", "type", "size"};
 
-    int i = index / 2;
-
-    switch (i) {
-    case 0: {
-        this->currentSortBy = "name";
-        break;
+    if (index < 0 || index / 2 >= sortByList.size()) {
+        return;
     }
-    case 1: {
-        this->currentSortBy = "time";
-    }
-    case 2: {
-        this->currentSortBy = "type";
-    }
-    case 3: {
-        this->currentSortBy = "size";
-    }
-    }
+    this->currentOrder = index % 2 == 0 ? "asc" : "desc";
+    this->currentSortBy = QString::fromStdString(sortByList[index / 2]);
 
     model->fetchDirectory(currentPath, true, currentOrder, currentSortBy);
 }
@@ -793,9 +833,12 @@ void FileManagementTabForm::on_pushButtonCreateDir_clicked()
 
 void FileManagementTabForm::on_treeView_customContextMenuRequested(const QPoint &pos)
 {
-    if (getSelectedFiles().size() == 0) {
-        return;
-    }
+    ui->actionAsc->setChecked(currentOrder == "asc");
+    ui->actionDesc->setChecked(currentOrder == "desc");
+    ui->actionName->setChecked(currentSortBy == "name");
+    ui->actionLastModified->setChecked(currentSortBy == "time");
+    ui->actionType->setChecked(currentSortBy == "type");
+    ui->actionSize->setChecked(currentSortBy == "size");
 
     contextMenu->exec(pos);
 }

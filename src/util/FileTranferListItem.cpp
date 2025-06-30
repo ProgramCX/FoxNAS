@@ -25,8 +25,16 @@ FileTranferListItem::FileTranferListItem(QString sourceFilePath,
     , ui(new Ui::FileTranferListItem)
 {
     ui->setupUi(this);
-    ui->labelSourceFile->setText(QString("远程路径：%1").arg(sourceFilePath));
-    ui->labelDestinationFile->setText(QString("本地保存位置：%2").arg(destinationPath));
+
+    setMessageText(
+        tr("正在准备%1").arg(transferType == TransferType::DOWNLOAD ? tr("下载") : tr("上传")));
+    if (transferType == TransferType::DOWNLOAD) {
+        ui->labelSourceFile->setText(QString("远程路径：%1").arg(sourceFilePath));
+        ui->labelDestinationFile->setText(QString("本地保存位置：%2").arg(destinationPath));
+    } else {
+        ui->labelSourceFile->setText(QString("本地文件路径：%1").arg(sourceFilePath));
+        ui->labelDestinationFile->setText(QString("远程保存位置：%2").arg(destinationPath));
+    }
 }
 
 FileTranferListItem::~FileTranferListItem()
@@ -263,7 +271,7 @@ void FileTranferListItem::startTransfer(bool isContinue)
             if (currentState != CANCELED) {
                 int statusCode = netWorkReply->attribute(QNetworkRequest::HttpStatusCodeAttribute)
                                      .toInt();
-                if (netWorkReply->error() || (statusCode != 200 && statusCode != 201)) {
+                if (netWorkReply->error()) {
                     dealWithError();
                 } else if (currentState == TRANSFERING) {
                     currentState = FINISHED;
@@ -297,7 +305,8 @@ void FileTranferListItem::setMessageText(const QString &message) const
 
 void FileTranferListItem::dealWithError()
 {
-    ui->labelMessage->setText("传输失败！");
+    ui->labelMessage->setText(transferType == TransferType::DOWNLOAD ? tr("下载失败！")
+                                                                     : tr("上传失败！"));
 
     ui->pushButtonCancel->setEnabled(true);
     ui->pushButtonContinue->setEnabled(false);
@@ -331,7 +340,8 @@ void FileTranferListItem::pauseTransfer()
 void FileTranferListItem::continueTransfer()
 {
     ui->pushButtonContinue->setEnabled(false);
-    setMessageText(tr("正在准备传输"));
+    setMessageText(
+        tr("正在准备%1").arg(transferType == TransferType::DOWNLOAD ? tr("下载") : tr("上传")));
     emit transferTryingContinue(this);
     // startTransfer(true);
 }

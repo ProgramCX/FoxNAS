@@ -1,1 +1,2 @@
 IDI_ICON1 ICON DISCARDABLE "favicon.ico"
+1 RT_MANIFEST "manifest/win32-require-admin-manifest.xml"

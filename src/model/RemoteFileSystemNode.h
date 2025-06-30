@@ -7,6 +7,7 @@ struct RemoteFileSystemNode
     QString name;
     QString path;
     double size;
+    QString sizeUnit;
     qint64 lastModified;
     QString type;
     RemoteFileSystemNode* parent = nullptr;

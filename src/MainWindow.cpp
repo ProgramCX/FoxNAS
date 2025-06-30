@@ -3,7 +3,6 @@
 #include "MainTabWidgets/FileManagementForm.h"
 #include "MainTabWidgets/InfoForm.h"
 #include "MainTabWidgets/OverViewForm.h"
-#include "MainTabWidgets/SSHForm.h"
 #include "MainTabWidgets/SettingsForm.h"
 #include "MainTabWidgets/UserManagementForm.h"
 #include "ui_MainWindow.h"
@@ -78,11 +77,6 @@ void MainWindow::iniPermissionUi(QString &rawContent, bool hasError, qint16 stat
         if (stringList.contains("DDNS")) {
             DDNSForm *ddnsForm = new DDNSForm(ui->tabWidget);
             ui->tabWidget->addTab(ddnsForm, "动态域名解析");
-        }
-
-        if (stringList.contains("SSH")) {
-            SSHForm *sshForm = new SSHForm(ui->tabWidget);
-            ui->tabWidget->addTab(sshForm, "SSH 登录");
         }
 
         if (stringList.contains("USER")) {

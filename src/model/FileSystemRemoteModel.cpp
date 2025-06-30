@@ -176,6 +176,9 @@ void FileSystemRemoteModel::fetchDirectory(QString directory,
                                            QString order,
                                            QString sortBy)
 {
+    if (isFetchingDir)
+        return;
+
     if (directory == currentDirectory && totalPage == currentPage && !refresh) {
         return;
     }
@@ -200,7 +203,7 @@ void FileSystemRemoteModel::fetchDirectory(QString directory,
     if (!rootNode) {
         return;
     }
-
+    isFetchingDir = true;
     request->sendRequest();
 
     connect(request,
@@ -250,11 +253,11 @@ void FileSystemRemoteModel::fetchDirectory(QString directory,
                 } else {
                     QMessageBox::critical(nullptr,
                                           "失败",
-                                          QString::number(statusCode) + "获取文件列表失败："
-                                              + rawContent,
+                                          "获取文件列表失败：" + rawContent,
                                           tr("确定"));
                 }
                 request->deleteLater();
+                isFetchingDir = false;
             });
 }
 

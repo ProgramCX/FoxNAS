@@ -51,9 +51,11 @@ private:
     FileSystemRemoteModel *model;
 
     QString currentPath;
+
     bool back = 0;
     bool forward = 0;
     bool isStartingTransfer = false;
+
     int inTaskFiles = 0;
 
     QString currentOrder = "asc";
@@ -117,6 +119,8 @@ private:
     QList<QString> getSelectedFiles(bool hasDir = true) const;
 
     QList<QString> getFilePathRecursively(const QString &path) const;
+
+    void updateComboBox(QString sortBy, QString order);
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

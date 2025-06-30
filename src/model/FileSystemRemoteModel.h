@@ -51,6 +51,7 @@ private:
 
     int from = 0;
     int to = 0;
+    bool isFetchingDir = 0;
 
     QString order = "asc";
     QString sortBy = "name";
