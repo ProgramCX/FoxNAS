@@ -20,5 +20,10 @@ const QString NASDOWNLOADFILEAPI = "/api/file/op/get";
 const QString NASUPLOADFILEAPI = "/api/file/op/upload";
 const QString NASRESOURCESTATUSSOCKET = "/ws/overview";
 
+const QString NASVideoMetaData = "/api/file/media/metadata";
+const QString NASVideoRangeStream = "/api/file/media/video-stream";
+const QString NASVideoToken = "/api/file/media/validate";
+const QString NASMediaType = "/api/file/media/media-type";
+
 QString getFullApiPath(QString host, QString api);
 #endif // APIURL_H

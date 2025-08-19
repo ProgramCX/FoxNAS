@@ -15,6 +15,8 @@
 #include <QMutex>
 #include <QScrollBar>
 #include <QTreeView>
+#include "../MediaPlayer/VideoPlayer.h"
+#include <MemStore.h>
 
 #include "ui_FileManagementTabForm.h"
 FileManagementTabForm::FileManagementTabForm(QWidget *parent)
@@ -203,9 +205,7 @@ void FileManagementTabForm::iniContextMenu()
     contextMenu->addAction(ui->actionRename);
     contextMenu->addAction(ui->actionProperty);
 
-    connect(ui->actionOpen, &QAction::triggered, this, [this] {
-
-    });
+    connect(ui->actionOpen, &QAction::triggered, this, [this] { openFile(); });
 
     connect(ui->actionEdit, &QAction::triggered, this, [this] {
 
@@ -279,7 +279,7 @@ void FileManagementTabForm::connectSlots()
     connect(ui->pushButtonCut, &QPushButton::clicked, this, &FileManagementTabForm::cutFiles);
     connect(ui->pushButtonPaste, &QPushButton::clicked, this, &FileManagementTabForm::pasteFiles);
     connect(ui->pushButtonRename, &QPushButton::clicked, this, &FileManagementTabForm::renameFile);
-
+    connect(ui->pushButtonOpen, &QPushButton::clicked, this, &FileManagementTabForm::openFile);
     connect(&ClipboardManager::instance(), &ClipboardManager::clipboardCopyChanged, this, [this] {
         if (ClipboardManager::instance().getClipboardMode() == ClipboardManager::COPY) {
             bool hasContent = !ClipboardManager::instance().getCopiedFiles().isEmpty();
@@ -316,6 +316,7 @@ void FileManagementTabForm::handleItemDoubleClicked(const QModelIndex &index)
             model->fetchDirectory(item->path, false, currentOrder, currentSortBy);
             onSelectionChanged(QItemSelection(), QItemSelection());
         } else if (item->type == "file") {
+            openFile();
         }
     }
 }
@@ -475,6 +476,27 @@ void FileManagementTabForm::renameFile()
             model->renameFile(node->path, newName);
         }
     }
+}
+
+void FileManagementTabForm::openFile()
+{
+    QList<QString> selectedItemPaths = getSelectedFiles();
+
+    ApiRequest *apiRequest = new ApiRequest(getFullApiPath(FULLHOST, NASMediaType), ApiRequest::GET);
+    apiRequest->addQueryParam("path", selectedItemPaths[0]);
+    connect(apiRequest,
+            &ApiRequest::responseRecieved,
+            this,
+            [=](QString &rawContent, bool hasError, qint16 statusCode) {
+                if (!hasError && statusCode == 200) {
+                    if (rawContent == "video") {
+                        VideoPlayer *videoPlayer = new VideoPlayer(selectedItemPaths[0]);
+                        videoPlayer->show();
+                    }
+                }
+            });
+
+    apiRequest->sendRequest();
 }
 
 void FileManagementTabForm::removeItemFromTransferList(FileTranferListItem *item)

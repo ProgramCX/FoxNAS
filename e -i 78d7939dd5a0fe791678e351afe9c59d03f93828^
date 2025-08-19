@@ -1,0 +1,206 @@
+[33mcommit e9b74b75d965e2c5f737237ce6e225185759e26b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: ProgramCX <programcx@outlook.com>
+Date:   Tue Jul 1 02:08:09 2025 +0800
+
+    fix(FileManagement): #elif with no expression
+
+[33mcommit 74d8685098abdf95839eb65550316a144ea5db23[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Tue Jul 1 01:58:25 2025 +0800
+
+    Update cmake.yml
+
+[33mcommit 492f723ad4cc386f72a7f75a33cb0cbc80574bc4[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Tue Jul 1 01:56:39 2025 +0800
+
+    Update cmake.yml
+
+[33mcommit dc101a8b4bfaa37fa9b43d35d82f09f742741b67[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Tue Jul 1 01:51:23 2025 +0800
+
+    Update cmake.yml
+
+[33mcommit 83626fdcaca83aa0782fce560c93ed719c350049[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Tue Jul 1 01:49:25 2025 +0800
+
+    Update cmake.yml
+
+[33mcommit 8a24835b998e09cd4d51e197dc88f144947eb9ac[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Tue Jul 1 01:46:08 2025 +0800
+
+    Update cmake.yml
+
+[33mcommit 5f36c6f3814dffb4ce744296b27d99297b8d55db[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Tue Jul 1 01:37:14 2025 +0800
+
+    Update cmake.yml
+
+[33mcommit 5e9942f86a2b728f5c965d39837fb354f3ce0fb6[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Tue Jul 1 01:32:42 2025 +0800
+
+    Update cmake.yml
+
+[33mcommit 254d36a14acf8e17a7f1b8a2f9676bf9655f9529[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Tue Jul 1 01:29:38 2025 +0800
+
+    Update cmake.yml
+
+[33mcommit 78d7939dd5a0fe791678e351afe9c59d03f93828[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Tue Jul 1 01:24:57 2025 +0800
+
+    CI: add CI
+
+[33mcommit 8dc79d84d3d76d1e8488b1dd2f5cdac7f43a7794[m
+Author: Program <programcx@outlook.com>
+Date:   Tue Jul 1 01:18:57 2025 +0800
+
+    config: tidy cmake.txt
+
+[33mcommit 51e385ca8c7531a7ce323e4a77e0683d013f0cfa[m
+Author: Program <programcx@outlook.com>
+Date:   Mon Jun 9 11:17:56 2025 +0800
+
+    style(FileManagement): beautify code style
+
+[33mcommit 55ccb53061febff23fc49617d31d744822d2b614[m
+Author: Program <programcx@outlook.com>
+Date:   Mon Jun 9 11:12:07 2025 +0800
+
+    feat(FileManagement): context menu
+
+[33mcommit 4da4017c35ed1190be99feb9e4cecd8662241677[m
+Author: Program <programcx@outlook.com>
+Date:   Mon Jun 9 00:10:08 2025 +0800
+
+    feat(FileManagement): create directories
+
+[33mcommit 24d973f6769c5786b3f45f42102618ae5f498017[m
+Author: Program <programcx@outlook.com>
+Date:   Sat May 31 15:03:13 2025 +0800
+
+    fix: upload destination path error
+
+[33mcommit d469db79524aaf6f99c5409a3ecdea4f44c451e1[m
+Author: Program <programcx@outlook.com>
+Date:   Fri May 30 22:13:36 2025 +0800
+
+    feat(FileManagement): add file upload with drag-and-drop support and state management; implement file download with breakpoint resume
+
+[33mcommit f942dc589b26bfabdbb1c4f74d50cea13587c86b[m
+Author: Program <programcx@outlook.com>
+Date:   Fri May 30 01:15:25 2025 +0800
+
+    feat(FileManagement): download file in queue
+
+[33mcommit 0ea174865eb5f03061e68709810fe71368540863[m
+Merge: 437e882 9e7d3dd
+Author: Program <ProgramCX@Outlook.com>
+Date:   Thu May 29 08:53:21 2025 +0800
+
+    Merge pull request #1 from ProgramCX/refactor/error-handling-json-file-batch-operation
+    
+    Refactor/error handling json file batch operation
+
+[33mcommit 9e7d3dda9a0b46a63f9b0741f7c44545c6ee4030[m[33m ([m[1;31morigin/refactor/error-handling-json-file-batch-operation[m[33m, [m[1;32mrefactor/error-handling-json-file-batch-operation[m[33m)[m
+Author: Program <programcx@outlook.com>
+Date:   Thu May 29 00:28:42 2025 +0800
+
+    feat(FileManagement): move&copy&rename files
+
+[33mcommit 109059e898a4175301408cb9693b64e406b36e4c[m
+Author: Program <programcx@outlook.com>
+Date:   Tue May 27 22:10:31 2025 +0800
+
+    refactor(FileManagement): call once to delete files
+
+[33mcommit 437e88254621bbb1ec732912087c800c8c6f744b[m
+Author: Program <programcx@outlook.com>
+Date:   Sun May 25 23:46:20 2025 +0800
+
+    feat(FileManagement): delete files
+
+[33mcommit e1f861c4a55c2db80c746af7db7be984f7dcf641[m
+Author: Program <programcx@outlook.com>
+Date:   Sun May 25 13:02:30 2025 +0800
+
+    git: add icon.rc to git
+
+[33mcommit 723a77d65478146b189e5bc1886304e1e8769731[m
+Author: Program <programcx@outlook.com>
+Date:   Sun May 25 12:58:43 2025 +0800
+
+    feat(FileManagement): go back,forward or up
+
+[33mcommit c613a9ff833402866756b53209ee9159f1af2510[m
+Author: Program <programcx@outlook.com>
+Date:   Sun May 25 00:59:32 2025 +0800
+
+    feat(FileManagement): list files and dirs in specific dir
+
+[33mcommit 292e2fd7c49a1de3d778cf5826b98597b9328e7f[m
+Author: Program <programcx@outlook.com>
+Date:   Thu May 22 22:23:37 2025 +0800
+
+    feat(overview): reconnect on disconnected
+
+[33mcommit 5576c80a9042820dbbb860715291ccdddf4d9653[m
+Author: Program <programcx@outlook.com>
+Date:   Wed May 21 19:33:14 2025 +0800
+
+    feat: disk usage list
+
+[33mcommit 7b8e733f89cc60b5e92110d23e7629c14cb85a8d[m
+Author: Program <programcx@outlook.com>
+Date:   Wed May 21 16:17:11 2025 +0800
+
+    feat: display cpu&memory condition in chart
+
+[33mcommit e9e4193695a0ce9a6f53afaa097113ec1bc25c2a[m
+Author: Program <programcx@outlook.com>
+Date:   Mon May 19 17:51:34 2025 +0800
+
+    feat: show tabs according to the user's  permissions
+
+[33mcommit 250449267686531791e71c008be88201376710c2[m
+Author: Program <programcx@outlook.com>
+Date:   Mon May 19 00:52:11 2025 +0800
+
+    feat: log in backend
+
+[33mcommit 3f219385b008e4be57ade54f242adf7904c73b6a[m
+Author: Program <programcx@outlook.com>
+Date:   Tue May 13 18:49:10 2025 +0800
+
+    doc: correct language switch link error in readme
+
+[33mcommit 9467b411b54a266b146ec6f670c923fbc5278f9a[m
+Author: Program <programcx@outlook.com>
+Date:   Tue May 13 18:47:03 2025 +0800
+
+    doc: create README
+
+[33mcommit 285d79cfda60a71e2c2a54208a4dfa288afcc34f[m
+Author: Program <programcx@outlook.com>
+Date:   Mon May 12 23:57:12 2025 +0800
+
+    feat: manually add,edit or delete nas server info
+
+[33mcommit 6a640646b96c2b5e8e1728360e98f8cc97140701[m
+Author: Program <ProgramCX@Outlook.com>
+Date:   Sat May 10 23:06:09 2025 +0800
+
+    Create LICENSE
+
+[33mcommit 1cee2cbf25829f94afa5904606147e934511a1d6[m
+Author: Program <programcx@outlook.com>
+Date:   Sat May 10 23:00:13 2025 +0800
+
+    feat: detect nas server in LAN through udp

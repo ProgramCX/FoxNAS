@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 project(FoxNAS LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network WebSockets LinguistTools Charts Svg Concurrent)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network WebSockets LinguistTools Charts Svg Concurrent Multimedia MultimediaWidgets)
 
 qt_standard_project_setup()
 
@@ -111,6 +111,7 @@ qt_add_executable(FoxNAS
     src/util/FileTranferListItem.ui
     src/util/BytesConvertorUtil.h
     src/util/BytesConvertorUtil.cpp
+    src/MediaPlayer/VideoPlayer.h src/MediaPlayer/VideoPlayer.cpp src/MediaPlayer/VideoPlayer.ui
 )
 
 
@@ -129,6 +130,8 @@ target_link_libraries(FoxNAS
         Qt::Charts
         Qt::Svg
         Qt::Concurrent
+        Qt::Multimedia
+        Qt::MultimediaWidgets
 )
 
 target_include_directories(FoxNAS

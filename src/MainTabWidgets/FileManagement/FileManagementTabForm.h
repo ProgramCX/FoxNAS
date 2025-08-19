@@ -95,6 +95,7 @@ private:
     void pasteFiles();
     void cutFiles();
     void renameFile();
+    void openFile();
 
     void removeItemFromTransferList(FileTranferListItem *item);
     void downloadFile(const QList<QString>& filesToDownload, const QString& savePath);
