@@ -24,6 +24,14 @@ const QString NASVideoMetaData = "/api/file/media/metadata";
 const QString NASVideoRangeStream = "/api/file/media/video-stream";
 const QString NASVideoToken = "/api/file/media/validate";
 const QString NASMediaType = "/api/file/media/media-type";
+const QString NASVideoHeartBeats = "/api/file/media/prolong-token";
 
+const QString NASDDNSTASKLIST = "/api/ddns/tasks/list";
+const QString NASDDNSSTATUS = "/api/ddns/tasks/status";
+const QString NASDDNSPAUSE = "/api/ddns/tasks/pause";
+const QString NASDDNSRESUME = "/api/ddns/tasks/resume";
+const QString NASDDNSRESTART = "/api/ddns/tasks/restart";
+const QString NASDDNSDELETE = "/api/ddns/tasks/delete";
+const QString NASDDNSUPDATE = "/api/ddns/tasks/update";
 QString getFullApiPath(QString host, QString api);
 #endif // APIURL_H

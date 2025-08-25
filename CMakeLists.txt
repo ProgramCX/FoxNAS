@@ -112,6 +112,14 @@ qt_add_executable(FoxNAS
     src/util/BytesConvertorUtil.h
     src/util/BytesConvertorUtil.cpp
     src/MediaPlayer/VideoPlayer.h src/MediaPlayer/VideoPlayer.cpp src/MediaPlayer/VideoPlayer.ui
+    src/MediaPlayer/VideoWidget.h
+
+    # 委托
+    src/delegate/ButtonDelegate.h
+    src/delegate/ButtonDelegate.cpp
+    src/delegate/MultiButtonDelegate.h
+    src/delegate/MultiButtonDelegate.cpp
+    src/delegate/ComboBoxDelegate.h
 )
 
 
@@ -140,6 +148,8 @@ target_include_directories(FoxNAS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/model
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/FileManagement
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/MediaPlayer
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/delegate
 )
 
 include(GNUInstallDirs)

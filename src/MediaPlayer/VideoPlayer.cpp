@@ -11,37 +11,39 @@
 #include <QMediaMetaData>
 #include <QMessageBox>
 
+#include "VideoWidget.h"
+
 #include "ui_VideoPlayer.h"
 #include <MemStore.h>
 
 VideoPlayer::VideoPlayer(QString filePath, QWidget *parent)
-    : QMainWindow(parent)
+    : QWidget(parent)
     , ui(new Ui::VideoPlayer)
 {
     setAttribute(Qt::WA_DeleteOnClose);
+    setMouseTracking(true);
     ui->setupUi(this);
     player = new QMediaPlayer;
-    videoWidget = new QVideoWidget;
+    videoWidget = new VideoPlayerWidget(this);
     audioOutput = new QAudioOutput;
 
     uiHideTimer = new QTimer(this);
     uiHideTimer->setInterval(5000);
     uiHideTimer->setSingleShot(true);
 
+    heartBeatsTimer = new QTimer(this);
+    heartBeatsTimer->setInterval(10000);
+
     connect(uiHideTimer, &QTimer::timeout, this, [=]() { ui->frame->setVisible(0); });
-
-    ui->videoFrame->setMouseTracking(true);
-    setMouseTracking(true);
-
-    ui->videoFrame->installEventFilter(this);
-    videoWidget->installEventFilter(this);
+    connect(heartBeatsTimer, &QTimer::timeout, this, &VideoPlayer::sendHeartBeats);
 
     ui->toolButtonBackward->setIcon(style()->standardIcon(QStyle::SP_MediaSeekBackward));
     ui->toolButtonForward->setIcon(style()->standardIcon(QStyle::SP_MediaSeekForward));
     ui->toolButtonEnd->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
 
     QVBoxLayout *layout = new QVBoxLayout(ui->videoFrame);
-    QVideoWidget *videoWidget = new QVideoWidget(ui->videoFrame);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
     layout->addWidget(videoWidget);
 
     player->setAudioOutput(audioOutput);
@@ -50,11 +52,6 @@ VideoPlayer::VideoPlayer(QString filePath, QWidget *parent)
     this->filePath = filePath;
 
     connect(player, &QMediaPlayer::positionChanged, this, [=](qint64 position) {
-        // position 单位是毫秒
-        if (doing) {
-            QTimer::singleShot(1000, this, [=]() { doing = false; });
-            return;
-        }
         ui->labelCurrent->setText(formatDuration(position / 1000));
         ui->horizontalSlider->setValue(position / 1000);
     });
@@ -117,7 +114,6 @@ VideoPlayer::VideoPlayer(QString filePath, QWidget *parent)
             [=](QMediaPlayer::PlaybackState state) {
                 if (state == QMediaPlayer::PlayingState) {
                     changeButtonStatePlaying();
-                    player->setPosition(videoPosition);
                     retryCount = 0;
                 } else if (state == QMediaPlayer::PausedState) {
                     changeButtonStatePause();
@@ -125,15 +121,31 @@ VideoPlayer::VideoPlayer(QString filePath, QWidget *parent)
                     changeButtonStateStop();
                 }
             });
+
+    ui->verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+    // 确保 Frame 无边框
+    ui->frame->setFrameShape(QFrame::NoFrame);
+    ui->videoFrame->setFrameShape(QFrame::NoFrame);
+    ui->videoFrame->setMouseTracking(true);
+    videoWidget->setAttribute(Qt::WA_OpaquePaintEvent, true);
     loadMedia(filePath);
 }
-
+void VideoPlayer::mouseMoveEvent(QMouseEvent *event)
+{
+    QWidget::mouseMoveEvent(event);
+}
 VideoPlayer::~VideoPlayer()
 {
     delete ui;
     delete player;
     delete audioOutput;
     delete videoWidget;
+}
+
+void VideoPlayer::showControls()
+{
+    uiHideTimer->start();
+    ui->frame->setVisible(true);
 }
 
 void VideoPlayer::loadMedia(QString filePath)
@@ -155,6 +167,7 @@ void VideoPlayer::loadMedia(QString filePath)
                     url.setQuery(query);
                     player->setSource(url);
                     player->play();
+                    heartBeatsTimer->start();
                 }
 
                 apiRequest->deleteLater();
@@ -271,6 +284,16 @@ void VideoPlayer::changeButtonStatePlaying()
     ui->toolButtonStartPause->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
 }
 
+void VideoPlayer::sendHeartBeats()
+{
+    ApiRequest *apiRequest = new ApiRequest(getFullApiPath(FULLHOST, NASVideoHeartBeats),
+                                            ApiRequest::POST);
+    apiRequest->addQueryParam("path", filePath);
+    apiRequest->addQueryParam("token", token);
+    // connect(apiRequest, &ApiRequest::responseRecieved, this, [] {});
+    apiRequest->sendRequest();
+}
+
 void VideoPlayer::on_comboBoxVideoTrack_currentIndexChanged(int index)
 {
     player->setActiveVideoTrack(index);
@@ -288,9 +311,7 @@ void VideoPlayer::on_comboBoxAssTrack_currentIndexChanged(int index)
 
 void VideoPlayer::on_horizontalSlider_sliderMoved(int position)
 {
-    doing = true;
-    videoPosition = position * 1000;
-    loadMedia(filePath);
+    player->setPosition(position * 1000);
 }
 
 void VideoPlayer::on_toolButtonStartPause_clicked()
@@ -298,9 +319,7 @@ void VideoPlayer::on_toolButtonStartPause_clicked()
     if (player->playbackState() == QMediaPlayer::PlayingState) {
         player->pause();
     } else {
-        videoPosition = player->position();
-        doing = true;
-        loadMedia(this->filePath);
+        player->play();
     }
 }
 
@@ -317,9 +336,7 @@ void VideoPlayer::on_toolButtonBackward_clicked()
     qint64 newPos = currentPos - 5000;
     if (newPos < 0)
         newPos = 0;
-    videoPosition = newPos;
-    doing = true;
-    loadMedia(this->filePath);
+    player->setPosition(newPos);
 }
 
 void VideoPlayer::on_toolButtonForward_clicked()
@@ -328,32 +345,7 @@ void VideoPlayer::on_toolButtonForward_clicked()
     qint64 newPos = currentPos + 5000;
     if (newPos > player->duration())
         newPos = player->duration();
-    videoPosition = newPos;
-    loadMedia(this->filePath);
-}
-
-void VideoPlayer::on_horizontalSlider_sliderPressed()
-{
-    doing = true;
-}
-
-void VideoPlayer::mouseMoveEvent(QMouseEvent *event)
-{
-    if (isFullScreen()) {
-        uiHideTimer->start();
-        ui->frame->setVisible(true);
-    }
-    QMainWindow::mouseMoveEvent(event);
-}
-
-bool VideoPlayer::eventFilter(QObject *obj, QEvent *event)
-{
-    if (event->type() == QEvent::MouseMove && isFullScreen()) {
-        ui->frame->setVisible(true);
-        uiHideTimer->start(5000);
-        return true;
-    }
-    return QMainWindow::eventFilter(obj, event);
+    player->setPosition(newPos);
 }
 
 void VideoPlayer::on_toolButtonFullscreen_clicked()

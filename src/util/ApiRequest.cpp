@@ -94,7 +94,7 @@ void ApiRequest::sendRequest()
     if (method == POST) {
         reply = manager.post(request, body.toJson());
     } else if (method == GET) {
-        reply = manager.get(request);
+        reply = manager.get(request, body.toJson());
     } else if (method == DELETE) {
         reply = manager.sendCustomRequest(request, "DELETE", body.toJson());
     } else if (method == PUT) {

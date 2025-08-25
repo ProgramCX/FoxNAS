@@ -8,17 +8,22 @@
 #include <QStringList>
 #include <QTimer>
 #include <QVideoWidget>
+
+class VideoPlayerWidget;
+
 namespace Ui {
 class VideoPlayer;
 }
 
-class VideoPlayer : public QMainWindow
+class VideoPlayer : public QWidget
 {
     Q_OBJECT
 
 public:
     explicit VideoPlayer(QString filePath, QWidget *parent = nullptr);
     ~VideoPlayer();
+
+    void showControls();
 
 private slots:
     void on_comboBoxVideoTrack_currentIndexChanged(int index);
@@ -37,21 +42,20 @@ private slots:
 
     void on_toolButtonForward_clicked();
 
-    void on_horizontalSlider_sliderPressed();
-
     void on_toolButtonFullscreen_clicked();
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    //     bool eventFilter(QObject *obj, QEvent *event) override;
 
 private:
     Ui::VideoPlayer *ui;
 
-    QVideoWidget *videoWidget;
+    VideoPlayerWidget *videoWidget;
 
     QMediaPlayer *player;
     QAudioOutput *audioOutput;
+    QTimer *heartBeatsTimer;
 
     QString filePath;
     QString token;
@@ -72,8 +76,6 @@ private:
 
     qint64 videoPosition = 0;
 
-    bool doing = false;
-
 private:
     void loadMedia(QString filePath);
     void iniMediaMeta();
@@ -81,6 +83,8 @@ private:
     void changeButtonStateStop();
     void changeButtonStatePause();
     void changeButtonStatePlaying();
+
+    void sendHeartBeats();
 };
 
 #endif // VIDEOPLAYER_H
