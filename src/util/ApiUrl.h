@@ -33,5 +33,11 @@ const QString NASDDNSRESUME = "/api/ddns/tasks/resume";
 const QString NASDDNSRESTART = "/api/ddns/tasks/restart";
 const QString NASDDNSDELETE = "/api/ddns/tasks/delete";
 const QString NASDDNSUPDATE = "/api/ddns/tasks/update";
+const QString NASDDNSCREATE = "/api/ddns/tasks/create";
+
+const QString NASDDNSSECRETLIST = "/api/ddns/config/accessKeys";
+const QString NASDDNSSECRETCREATE = "/api/ddns/config/addAccessKey";
+const QString NASDDNSSECRETREMOVE = "/api/ddns/config/delAccessKey";
+const QString NASDDNSSECRETUPDATE = "/api/ddns/config/updateAccessKey";
 QString getFullApiPath(QString host, QString api);
 #endif // APIURL_H

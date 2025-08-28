@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>DDNS任务管理</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -68,25 +68,6 @@
             </size>
            </property>
           </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButtonDelRecord">
-           <property name="minimumSize">
-            <size>
-             <width>81</width>
-             <height>21</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>100</width>
-             <height>21</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>删除记录(&amp;D)</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>

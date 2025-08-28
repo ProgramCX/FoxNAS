@@ -16,12 +16,28 @@ public:
     explicit DDNSForm(QWidget *parent = nullptr);
     ~DDNSForm();
 
+private slots:
+    void on_pushButtonNewRecord_clicked();
+
+    void on_pushButtonFirstPage_clicked();
+
+    void on_pushButtonLastPage_clicked();
+
+    void on_pushButtonNextPage_clicked();
+
+    void on_pushButtonTailPage_clicked();
+
+    void on_pushButtonGoPage_clicked();
+
+    void on_pushButtonDDNSConfig_clicked();
+
 private:
     Ui::DDNSForm *ui;
 
     QStandardItemModel *model;
     void iniTableViewStructure();
     void loadData(const QString &jsonString);
+    void updateButton();
     void fetchData(int page);
 
     void updateStatus();
@@ -31,9 +47,10 @@ private:
     void resumeTask(int id);
 
     void deleteTask(int id, int row);
-    void createTask(int id);
+    void createTask(int row);
     void updateTask(int row);
 
+    void addNewRow();
     void changeTaskStatus(int id, QString api, QString failDesc);
     int findRowById(int id);
 

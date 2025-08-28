@@ -120,6 +120,11 @@ qt_add_executable(FoxNAS
     src/delegate/MultiButtonDelegate.h
     src/delegate/MultiButtonDelegate.cpp
     src/delegate/ComboBoxDelegate.h
+    src/MainTabWidgets/DDNSManagement/DDNSSecretForm.h
+    src/MainTabWidgets/DDNSManagement/DDNSSecretForm.cpp
+    src/MainTabWidgets/DDNSManagement/DDNSSecretForm.ui
+    src/MainTabWidgets/DDNSManagement/DDNSSecrectSelectDialog.h
+    src/MainTabWidgets/DDNSManagement/DDNSSecrectSelectDialog.cpp src/MainTabWidgets/DDNSManagement/DDNSSecrectSelectDialog.ui
 )
 
 
@@ -149,6 +154,7 @@ target_include_directories(FoxNAS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/FileManagement
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/MediaPlayer
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/DDNSManagement
         ${CMAKE_CURRENT_SOURCE_DIR}/src/delegate
 )
 

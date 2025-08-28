@@ -475,18 +475,34 @@ void OverViewForm::handleError()
     disconnect(socket, &QWebSocket::textMessageReceived, this, &OverViewForm::onRecieveMessage);
     disconnect(socket, &QWebSocket::errorOccurred, this, &OverViewForm::handleError);
     disconnect(socket, &QWebSocket::disconnected, this, &OverViewForm::handleDisconnected);
+
     reconnectTime++;
     qDebug() << "连接失败:" << socket->errorString();
-    if (reconnectTime >= 10) {
-        QMessageBox::critical(this, tr("失败"), tr("十次重连失败！请检查你的网络！"), tr("确定"));
-        disconnect(socket, &QWebSocket::textMessageReceived, this, &OverViewForm::onRecieveMessage);
-        disconnect(socket, &QWebSocket::errorOccurred, this, &OverViewForm::handleError);
-        disconnect(socket, &QWebSocket::disconnected, this, &OverViewForm::handleDisconnected);
-        return;
-    }
 
-    qDebug() << "正在进行第" << reconnectTime << "次重连...";
-    startGetResourceStatus();
+    if (reconnectTime >= 10) {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this,
+                                      tr("重连失败"),
+                                      tr("十次重连失败！是否继续重连？"),
+                                      QMessageBox::Yes | QMessageBox::No);
+
+        if (reply == QMessageBox::Yes) {
+            reconnectTime = 0;
+            qDebug() << "继续重连...";
+            startGetResourceStatus();
+        } else {
+            QMessageBox::critical(this, tr("失败"), tr("请检查你的网络！"), tr("确定"));
+            disconnect(socket,
+                       &QWebSocket::textMessageReceived,
+                       this,
+                       &OverViewForm::onRecieveMessage);
+            disconnect(socket, &QWebSocket::errorOccurred, this, &OverViewForm::handleError);
+            disconnect(socket, &QWebSocket::disconnected, this, &OverViewForm::handleDisconnected);
+        }
+    } else {
+        qDebug() << "正在进行第" << reconnectTime << "次重连...";
+        startGetResourceStatus();
+    }
 }
 
 void OverViewForm::handleDisconnected()
