@@ -41,7 +41,7 @@ jobs:
                 cache: true
                 cache-key-prefix: 'Qt'
                 version: '6.8.0'
-                modules:  qtcharts qtwebsockets
+                modules:  qtcharts qtwebsockets qtmultimedia
 
             - name: Configure CMake
               # Configure CMake in a 'build' subdirectory.
@@ -81,7 +81,7 @@ jobs:
                   version: ${{ matrix.qt_version }}
                   cache: true
                   cache-key-prefix: 'Qt'
-                  modules:  qtcharts qtwebsockets
+                  modules:  qtcharts qtwebsockets qtmultimedia
 
             - name: Configure CMake
               # Configure CMake in a 'build' subdirectory.
@@ -120,7 +120,7 @@ jobs:
                 version: ${{ matrix.qt_version }}
                 cache: true
                 cache-key-prefix: 'Qt'
-                modules:  qtcharts qtwebsockets
+                modules:  qtcharts qtwebsockets qtmultimedia
 
           - name: Configure CMake
             run: cmake -B ${{github.workspace}}/build
