@@ -39,5 +39,16 @@ const QString NASDDNSSECRETLIST = "/api/ddns/config/accessKeys";
 const QString NASDDNSSECRETCREATE = "/api/ddns/config/addAccessKey";
 const QString NASDDNSSECRETREMOVE = "/api/ddns/config/delAccessKey";
 const QString NASDDNSSECRETUPDATE = "/api/ddns/config/updateAccessKey";
+
+const QString NASUSERADD = "/api/user/addUser";
+const QString NASUSERDELETE = "/api/user/delUser";
+const QString NASUSERBLOCK = "/api/user/blockUser";
+const QString NASUSERUNBLOCK = "/api/user/unblockUser";
+const QString NASUSERLIST = "/api/user/list";
+const QString NASUSERCHANGEPASSWORD = "/api/user/changePassword";
+const QString NASUSERPERMISSIONSLIST = "/api/user/permissions";
+const QString NASUSERGRANTPERMISSION = "/api/user/grantPermission";
+const QString NASUSERREVOKEPERMISSION = "/api/user/revokePermission";
+const QString NASUSERALLPERMISSIONS = "/api/user/allPermissions";
 QString getFullApiPath(QString host, QString api);
 #endif // APIURL_H
