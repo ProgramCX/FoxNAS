@@ -39,6 +39,8 @@ public:
     void setApi(const QString &newApi);
     void addQueryParam(QString name, QString value);
     void setUrlQuery(QUrlQuery &query);
+
+    QJsonDocument getData(QString rawContent);
 signals:
     void responseRecieved(QString &rawContent, bool hasError, qint16 statusCode);
 };

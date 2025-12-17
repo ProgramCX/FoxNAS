@@ -9,6 +9,9 @@
 #include <IniSettings.hpp>
 #include <MemStore.h>
 
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 ApiRequest::ApiRequest(QString apiAddress,
                        METHOD httpMethod,
                        QJsonDocument requestBody,
@@ -68,6 +71,31 @@ void ApiRequest::setUrlQuery(QUrlQuery &query)
 {
     urlApi.setQuery(query);
     request.setUrl(QUrl(urlApi.toString(QUrl::FullyEncoded)));
+}
+
+QJsonDocument ApiRequest::getData(QString rawContent)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+
+    if (doc.isNull()) {
+        qDebug() << "无法解析API响应为JSON";
+        return QJsonDocument();
+    }
+
+    if (doc.isObject()) {
+        QJsonObject obj = doc.object();
+        if (obj.contains("data")) {
+            QJsonValue dataValue = obj.value("data");
+
+            if (dataValue.isObject()) {
+                return QJsonDocument(dataValue.toObject());
+            } else if (dataValue.isArray()) {
+                return QJsonDocument(dataValue.toArray());
+            }
+        }
+    }
+
+    return QJsonDocument();
 }
 
 QString ApiRequest::getToken()

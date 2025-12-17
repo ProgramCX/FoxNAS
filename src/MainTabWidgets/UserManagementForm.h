@@ -41,6 +41,10 @@ private:
     void updateStatus();
     void updateButton();
     void addNewRow();
+    void updateUser(int row);
+    void createUser(int row);
+    void deleteUser(int row);
+    void showSystemPermissions(QString name, int row);
 
 private:
     int totalPages;

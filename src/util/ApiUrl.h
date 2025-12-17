@@ -50,5 +50,8 @@ const QString NASUSERPERMISSIONSLIST = "/api/user/permissions";
 const QString NASUSERGRANTPERMISSION = "/api/user/grantPermission";
 const QString NASUSERREVOKEPERMISSION = "/api/user/revokePermission";
 const QString NASUSERALLPERMISSIONS = "/api/user/allPermissions";
+const QString NASUSERUPDATE = "/api/user/updateUser";
+
+const QString NASUSERDIRTREE = "/api/user/dirs";
 QString getFullApiPath(QString host, QString api);
 #endif // APIURL_H

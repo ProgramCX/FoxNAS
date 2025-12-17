@@ -120,11 +120,20 @@ qt_add_executable(FoxNAS
     src/delegate/MultiButtonDelegate.h
     src/delegate/MultiButtonDelegate.cpp
     src/delegate/ComboBoxDelegate.h
+
+
     src/MainTabWidgets/DDNSManagement/DDNSSecretForm.h
     src/MainTabWidgets/DDNSManagement/DDNSSecretForm.cpp
     src/MainTabWidgets/DDNSManagement/DDNSSecretForm.ui
     src/MainTabWidgets/DDNSManagement/DDNSSecrectSelectDialog.h
     src/MainTabWidgets/DDNSManagement/DDNSSecrectSelectDialog.cpp src/MainTabWidgets/DDNSManagement/DDNSSecrectSelectDialog.ui
+    src/MainTabWidgets/UserManagement/PasswordModifyDialog.h src/MainTabWidgets/UserManagement/PasswordModifyDialog.cpp src/MainTabWidgets/UserManagement/PasswordModifyDialog.ui
+    src/MainTabWidgets/UserManagement/UserPermissionDialog.h src/MainTabWidgets/UserManagement/UserPermissionDialog.cpp src/MainTabWidgets/UserManagement/UserPermissionDialog.ui
+    src/MainTabWidgets/UserManagement/FilePermissionManagmentDialog.h src/MainTabWidgets/UserManagement/FilePermissionManagmentDialog.cpp src/MainTabWidgets/UserManagement/FilePermissionManagmentDialog.ui
+    src/MainTabWidgets/UserManagement/UserDirPermissionDialog.h src/MainTabWidgets/UserManagement/UserDirPermissionDialog.cpp src/MainTabWidgets/UserManagement/UserDirPermissionDialog.ui
+    src/MainTabWidgets/UserManagement/DIrPermissionEditDialog.h src/MainTabWidgets/UserManagement/DIrPermissionEditDialog.cpp src/MainTabWidgets/UserManagement/DIrPermissionEditDialog.ui
+    src/MainTabWidgets/UserManagement/DirSelectDialog.h src/MainTabWidgets/UserManagement/DirSelectDialog.cpp src/MainTabWidgets/UserManagement/DirSelectDialog.ui
+    src/util/TaskExecutor.h
 )
 
 
@@ -155,6 +164,7 @@ target_include_directories(FoxNAS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/FileManagement
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/MediaPlayer
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/DDNSManagement
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/UserManagement
         ${CMAKE_CURRENT_SOURCE_DIR}/src/delegate
 )
 
