@@ -19,8 +19,6 @@ public:
     QString getSelectedDir() const;
 
 private slots:
-    void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
-
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
     void on_treeWidget_itemExpanded(QTreeWidgetItem *item);
