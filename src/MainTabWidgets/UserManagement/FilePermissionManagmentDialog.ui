@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -102,7 +102,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox_3">
+        <widget class="QCheckBox" name="checkBoxRead">
          <property name="minimumSize">
           <size>
            <width>61</width>
@@ -121,7 +121,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox_4">
+        <widget class="QCheckBox" name="checkBoxWrite">
          <property name="minimumSize">
           <size>
            <width>61</width>
@@ -159,7 +159,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonSelect_5">
+      <widget class="QPushButton" name="pushButtonCancel">
        <property name="minimumSize">
         <size>
          <width>81</width>
@@ -178,7 +178,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonSelect_6">
+      <widget class="QPushButton" name="pushButtonOK">
        <property name="minimumSize">
         <size>
          <width>81</width>

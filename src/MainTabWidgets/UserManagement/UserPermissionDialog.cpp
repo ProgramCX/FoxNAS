@@ -137,10 +137,6 @@ void UserPermissionDialog::grantPermission()
             [this, apiRequest, areaName](QString &rawContent, bool hasError, qint16 statusCode) {
                 if (statusCode == 200) {
                     getData();
-                    QMessageBox::information(this,
-                                             tr("成功"),
-                                             tr("授予 %1 权限成功！").arg(areaName),
-                                             tr("确定"));
                 } else {
                     QMessageBox::critical(this,
                                           tr("失败"),
@@ -166,10 +162,6 @@ void UserPermissionDialog::revokePermission()
             [this, apiRequest, areaName](QString &rawContent, bool hasError, qint16 statusCode) {
                 if (statusCode == 200) {
                     getData();
-                    QMessageBox::information(this,
-                                             tr("成功"),
-                                             tr("撤销 %1 权限成功！").arg(areaName),
-                                             tr("确定"));
                 } else {
                     QMessageBox::critical(this,
                                           tr("失败"),

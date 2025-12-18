@@ -15,6 +15,13 @@ public:
     explicit InfoForm(QWidget *parent = nullptr);
     ~InfoForm();
 
+    void loadHardwareInfo();
+
+private slots:
+    void on_pushButtonCopy_clicked();
+
+    void on_pushButtonAbout_clicked();
+
 private:
     Ui::InfoForm *ui;
 };

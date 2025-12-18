@@ -53,5 +53,14 @@ const QString NASUSERALLPERMISSIONS = "/api/user/allPermissions";
 const QString NASUSERUPDATE = "/api/user/updateUser";
 
 const QString NASUSERDIRTREE = "/api/user/dirs";
+const QString NASUSERALLRESOURCES = "/api/user/allResources";
+const QString NASMODIFYUSERDIRPERMISSIONS = "/api/user/modifyResource";
+const QString NASCREATEUSERDIRPERMISSIONS = "/api/user/createResource";
+const QString NASDELETEUSERDIRPERMISSIONS = "/api/user/deleteResource";
+
+const QString NASHARDWAREINFO = "/api/hardware/info";
+
+const QString NASSELFCHANGEPASSWORD = "/api/user-self/changePassword";
+const QString NASSELFCHANGEUSERNAME = "/api/user-self/changeUserName";
 QString getFullApiPath(QString host, QString api);
 #endif // APIURL_H

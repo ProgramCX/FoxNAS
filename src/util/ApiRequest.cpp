@@ -98,6 +98,31 @@ QJsonDocument ApiRequest::getData(QString rawContent)
     return QJsonDocument();
 }
 
+QString ApiRequest::getErrorMessage(QString rawContent)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+
+    if (doc.isNull()) {
+        qDebug() << "无法解析API响应为JSON";
+        return rawContent;
+    }
+
+    if (doc.isObject()) {
+        QJsonObject obj = doc.object();
+        if (obj.contains("message")) {
+            QJsonValue dataValue = obj.value("message");
+
+            if (dataValue.isString()) {
+                return dataValue.toString();
+            } else {
+                return rawContent;
+            }
+        }
+    }
+
+    return rawContent;
+}
+
 QString ApiRequest::getToken()
 {
     return NASTOKEN;

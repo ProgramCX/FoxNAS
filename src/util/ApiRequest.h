@@ -41,6 +41,8 @@ public:
     void setUrlQuery(QUrlQuery &query);
 
     QJsonDocument getData(QString rawContent);
+    QString getErrorMessage(QString rawContent);
+
 signals:
     void responseRecieved(QString &rawContent, bool hasError, qint16 statusCode);
 };

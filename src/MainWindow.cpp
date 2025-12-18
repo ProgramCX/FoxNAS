@@ -67,28 +67,28 @@ void MainWindow::iniPermissionUi(QString &rawContent, bool hasError, qint16 stat
             stringList.append(item.toString());
         }
         OverViewForm *overViewForm = new OverViewForm(ui->tabWidget);
-        ui->tabWidget->addTab(overViewForm, "系统概览");
+        ui->tabWidget->addTab(overViewForm, tr("系统概览"));
 
         if (stringList.contains("FILE")) {
             FileManagementForm *fileManagementForm = new FileManagementForm(ui->tabWidget);
-            ui->tabWidget->addTab(fileManagementForm, "文件管理");
+            ui->tabWidget->addTab(fileManagementForm, tr("文件管理"));
         }
 
         if (stringList.contains("DDNS")) {
             DDNSForm *ddnsForm = new DDNSForm(ui->tabWidget);
-            ui->tabWidget->addTab(ddnsForm, "动态域名解析");
+            ui->tabWidget->addTab(ddnsForm, tr("动态域名解析"));
         }
 
         if (stringList.contains("USER")) {
             UserManagementForm *userManageMent = new UserManagementForm(ui->tabWidget);
-            ui->tabWidget->addTab(userManageMent, "用户管理");
+            ui->tabWidget->addTab(userManageMent, tr("用户管理"));
         }
 
         SettingsForm *settingsForm = new SettingsForm(ui->tabWidget);
-        ui->tabWidget->addTab(settingsForm, "系统设置");
+        ui->tabWidget->addTab(settingsForm, tr("系统设置"));
 
         InfoForm *infoForm = new InfoForm(ui->tabWidget);
-        ui->tabWidget->addTab(infoForm, "系统信息");
+        ui->tabWidget->addTab(infoForm, tr("系统信息"));
     } else {
         apiRequest->loginAgain(statusCode);
         this->close();

@@ -134,6 +134,10 @@ qt_add_executable(FoxNAS
     src/MainTabWidgets/UserManagement/DIrPermissionEditDialog.h src/MainTabWidgets/UserManagement/DIrPermissionEditDialog.cpp src/MainTabWidgets/UserManagement/DIrPermissionEditDialog.ui
     src/MainTabWidgets/UserManagement/DirSelectDialog.h src/MainTabWidgets/UserManagement/DirSelectDialog.cpp src/MainTabWidgets/UserManagement/DirSelectDialog.ui
     src/util/TaskExecutor.h
+    src/MainTabWidgets/AboutDialog.h src/MainTabWidgets/AboutDialog.cpp src/MainTabWidgets/AboutDialog.ui
+    src/MainTabWidgets/Settings/SelfUserSettingsForm.h src/MainTabWidgets/Settings/SelfUserSettingsForm.cpp src/MainTabWidgets/Settings/SelfUserSettingsForm.ui
+    src/MainTabWidgets/Settings/GeneralSettingForm.h src/MainTabWidgets/Settings/GeneralSettingForm.cpp src/MainTabWidgets/Settings/GeneralSettingForm.ui
+    src/MainTabWidgets/Settings/PasswordChangeDialog.h src/MainTabWidgets/Settings/PasswordChangeDialog.cpp src/MainTabWidgets/Settings/PasswordChangeDialog.ui
 )
 
 
@@ -166,6 +170,7 @@ target_include_directories(FoxNAS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/DDNSManagement
         ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/UserManagement
         ${CMAKE_CURRENT_SOURCE_DIR}/src/delegate
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/MainTabWidgets/Settings
 )
 
 include(GNUInstallDirs)

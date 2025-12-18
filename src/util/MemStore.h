@@ -5,4 +5,5 @@
 extern QString NASTOKEN;
 extern QString FULLHOST;
 extern QString USERNAME;
+const QString VERSION = "0.1.0-alpha";
 #endif // MEMSTORE_H

@@ -124,7 +124,7 @@
         </size>
        </property>
        <property name="text">
-        <string>确定(&amp;O)</string>
+        <string>选择(&amp;S)</string>
        </property>
       </widget>
      </item>

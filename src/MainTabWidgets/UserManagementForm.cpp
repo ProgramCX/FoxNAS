@@ -15,8 +15,8 @@
 #include <MultiButtonDelegate.h>
 #include <UserPermissionDialog.h>
 
-#include <DirSelectDialog.h>
 #include <PasswordModifyDialog.h>
+#include <UserDirPermissionDialog.h>
 
 UserManagementForm::UserManagementForm(QWidget *parent)
     : QWidget(parent)
@@ -81,7 +81,7 @@ void UserManagementForm::loadData(const QString &jsonString)
         model->setItem(row, 2, itemStatus);
     }
 
-    QStringList btns = {tr("修改密码"), tr("系统权限"), tr("目录权限"), tr("删除"), tr("保存")};
+    QStringList btns = {tr("设置密码"), tr("系统权限"), tr("目录权限"), tr("删除"), tr("保存")};
     MultiButtonDelegate *btnDelegate = new MultiButtonDelegate(btns, this);
     ui->tableView->setItemDelegateForColumn(3, btnDelegate);
 
@@ -94,13 +94,32 @@ void UserManagementForm::loadData(const QString &jsonString)
                 int row = index.row();
                 QModelIndex idIndex = model->index(row, 0);
                 int id = model->data(idIndex, Qt::DisplayRole).toInt();
-                if (btn == tr("修改密码")) {
+                if (btn == tr("设置密码")) {
+                    if (!id) {
+                        QMessageBox::critical(this,
+                                              tr("错误"),
+                                              tr("请先点击保存按钮保存用户后设置密码！"));
+                        return;
+                    }
                     changePassword(model->item(row, 1)->data(Qt::UserRole).toString(), row);
                 } else if (btn == tr("系统权限")) {
+                    if (!id) {
+                        QMessageBox::critical(this,
+                                              tr("错误"),
+                                              tr("请先点击保存按钮保存用户后设置系统权限！"));
+                        return;
+                    }
                     showSystemPermissions(model->item(row, 1)->data(Qt::UserRole).toString(), row);
                 } else if (btn == tr("目录权限")) {
-                    DirSelectDialog di;
-                    di.exec();
+                    if (!id) {
+                        QMessageBox::critical(this,
+                                              tr("错误"),
+                                              tr("请先点击保存按钮保存用户后设置目录权限！"));
+                        return;
+                    }
+                    UserDirPermissionDialog *dialog = new UserDirPermissionDialog(
+                        model->item(row, 1)->data(Qt::UserRole).toString());
+                    dialog->show();
                 } else if (btn == tr("删除")) {
                     QMessageBox::StandardButton reply;
                     reply = QMessageBox::question(

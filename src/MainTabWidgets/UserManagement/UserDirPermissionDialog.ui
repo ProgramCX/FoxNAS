@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>用户目录权限</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -51,6 +51,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonModifyDir">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>81</width>
@@ -70,6 +73,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonDeleteDir">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="minimumSize">
         <size>
          <width>81</width>
