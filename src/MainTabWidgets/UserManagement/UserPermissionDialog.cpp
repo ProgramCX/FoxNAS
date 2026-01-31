@@ -9,9 +9,9 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-UserPermissionDialog::UserPermissionDialog(QString userName, QWidget *parent)
+UserPermissionDialog::UserPermissionDialog(QString uuid, QWidget *parent)
     : QDialog(parent)
-    , userName(userName)
+    , userUuid(uuid)
     , ui(new Ui::UserPermissionDialog)
 {
     ui->setupUi(this);
@@ -26,7 +26,7 @@ UserPermissionDialog::~UserPermissionDialog()
 
 void UserPermissionDialog::iniUi()
 {
-    setWindowTitle(tr("%1 的系统权限列表").arg(userName));
+    setWindowTitle(tr("用户 UUID: %1 的系统权限列表").arg(userUuid));
     connect(ui->treeWidget,
             &QTreeWidget::currentItemChanged,
             this,
@@ -75,7 +75,7 @@ void UserPermissionDialog::getData()
                     auto request = new ApiRequest(getFullApiPath(FULLHOST, NASUSERPERMISSIONSLIST),
                                                   ApiRequest::GET,
                                                   this);
-                    request->addQueryParam("userName", userName);
+                    request->addQueryParam("uuid", userUuid);
                     connect(request,
                             &ApiRequest::responseRecieved,
                             this,
@@ -129,7 +129,7 @@ void UserPermissionDialog::grantPermission()
     auto apiRequest = new ApiRequest(getFullApiPath(FULLHOST, NASUSERGRANTPERMISSION),
                                      ApiRequest::PUT,
                                      this);
-    apiRequest->addQueryParam("userName", userName);
+    apiRequest->addQueryParam("uuid", userUuid);
     apiRequest->addQueryParam("areaName", areaName);
     connect(apiRequest,
             &ApiRequest::responseRecieved,
@@ -154,7 +154,7 @@ void UserPermissionDialog::revokePermission()
     auto apiRequest = new ApiRequest(getFullApiPath(FULLHOST, NASUSERREVOKEPERMISSION),
                                      ApiRequest::PUT,
                                      this);
-    apiRequest->addQueryParam("userName", userName);
+    apiRequest->addQueryParam("uuid", userUuid);
     apiRequest->addQueryParam("areaName", areaName);
     connect(apiRequest,
             &ApiRequest::responseRecieved,

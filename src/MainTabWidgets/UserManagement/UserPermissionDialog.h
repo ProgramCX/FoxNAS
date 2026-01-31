@@ -13,14 +13,14 @@ class UserPermissionDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit UserPermissionDialog(QString userName, QWidget *parent = nullptr);
+    explicit UserPermissionDialog(QString uuid, QWidget *parent = nullptr);
     ~UserPermissionDialog();
 
 private:
     Ui::UserPermissionDialog *ui;
     QString selectedPermission;
     QTreeWidgetItem *currentItem = nullptr;
-    QString userName;
+    QString userUuid;
     QStringList allPermissionsList;
     QStringList grantedPermissions;
 

@@ -12,11 +12,13 @@ class NASLoginDialog : public QDialog
     Q_OBJECT
 
 public:
+    void setUserNameAndPassword(const QString &userName, const QString &password);
     explicit NASLoginDialog(const QString &fullHost, QWidget *parent = nullptr);
     ~NASLoginDialog();
     bool getLogined() { return this->logined; }
 private slots:
     void on_buttonShowPassword_clicked(bool checked);
+    void on_buttonRegister_clicked();
 
 private:
     Ui::NASLoginDialog *ui;

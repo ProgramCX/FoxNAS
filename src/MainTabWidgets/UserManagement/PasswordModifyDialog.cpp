@@ -9,9 +9,9 @@
 #include <ApiUrl.h>
 #include <MemStore.h>
 
-PasswordModifyDialog::PasswordModifyDialog(QString userName, QWidget *parent)
+PasswordModifyDialog::PasswordModifyDialog(QString uuid, QWidget *parent)
     : QDialog(parent)
-    , userName(userName)
+    , userUuid(uuid)
     , ui(new Ui::PasswordModifyDialog)
 {
     ui->setupUi(this);
@@ -25,14 +25,14 @@ PasswordModifyDialog::~PasswordModifyDialog()
     delete ui;
 }
 
-QString PasswordModifyDialog::getUserName() const
+QString PasswordModifyDialog::getUuid() const
 {
-    return userName;
+    return userUuid;
 }
 
-void PasswordModifyDialog::setUserName(const QString &newUserName)
+void PasswordModifyDialog::setUuid(const QString &newUuid)
 {
-    userName = newUserName;
+    userUuid = newUuid;
 }
 
 bool PasswordModifyDialog::verifyForm()
@@ -59,7 +59,7 @@ void PasswordModifyDialog::on_pushButtonOK_2_clicked()
 void PasswordModifyDialog::changePassword()
 {
     QJsonObject record;
-    record["userName"] = userName;
+    record["uuid"] = userUuid;
     record["password"] = ui->lineEditNew->text();
 
     QJsonDocument doc(record);
@@ -73,7 +73,7 @@ void PasswordModifyDialog::changePassword()
                 if (hasError || statusCode != 200) {
                     QMessageBox::critical(nullptr,
                                           "失败",
-                                          tr("修改userName为 %1 的用户失败").arg(userName),
+                                          tr("修改用户 UUID 为 %1 的密码失败").arg(userUuid),
                                           tr("确定"));
                 } else {
                 }

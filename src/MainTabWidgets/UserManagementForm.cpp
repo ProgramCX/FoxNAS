@@ -36,7 +36,7 @@ UserManagementForm::~UserManagementForm()
 
 void UserManagementForm::iniTableViewStructure()
 {
-    model->setHorizontalHeaderLabels({tr("用户ID"), tr("用户姓名"), tr("用户状态"), tr("操作")});
+    model->setHorizontalHeaderLabels({tr("用户UUID"), tr("用户姓名"), tr("用户状态"), tr("操作")});
     ui->tableView->setModel(model);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     int lastCol = model->columnCount() - 1;
@@ -63,14 +63,14 @@ void UserManagementForm::loadData(const QString &jsonString)
     for (int row = 0; row < records.size(); ++row) {
         QJsonObject record = records[row].toObject();
 
-        // 个数
-        QStandardItem *itemId = new QStandardItem(QString::number(row + 1));
-        itemId->setFlags(itemId->flags() & ~Qt::ItemIsEditable); // 不可编辑
-        model->setItem(row, 0, itemId);
+        // 用户 UUID
+        QStandardItem *itemUuid = new QStandardItem(record["id"].toString());
+        itemUuid->setFlags(itemUuid->flags() & ~Qt::ItemIsEditable); // 不可编辑
+        model->setItem(row, 0, itemUuid);
 
         // 用户名称
         QStandardItem *itemUserName = new QStandardItem(record["userName"].toString());
-        itemUserName->setData(record["userName"].toString(), Qt::UserRole);
+        itemUserName->setData(record["id"].toString(), Qt::UserRole); // 存储 UUID
         model->setItem(row, 1, itemUserName);
 
         // 是否启用 (复选框)
@@ -92,45 +92,43 @@ void UserManagementForm::loadData(const QString &jsonString)
                 qDebug() << "行:" << index.row() << "按钮:" << btn;
 
                 int row = index.row();
-                QModelIndex idIndex = model->index(row, 0);
-                int id = model->data(idIndex, Qt::DisplayRole).toInt();
+                QString uuid = model->item(row, 0)->text();
                 if (btn == tr("设置密码")) {
-                    if (!id) {
+                    if (uuid.isEmpty() || uuid == "new") {
                         QMessageBox::critical(this,
                                               tr("错误"),
                                               tr("请先点击保存按钮保存用户后设置密码！"));
                         return;
                     }
-                    changePassword(model->item(row, 1)->data(Qt::UserRole).toString(), row);
+                    changePassword(uuid, row);
                 } else if (btn == tr("系统权限")) {
-                    if (!id) {
+                    if (uuid.isEmpty() || uuid == "new") {
                         QMessageBox::critical(this,
                                               tr("错误"),
                                               tr("请先点击保存按钮保存用户后设置系统权限！"));
                         return;
                     }
-                    showSystemPermissions(model->item(row, 1)->data(Qt::UserRole).toString(), row);
+                    showSystemPermissions(uuid, row);
                 } else if (btn == tr("目录权限")) {
-                    if (!id) {
+                    if (uuid.isEmpty() || uuid == "new") {
                         QMessageBox::critical(this,
                                               tr("错误"),
                                               tr("请先点击保存按钮保存用户后设置目录权限！"));
                         return;
                     }
-                    UserDirPermissionDialog *dialog = new UserDirPermissionDialog(
-                        model->item(row, 1)->data(Qt::UserRole).toString());
+                    UserDirPermissionDialog *dialog = new UserDirPermissionDialog(uuid);
                     dialog->show();
                 } else if (btn == tr("删除")) {
                     QMessageBox::StandardButton reply;
                     reply = QMessageBox::question(
                         this,                                                   // 父窗口
                         "确认删除",                                             // 标题
-                        "确定要删除改用户吗？关于该用户的所有信息都将被删除！", // 提示文本
+                        "确定要删除该用户吗？关于该用户的所有信息都将被删除！", // 提示文本
                         QMessageBox::Yes | QMessageBox::No                      // 按钮
                     );
 
                     if (reply == QMessageBox::Yes) {
-                        deleteUser(row);
+                        deleteUser(uuid, row);
                     }
 
                 } else if (btn == tr("保存")) {
@@ -161,7 +159,7 @@ void UserManagementForm::fetchData(int page)
                     updateStatus();
 
                 } else {
-                    QMessageBox::critical(nullptr, "失败", "获取DDNS列表失败！", tr("确定"));
+                    QMessageBox::critical(nullptr, "失败", "获取用户列表失败！", tr("确定"));
                 }
                 updateButton();
                 delete apiRequest;
@@ -170,9 +168,9 @@ void UserManagementForm::fetchData(int page)
     apiRequest->sendRequest();
 }
 
-void UserManagementForm::changePassword(QString name, int row)
+void UserManagementForm::changePassword(QString uuid, int row)
 {
-    PasswordModifyDialog dialog(name, this);
+    PasswordModifyDialog dialog(uuid, this);
     dialog.exec();
 }
 
@@ -197,11 +195,11 @@ void UserManagementForm::addNewRow()
     int row = model->rowCount(); // 获取当前行数
     model->insertRow(row);       // 在末尾插入新行
 
-    QStandardItem *itemId = new QStandardItem("new");
-    itemId->setFlags(itemId->flags() & ~Qt::ItemIsEditable); // 不可编辑
+    QStandardItem *itemUuid = new QStandardItem("new");
+    itemUuid->setFlags(itemUuid->flags() & ~Qt::ItemIsEditable); // 不可编辑
 
-    // 用户ID
-    model->setItem(row, 0, itemId);
+    // 用户 UUID
+    model->setItem(row, 0, itemUuid);
 
     // 用户名称
     model->setItem(row, 1, new QStandardItem(tr("user name")));
@@ -222,7 +220,7 @@ void UserManagementForm::addNewRow()
 
 void UserManagementForm::updateUser(int row)
 {
-    QString originalName = model->item(row, 1)->data(Qt::UserRole).toString();
+    QString uuid = model->item(row, 0)->text();
     QJsonObject record;
     record["userName"] = model->item(row, 1)->text();
     if (record["userName"].toString().isEmpty()) {
@@ -235,7 +233,7 @@ void UserManagementForm::updateUser(int row)
                                             ApiRequest::PUT,
 
                                             QJsonDocument(record));
-    apiRequest->addQueryParam("originalName", originalName);
+    apiRequest->addQueryParam("uuid", uuid);
     connect(apiRequest,
             &ApiRequest::responseRecieved,
             this,
@@ -295,12 +293,11 @@ void UserManagementForm::createUser(int row)
     apiRequest->sendRequest();
 }
 
-void UserManagementForm::deleteUser(int row)
+void UserManagementForm::deleteUser(QString uuid, int row)
 {
-    QString userName = model->item(row, 1)->data(Qt::UserRole).toString();
     ApiRequest *apiRequest = new ApiRequest(getFullApiPath(FULLHOST, NASUSERDELETE),
                                             ApiRequest::DELETE);
-    apiRequest->addQueryParam("userName", userName);
+    apiRequest->addQueryParam("uuid", uuid);
     connect(apiRequest,
             &ApiRequest::responseRecieved,
             this,
@@ -308,10 +305,11 @@ void UserManagementForm::deleteUser(int row)
                 if (hasError || statusCode != 200) {
                     QMessageBox::critical(nullptr,
                                           "失败",
-                                          tr("删除userName为 %1 的用户失败").arg(userName),
+                                          tr("删除用户失败"),
                                           tr("确定"));
                 } else {
                     model->removeRow(row);
+                    QMessageBox::information(nullptr, "成功", tr("删除用户成功"), tr("确定"));
                 }
                 delete apiRequest;
             });
@@ -319,9 +317,9 @@ void UserManagementForm::deleteUser(int row)
     apiRequest->sendRequest();
 }
 
-void UserManagementForm::showSystemPermissions(QString name, int row)
+void UserManagementForm::showSystemPermissions(QString uuid, int row)
 {
-    UserPermissionDialog dialog(name, this);
+    UserPermissionDialog dialog(uuid, this);
     dialog.exec();
 }
 

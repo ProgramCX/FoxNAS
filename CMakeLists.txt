@@ -41,6 +41,9 @@ qt_add_executable(FoxNAS
     src/DetailDialog.h
     src/DetailDialog.cpp
     src/DetailDialog.ui
+    src/RegisterDialog.h
+    src/RegisterDialog.cpp
+    src/RegisterDialog.ui
 
     # 🔹 主界面 - Tab 页面模块
     src/MainTabWidgets/OverViewForm.h
@@ -138,12 +141,30 @@ qt_add_executable(FoxNAS
     src/MainTabWidgets/Settings/SelfUserSettingsForm.h src/MainTabWidgets/Settings/SelfUserSettingsForm.cpp src/MainTabWidgets/Settings/SelfUserSettingsForm.ui
     src/MainTabWidgets/Settings/GeneralSettingForm.h src/MainTabWidgets/Settings/GeneralSettingForm.cpp src/MainTabWidgets/Settings/GeneralSettingForm.ui
     src/MainTabWidgets/Settings/PasswordChangeDialog.h src/MainTabWidgets/Settings/PasswordChangeDialog.cpp src/MainTabWidgets/Settings/PasswordChangeDialog.ui
+
+    # 语言管理器
+    src/util/LanguageManager.h
+    src/util/LanguageManager.cpp
 )
 
 
+# 多语言翻译文件
+set(TS_FILES
+    translations/FoxNAS_zh_CN.ts
+    translations/FoxNAS_zh_TW.ts
+    translations/FoxNAS_ja.ts
+    translations/FoxNAS_fr.ts
+    translations/FoxNAS_de.ts
+    translations/FoxNAS_pt.ts
+    translations/FoxNAS_ru.ts
+    translations/FoxNAS_ar.ts
+    translations/FoxNAS_en.ts
+)
+
 qt_add_translations(
     TARGETS FoxNAS
-    TS_FILES FoxNAS_zh_CN.ts
+    TS_FILES ${TS_FILES}
+    QM_FILES_OUTPUT_VARIABLE QM_FILES
 )
 
 

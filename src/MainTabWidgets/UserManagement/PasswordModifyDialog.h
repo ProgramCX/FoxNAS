@@ -12,14 +12,14 @@ class PasswordModifyDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PasswordModifyDialog(QString userName, QWidget *parent = nullptr);
+    explicit PasswordModifyDialog(QString uuid, QWidget *parent = nullptr);
     ~PasswordModifyDialog();
 
-    QString getUserName() const;
-    void setUserName(const QString &newUserName);
+    QString getUuid() const;
+    void setUuid(const QString &newUuid);
 
 private:
-    QString userName;
+    QString userUuid;
 
 private:
     bool verifyForm();

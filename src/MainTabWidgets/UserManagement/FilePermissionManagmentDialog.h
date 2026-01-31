@@ -14,7 +14,7 @@ class FilePermissionManagmentDialog : public QDialog
 public:
     explicit FilePermissionManagmentDialog(QString folderName,
                                            QVariantList list,
-                                           QString userName,
+                                           QString uuid,
                                            QWidget *parent = nullptr);
     ~FilePermissionManagmentDialog();
 
@@ -35,7 +35,7 @@ private:
 
     QStringList currentPermissionList;
     QString oldFolderName;
-    QString userName;
+    QString userUuid;
     bool isNew;
 };
 

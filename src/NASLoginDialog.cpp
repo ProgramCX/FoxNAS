@@ -2,6 +2,7 @@
 #include "LoadingDialog.h"
 #include "MainWindow.h"
 #include "MemStore.h"
+#include "RegisterDialog.h"
 #include "ui_NASLoginDialog.h"
 
 #include <QMessageBox>
@@ -33,6 +34,14 @@ NASLoginDialog::~NASLoginDialog()
     delete ui;
 }
 
+void NASLoginDialog::setUserNameAndPassword(const QString &userName, const QString &password)
+{
+    ui->lineEditUserName->setText(userName);
+    ui->lineEditPassword->setText(password);
+    // 注册成功后自动登录
+    login();
+}
+
 void NASLoginDialog::login()
 {
     QString fullHost = getFullApiPath(this->fullHost, NASLOGINAPI);
@@ -59,9 +68,35 @@ void NASLoginDialog::login()
                     //                          "登录成功！",
                     //                          "登录成功，token为\n" + rawContent,
                     //                          QMessageBox::Ok);
-                    NASTOKEN = rawContent; //存储token
+                    //解析响应体
+                    QJsonDocument doc = QJsonDocument::fromJson(rawContent.toUtf8());
+                    QJsonObject obj = doc.object();
+                    NASTOKEN = obj["accessToken"].toString(); //存储token
+                    REFRESHTOKEN = obj["refreshToken"].toString();
                     FULLHOST = this->fullHost;
                     USERNAME = userName;
+
+                    // 从 accessToken 中解析 UUID (JWT 的 sub 字段)
+                    QString accessToken = obj["accessToken"].toString();
+                    QStringList parts = accessToken.split('.');
+                    if (parts.size() >= 2) {
+                        QString payloadBase64 = parts[1];
+                        payloadBase64.replace('-', '+');
+                        payloadBase64.replace('_', '/');
+                        int mod4 = payloadBase64.length() % 4;
+                        if (mod4 > 0) {
+                            payloadBase64.append(QString(4 - mod4, '='));
+                        }
+                        QByteArray payload = QByteArray::fromBase64(payloadBase64.toUtf8());
+                        QJsonDocument payloadDoc = QJsonDocument::fromJson(payload);
+                        if (payloadDoc.isObject()) {
+                            QJsonObject payloadObj = payloadDoc.object();
+                            if (payloadObj.contains("sub")) {
+                                USERUUID = payloadObj["sub"].toString();
+                            }
+                        }
+                    }
+                    qDebug() << "解析出的 USERUUID:" << USERUUID;
 
                     QSettings &settings = IniSettings::getGlobalSettingsInstance();
                     settings.setValue("Secret/remember", ui->checkBox->isChecked());
@@ -101,4 +136,11 @@ void NASLoginDialog::on_buttonShowPassword_clicked(bool checked)
     } else {
         ui->lineEditPassword->setEchoMode(QLineEdit::Password);
     }
+}
+
+void NASLoginDialog::on_buttonRegister_clicked()
+{
+    RegisterDialog registerDialog(fullHost, this);
+    connect(&registerDialog, &RegisterDialog::registerSuccess, this, &NASLoginDialog::setUserNameAndPassword);
+    registerDialog.exec();
 }

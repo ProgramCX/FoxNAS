@@ -13,13 +13,13 @@
 #include <QTreeWidgetItem>
 
 #include <FilePermissionManagmentDialog.h>
-UserDirPermissionDialog::UserDirPermissionDialog(QString userName, QWidget *parent)
+UserDirPermissionDialog::UserDirPermissionDialog(QString uuid, QWidget *parent)
     : QWidget(parent)
-    , currentUserName(userName)
+    , currentUserUuid(uuid)
     , ui(new Ui::UserDirPermissionDialog)
 {
     ui->setupUi(this);
-    setWindowTitle(tr("%1 的目录权限").arg(userName));
+    setWindowTitle(tr("用户 UUID: %1 的目录权限").arg(uuid));
     setAttribute(Qt::WA_DeleteOnClose);
 
     ui->treeWidget->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -45,7 +45,7 @@ void UserDirPermissionDialog::loadData()
     ApiRequest *request = new ApiRequest(getFullApiPath(FULLHOST, NASUSERALLRESOURCES),
                                          ApiRequest::GET,
                                          this);
-    request->addQueryParam("userName", currentUserName);
+    request->addQueryParam("uuid", currentUserUuid);
     connect(request,
             &ApiRequest::responseRecieved,
             this,
@@ -57,7 +57,7 @@ void UserDirPermissionDialog::loadData()
 
                     foreach (const QJsonValue &dataValue, dataArr) {
                         QJsonObject dataObj = dataValue.toObject();
-                        QString ownerName = dataObj.value("ownerName").toString();
+                        QString ownerUuid = dataObj.value("ownerUuid").toString();
                         QString folderName = dataObj.value("folderName").toString();
                         QJsonArray permissions = dataObj.value("types").toArray();
 
@@ -93,7 +93,7 @@ void UserDirPermissionDialog::on_pushButtonModifyDir_clicked()
     if (item) {
         QString folderName = item->data(0, Qt::UserRole).toString();
         QVariantList currentPermissions = item->data(1, Qt::UserRole).toList();
-        FilePermissionManagmentDialog dialog(folderName, currentPermissions, currentUserName, this);
+        FilePermissionManagmentDialog dialog(folderName, currentPermissions, currentUserUuid, this);
 
         if (dialog.exec() == QDialog::Accepted) {
             loadData();
@@ -103,7 +103,7 @@ void UserDirPermissionDialog::on_pushButtonModifyDir_clicked()
 
 void UserDirPermissionDialog::on_pushButtonNewDir_clicked()
 {
-    FilePermissionManagmentDialog dialog("", {}, currentUserName, this);
+    FilePermissionManagmentDialog dialog("", {}, currentUserUuid, this);
     if (dialog.exec() == QDialog::Accepted) {
         loadData();
     }
@@ -118,7 +118,7 @@ void UserDirPermissionDialog::on_pushButtonDeleteDir_clicked()
                                                 ApiRequest::DELETE,
                                                 this);
         QString folderName = item->data(0, Qt::UserRole).toString();
-        apiRequest->addQueryParam("userName", currentUserName);
+        apiRequest->addQueryParam("uuid", currentUserUuid);
         apiRequest->addQueryParam("resourcePath", folderName);
         connect(apiRequest,
                 &ApiRequest::responseRecieved,

@@ -12,7 +12,7 @@ class UserDirPermissionDialog : public QWidget
     Q_OBJECT
 
 public:
-    explicit UserDirPermissionDialog(QString userName, QWidget *parent = nullptr);
+    explicit UserDirPermissionDialog(QString uuid, QWidget *parent = nullptr);
     ~UserDirPermissionDialog();
 
 private slots:
@@ -26,7 +26,7 @@ private slots:
 
 private:
     Ui::UserDirPermissionDialog *ui;
-    QString currentUserName;
+    QString currentUserUuid;
 
 private:
     void loadData();

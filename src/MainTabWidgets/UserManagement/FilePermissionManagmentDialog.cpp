@@ -15,10 +15,10 @@
 #include <QDebug>
 FilePermissionManagmentDialog::FilePermissionManagmentDialog(QString folderName,
                                                              QVariantList list,
-                                                             QString userName,
+                                                             QString uuid,
                                                              QWidget *parent)
     : QDialog(parent)
-    , userName(userName)
+    , userUuid(uuid)
     , ui(new Ui::FilePermissionManagmentDialog)
 {
     ui->setupUi(this);
@@ -115,7 +115,7 @@ void FilePermissionManagmentDialog::on_pushButtonOK_clicked()
 
         apiRequest->addQueryParam("newResourcePath", ui->lineEdit->text());
         apiRequest->addQueryParam("oldResourcePath", oldFolderName);
-        apiRequest->addQueryParam("userName", userName);
+        apiRequest->addQueryParam("uuid", userUuid);
 
         connect(apiRequest,
                 &ApiRequest::responseRecieved,
@@ -136,7 +136,7 @@ void FilePermissionManagmentDialog::on_pushButtonOK_clicked()
                                                 requestDoc,
                                                 this);
         apiRequest->addQueryParam("resourcePath", ui->lineEdit->text());
-        apiRequest->addQueryParam("userName", userName);
+        apiRequest->addQueryParam("uuid", userUuid);
         connect(apiRequest,
                 &ApiRequest::responseRecieved,
                 this,

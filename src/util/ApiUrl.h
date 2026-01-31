@@ -62,5 +62,13 @@ const QString NASHARDWAREINFO = "/api/hardware/info";
 
 const QString NASSELFCHANGEPASSWORD = "/api/user-self/changePassword";
 const QString NASSELFCHANGEUSERNAME = "/api/user-self/changeUserName";
+
+// 注册相关API
+const QString NASSENDVERIFYCODE = "/api/auth/sendVerifyCode";
+const QString NASREGISTER = "/api/auth/reg";
+
+// Token刷新相关API
+const QString NASREFRESHTOKEN = "/api/auth/refresh";
+
 QString getFullApiPath(QString host, QString api);
 #endif // APIURL_H

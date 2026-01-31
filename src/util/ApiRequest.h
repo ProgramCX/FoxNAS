@@ -33,6 +33,7 @@ private:
 
 public:
     void sendRequest();
+    bool refreshToken();
     void loginAgain(qint16 statusCode);
 
     QString getApi() const;

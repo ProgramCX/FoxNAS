@@ -1,9 +1,13 @@
 #include "ApiRequest.h"
 #include "../NASLoginDialog.h"
+#include "../LoginDialog.h"
 
 #include "MemStore.h"
+#include "ApiUrl.h"
 
+#include <QApplication>
 #include <QDebug>
+#include <QEventLoop>
 #include <QMessageBox>
 #include <QUrlQuery>
 #include <IniSettings.hpp>
@@ -167,24 +171,121 @@ void ApiRequest::sendRequest()
         }
 
         response = reply->readAll();
+        if (response.isEmpty() && hasError) {
+            response = reply->errorString();
+        }
+
         qint16 statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        
+        // 401 未授权，尝试使用 refresh token 刷新
+        if (statusCode == 401 && !REFRESHTOKEN.isEmpty()) {
+            if (refreshToken()) {
+                // Token 刷新成功，重新发送请求
+                qDebug() << "Token 刷新成功，正在重新发送请求...";
+                sendRequest();
+                return;
+            }
+        }
+        
         emit responseRecieved(response, hasError, statusCode);
     });
 }
 
+bool ApiRequest::refreshToken()
+{
+    qDebug() << "开始刷新 Token...";
+
+    if (FULLHOST.isEmpty() || REFRESHTOKEN.isEmpty() || USERUUID.isEmpty()) {
+        qDebug() << "Token 刷新失败: FULLHOST 或 REFRESHTOKEN 或 USERUUID 为空";
+        qDebug() << "FULLHOST:" << FULLHOST;
+        qDebug() << "REFRESHTOKEN:" << REFRESHTOKEN;
+        qDebug() << "USERUUID:" << USERUUID;
+        loginAgain(401);
+        return false;
+    }
+
+    QUrl url(getFullApiPath(FULLHOST, NASREFRESHTOKEN));
+    QNetworkRequest request;
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject jsonBody;
+    jsonBody["refreshToken"] = REFRESHTOKEN;
+    jsonBody["uuid"] = USERUUID;
+
+    QJsonDocument jsonDoc(jsonBody);
+
+    QNetworkAccessManager manager;
+    QNetworkReply *reply = manager.post(request, jsonDoc.toJson());
+
+    QEventLoop eventLoop;
+    QObject::connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
+    eventLoop.exec();
+
+    QByteArray responseData = reply->readAll();
+    qint16 statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (reply->error() == QNetworkReply::NoError && statusCode == 200) {
+        QJsonDocument responseDoc = QJsonDocument::fromJson(responseData);
+        if (responseDoc.isObject()) {
+            QJsonObject responseObj = responseDoc.object();
+
+            if (responseObj.contains("accessToken") && responseObj.contains("refreshToken")) {
+                NASTOKEN = responseObj["accessToken"].toString();
+                REFRESHTOKEN = responseObj["refreshToken"].toString();
+
+                qDebug() << "Token 刷新成功！";
+                qDebug() << "新的 AccessToken:" << NASTOKEN;
+                qDebug() << "新的 RefreshToken:" << REFRESHTOKEN;
+
+                reply->deleteLater();
+                return true;
+            }
+        }
+        qDebug() << "Token 刷新响应格式错误:" << responseData;
+    } else {
+        qDebug() << "Token 刷新失败，状态码:" << statusCode << "错误:" << reply->errorString();
+    }
+
+    reply->deleteLater();
+
+    qDebug() << "Token 刷新失败，需要重新登录";
+    loginAgain(statusCode);
+    return false;
+}
+
 void ApiRequest::loginAgain(qint16 statusCode)
 {
-    switch (statusCode) {
-    case 400: {
-        QMessageBox::critical(nullptr, "Bad Request", "API 请求方法不正确！", tr("确定"));
+    // 清除 Token 信息
+    NASTOKEN.clear();
+    REFRESHTOKEN.clear();
+    USERUUID.clear();
+    FULLHOST.clear();
+    USERNAME.clear();
 
+    QString message;
+    switch (statusCode) {
+    case 400:
+        message = tr("请求错误，请重新登录");
+        break;
+    case 401:
+        message = tr("登录已过期，请重新登录");
+        break;
+    case 403:
+        message = tr("没有权限，请重新登录");
+        break;
+    default:
+        message = tr("连接失败，请重新登录");
         break;
     }
-    case 403: {
-        QMessageBox::critical(nullptr, "Forbidden", "没有权限！", tr("确定"));
-        break;
-    }
-    }
-    NASLoginDialog dialog(FULLHOST);
-    dialog.exec();
+
+    QMessageBox::warning(nullptr, tr("需要重新登录"), message);
+
+    // 关闭所有窗口
+    QApplication::closeAllWindows();
+
+    // 显示广播发现对话框
+    LoginDialog *loginDialog = new LoginDialog();
+    loginDialog->setAttribute(Qt::WA_DeleteOnClose);
+    loginDialog->show();
 }

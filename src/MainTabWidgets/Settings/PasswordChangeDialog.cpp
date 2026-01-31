@@ -15,9 +15,9 @@ PasswordChangeDialog::PasswordChangeDialog(QWidget *parent)
     , ui(new Ui::PasswordChangeDialog)
 {
     ui->setupUi(this);
-    ui->lineEditOld->setEchoMode(QLineEdit::PasswordEchoOnEdit);
-    ui->lineEditNew_3->setEchoMode(QLineEdit::PasswordEchoOnEdit);
-    ui->lineEditNewConfirm_3->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+    ui->lineEditOld->setEchoMode(QLineEdit::Password);
+    ui->lineEditNew_3->setEchoMode(QLineEdit::Password);
+    ui->lineEditNewConfirm_3->setEchoMode(QLineEdit::Password);
 }
 
 PasswordChangeDialog::~PasswordChangeDialog()
