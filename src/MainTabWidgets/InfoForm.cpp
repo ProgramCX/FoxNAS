@@ -11,6 +11,7 @@
 
 #include <QClipboard>
 #include <AboutDialog.h>
+#include "../ErrorLogDialog.h"
 
 InfoForm::InfoForm(QWidget *parent)
     : QWidget(parent)
@@ -124,4 +125,10 @@ void InfoForm::on_pushButtonAbout_clicked()
 {
     AboutDialog about;
     about.exec();
+}
+
+void InfoForm::on_pushButtonViewLogs_clicked()
+{
+    ErrorLogDialog errorLogDialog(this);
+    errorLogDialog.exec();
 }

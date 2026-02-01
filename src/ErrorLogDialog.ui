@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ErrorLogDialog</class>
+ <widget class="QDialog" name="ErrorLogDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>错误日志</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutFilter">
+     <item>
+      <widget class="QLabel" name="labelModuleName">
+       <property name="text">
+        <string>模块名称：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditModuleName">
+       <property name="placeholderText">
+        <string>请输入模块名称</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelUserName">
+       <property name="text">
+        <string>用户名：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditUserName">
+       <property name="placeholderText">
+        <string>请输入用户名</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelExceptionType">
+       <property name="text">
+        <string>异常类型：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditExceptionType">
+       <property name="placeholderText">
+        <string>请输入异常类型</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutTimeRange">
+     <item>
+      <widget class="QLabel" name="labelTimeRange">
+       <property name="text">
+        <string>时间范围：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateTimeEdit" name="dateTimeEditStart">
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+       <property name="dateTime">
+        <datetime>
+         <year>2020</year>
+         <month>1</month>
+         <day>1</day>
+         <hour>0</hour>
+         <minute>0</minute>
+         <second>0</second>
+        </datetime>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelTo">
+       <property name="text">
+        <string>至</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateTimeEdit" name="dateTimeEditEnd">
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+       <property name="dateTime">
+        <datetime>
+         <year>2030</year>
+         <month>12</month>
+         <day>31</day>
+         <hour>23</hour>
+         <minute>59</minute>
+         <second>59</second>
+        </datetime>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacerFilter"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonSearch">
+       <property name="text">
+        <string>搜索</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonRefresh">
+       <property name="text">
+        <string>刷新</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tableWidgetLogs">
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="columnCount">
+      <number>7</number>
+     </property>
+     <attribute name="tableWidget_columnCount">
+      <number>7</number>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>ID</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>模块名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>用户名</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>异常类型</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>错误信息</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>创建时间</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>操作</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutPagination">
+     <item>
+      <widget class="QPushButton" name="buttonFirstPage">
+       <property name="text">
+        <string>首页</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonPreviousPage">
+       <property name="text">
+        <string>上一页</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelPageInfo">
+       <property name="text">
+        <string>第 1 页 / 共 1 页</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonNextPage">
+       <property name="text">
+        <string>下一页</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonLastPage">
+       <property name="text">
+        <string>末页</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacerPagination"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelClearBefore">
+       <property name="text">
+        <string>清理此时间之前的日志：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDateTimeEdit" name="dateTimeEditClearBefore">
+       <property name="calendarPopup">
+        <bool>true</bool>
+       </property>
+       <property name="dateTime">
+        <datetime>
+         <year>2020</year>
+         <month>1</month>
+         <day>1</day>
+         <hour>0</hour>
+         <minute>0</minute>
+         <second>0</second>
+        </datetime>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonClearLogs">
+       <property name="text">
+        <string>清理日志</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

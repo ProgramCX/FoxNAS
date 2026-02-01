@@ -9,10 +9,12 @@
 #include <QDebug>
 #include <QEventLoop>
 #include <QMessageBox>
+#include <QUrl>
 #include <QUrlQuery>
 #include <IniSettings.hpp>
 #include <MemStore.h>
 
+#include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -27,6 +29,7 @@ ApiRequest::ApiRequest(QString apiAddress,
 {
     urlApi.setUrl(apiAddress);
     request.setUrl(urlApi);
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
 }
 
 ApiRequest::ApiRequest(QString apiAddress, METHOD httpMethod, QObject *parent)
@@ -36,6 +39,7 @@ ApiRequest::ApiRequest(QString apiAddress, METHOD httpMethod, QObject *parent)
 {
     urlApi.setUrl(apiAddress);
     request.setUrl(QUrl(urlApi.toString(QUrl::FullyEncoded)));
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
 }
 
 QString ApiRequest::getApi() const
@@ -141,9 +145,14 @@ void ApiRequest::sendRequest()
 
     QString token = getToken();
 
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization", QString("Bearer " + token).toUtf8());
+    if (!urlApi.toString().contains("/api/status/status")) {
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        request.setRawHeader("Authorization", QString("Bearer " + token).toUtf8());
+    }
 
+    if (urlApi.toString().contains(":443")) {
+        urlApi = QUrl("https" + urlApi.toString().mid(4));
+    }
     qDebug() << "正在发送API请求..\n"
              << "请求token:" << token << "\n请求Url：" << urlApi.toString() << "\n请求体："
              << body.toJson() << "\n";
@@ -176,7 +185,7 @@ void ApiRequest::sendRequest()
         }
 
         qint16 statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        
+        qDebug() << statusCode;
         // 401 未授权，尝试使用 refresh token 刷新
         if (statusCode == 401 && !REFRESHTOKEN.isEmpty()) {
             if (refreshToken()) {
@@ -205,6 +214,9 @@ bool ApiRequest::refreshToken()
     }
 
     QUrl url(getFullApiPath(FULLHOST, NASREFRESHTOKEN));
+    if (url.toString().contains(":443")) {
+        url = QUrl("https" + urlApi.toString().mid(4));
+    }
     QNetworkRequest request;
     request.setUrl(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");

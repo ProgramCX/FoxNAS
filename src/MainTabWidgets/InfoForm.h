@@ -22,6 +22,8 @@ private slots:
 
     void on_pushButtonAbout_clicked();
 
+    void on_pushButtonViewLogs_clicked();
+
 private:
     Ui::InfoForm *ui;
 };

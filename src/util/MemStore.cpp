@@ -4,3 +4,4 @@ QString REFRESHTOKEN;
 QString FULLHOST;
 QString USERNAME;
 QString USERUUID;
+bool USESSL;

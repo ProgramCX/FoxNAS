@@ -19,6 +19,8 @@ public:
 private slots:
     void on_buttonShowPassword_clicked(bool checked);
     void on_buttonRegister_clicked();
+    void on_buttonForgotPassword_clicked();
+    void on_buttonForgotUsername_clicked();
 
 private:
     Ui::NASLoginDialog *ui;

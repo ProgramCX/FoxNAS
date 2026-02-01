@@ -3,6 +3,8 @@
 #include "MainWindow.h"
 #include "MemStore.h"
 #include "RegisterDialog.h"
+#include "ResetPasswordDialog.h"
+#include "RetrieveUsernameDialog.h"
 #include "ui_NASLoginDialog.h"
 
 #include <QMessageBox>
@@ -27,6 +29,18 @@ NASLoginDialog::NASLoginDialog(const QString &fullHost, QWidget *parent)
     ui->checkBox->setChecked(settings.value("Secret/remember").toBool());
 
     connect(ui->buttonLogin, &QPushButton::clicked, this, &NASLoginDialog::login);
+    connect(ui->buttonRegister,
+            &QPushButton::clicked,
+            this,
+            &NASLoginDialog::on_buttonRegister_clicked);
+    connect(ui->buttonForgotPassword,
+            &QPushButton::clicked,
+            this,
+            &NASLoginDialog::on_buttonForgotPassword_clicked);
+    connect(ui->buttonForgotUsername,
+            &QPushButton::clicked,
+            this,
+            &NASLoginDialog::on_buttonForgotUsername_clicked);
 }
 
 NASLoginDialog::~NASLoginDialog()
@@ -141,6 +155,21 @@ void NASLoginDialog::on_buttonShowPassword_clicked(bool checked)
 void NASLoginDialog::on_buttonRegister_clicked()
 {
     RegisterDialog registerDialog(fullHost, this);
-    connect(&registerDialog, &RegisterDialog::registerSuccess, this, &NASLoginDialog::setUserNameAndPassword);
+    connect(&registerDialog,
+            &RegisterDialog::registerSuccess,
+            this,
+            &NASLoginDialog::setUserNameAndPassword);
     registerDialog.exec();
+}
+
+void NASLoginDialog::on_buttonForgotPassword_clicked()
+{
+    ResetPasswordDialog resetPasswordDialog(fullHost, this);
+    resetPasswordDialog.exec();
+}
+
+void NASLoginDialog::on_buttonForgotUsername_clicked()
+{
+    RetrieveUsernameDialog retrieveUsernameDialog(fullHost, this);
+    retrieveUsernameDialog.exec();
 }

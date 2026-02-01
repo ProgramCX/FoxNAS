@@ -23,6 +23,8 @@ public:
     void setName(QString name);
     void setIp(QString ip);
     void setPort(quint16 port);
+private slots:
+    void on_checkBox_checkStateChanged(const Qt::CheckState &arg1);
 
 private:
     Ui::DetailDialog *ui;

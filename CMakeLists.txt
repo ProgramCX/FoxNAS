@@ -3,6 +3,9 @@ project(FoxNAS LANGUAGES CXX)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network WebSockets LinguistTools Charts Svg Concurrent Multimedia MultimediaWidgets)
 
+# 可选：OpenSSL（用于 HTTPS 支持）
+find_package(OpenSSL QUIET)
+
 qt_standard_project_setup()
 
 set(RESOURCES src/main.qrc)
@@ -44,6 +47,17 @@ qt_add_executable(FoxNAS
     src/RegisterDialog.h
     src/RegisterDialog.cpp
     src/RegisterDialog.ui
+    src/ResetPasswordDialog.h
+    src/ResetPasswordDialog.cpp
+    src/ResetPasswordDialog.ui
+    src/RetrieveUsernameDialog.h
+    src/RetrieveUsernameDialog.cpp
+    src/RetrieveUsernameDialog.ui
+
+    # 🔹 日志管理模块
+    src/ErrorLogDialog.h
+    src/ErrorLogDialog.cpp
+    src/ErrorLogDialog.ui
 
     # 🔹 主界面 - Tab 页面模块
     src/MainTabWidgets/OverViewForm.h
@@ -180,6 +194,10 @@ target_link_libraries(FoxNAS
         Qt::Multimedia
         Qt::MultimediaWidgets
 )
+
+if(OpenSSL_FOUND)
+    target_link_libraries(FoxNAS PRIVATE OpenSSL::SSL)
+endif()
 
 target_include_directories(FoxNAS
     PRIVATE

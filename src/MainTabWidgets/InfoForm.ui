@@ -85,6 +85,19 @@
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButtonViewLogs">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>查看错误日志(&amp;L)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="pushButtonAbout">
           <property name="minimumSize">
            <size>

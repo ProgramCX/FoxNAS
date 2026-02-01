@@ -54,3 +54,7 @@ void DetailDialog::setPort(quint16 port)
 {
     ui->spinBox->setValue(port);
 }
+
+void DetailDialog::on_checkBox_checkStateChanged(const Qt::CheckState &)
+{
+}

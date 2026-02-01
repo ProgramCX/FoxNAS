@@ -67,8 +67,17 @@ const QString NASSELFCHANGEUSERNAME = "/api/user-self/changeUserName";
 const QString NASSENDVERIFYCODE = "/api/auth/sendVerifyCode";
 const QString NASREGISTER = "/api/auth/reg";
 
+// 找回密码和用户名相关API
+const QString NASRESETPASSWORD = "/api/auth/password/reset";
+const QString NASRETRIEVEUSERNAME = "/api/auth/username/retrieve";
+
 // Token刷新相关API
 const QString NASREFRESHTOKEN = "/api/auth/refresh";
+
+// 日志管理相关API
+const QString NASERRORLOGLIST = "/api/log/error";
+const QString NASERRORLOGDETAIL = "/api/log/error";
+const QString NASDELETEERRORLOGSBEFORE = "/api/log/error/before";
 
 QString getFullApiPath(QString host, QString api);
 #endif // APIURL_H
