@@ -550,7 +550,8 @@ void OverViewForm::createCPUChart()
 
 QString OverViewForm::getFullWebsocketUrl()
 {
-    QString fullUrl = "ws://" + FULLHOST + NASRESOURCESTATUSSOCKET + "?token=" + NASTOKEN;
+    const QString prefix = FULLHOST.contains(":443") ? "wss://" : "ws://";
+    QString fullUrl = prefix + FULLHOST + NASRESOURCESTATUSSOCKET + "?token=" + NASTOKEN;
     qDebug() << fullUrl;
     return fullUrl;
 }
