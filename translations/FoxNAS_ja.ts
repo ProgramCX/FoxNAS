@@ -54,27 +54,27 @@
 <context>
     <name>ApiRequest</name>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="281"/>
+        <location filename="../src/util/ApiRequest.cpp" line="278"/>
         <source>请求错误，请重新登录</source>
         <translation>リクエストエラー、再ログインしてください</translation>
     </message>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="284"/>
+        <location filename="../src/util/ApiRequest.cpp" line="281"/>
         <source>登录已过期，请重新登录</source>
         <translation>ログインの有効期限が切れました、再ログインしてください</translation>
     </message>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="287"/>
+        <location filename="../src/util/ApiRequest.cpp" line="284"/>
         <source>没有权限，请重新登录</source>
         <translation>権限がありません、再ログインしてください</translation>
     </message>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="290"/>
+        <location filename="../src/util/ApiRequest.cpp" line="287"/>
         <source>连接失败，请重新登录</source>
         <translation>接続に失敗しました、再ログインしてください</translation>
     </message>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="294"/>
+        <location filename="../src/util/ApiRequest.cpp" line="291"/>
         <source>需要重新登录</source>
         <translation>再ログインが必要です</translation>
     </message>

@@ -150,9 +150,6 @@ void ApiRequest::sendRequest()
         request.setRawHeader("Authorization", QString("Bearer " + token).toUtf8());
     }
 
-    if (urlApi.toString().contains(":443")) {
-        urlApi = QUrl("https" + urlApi.toString().mid(4));
-    }
     qDebug() << "正在发送API请求..\n"
              << "请求token:" << token << "\n请求Url：" << urlApi.toString() << "\n请求体："
              << body.toJson() << "\n";
@@ -215,7 +212,7 @@ bool ApiRequest::refreshToken()
 
     QUrl url(getFullApiPath(FULLHOST, NASREFRESHTOKEN));
     if (url.toString().contains(":443")) {
-        url = QUrl("https" + urlApi.toString().mid(4));
+        url = QUrl("https" + url.toString().mid(4));
     }
     QNetworkRequest request;
     request.setUrl(url);

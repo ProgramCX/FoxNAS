@@ -54,27 +54,27 @@
 <context>
     <name>ApiRequest</name>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="281"/>
+        <location filename="../src/util/ApiRequest.cpp" line="278"/>
         <source>请求错误，请重新登录</source>
         <translation>Anfragefehler, bitte neu anmelden</translation>
     </message>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="284"/>
+        <location filename="../src/util/ApiRequest.cpp" line="281"/>
         <source>登录已过期，请重新登录</source>
         <translation>Sitzung abgelaufen, bitte neu anmelden</translation>
     </message>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="287"/>
+        <location filename="../src/util/ApiRequest.cpp" line="284"/>
         <source>没有权限，请重新登录</source>
         <translation>Keine Berechtigung, bitte neu anmelden</translation>
     </message>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="290"/>
+        <location filename="../src/util/ApiRequest.cpp" line="287"/>
         <source>连接失败，请重新登录</source>
         <translation>Verbindung fehlgeschlagen, bitte neu anmelden</translation>
     </message>
     <message>
-        <location filename="../src/util/ApiRequest.cpp" line="294"/>
+        <location filename="../src/util/ApiRequest.cpp" line="291"/>
         <source>需要重新登录</source>
         <translation>Neuanmeldung erforderlich</translation>
     </message>
