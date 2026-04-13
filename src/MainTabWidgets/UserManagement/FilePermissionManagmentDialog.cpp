@@ -124,7 +124,7 @@ void FilePermissionManagmentDialog::on_pushButtonOK_clicked()
                     if (statusCode == 200) {
                         accept();
                     } else {
-                        QMessageBox::critical(this, tr("失败"), tr("修啊目录权限失败！"));
+                        QMessageBox::critical(this, tr("失败"), tr("修改目录权限失败！"));
                     }
                 });
 

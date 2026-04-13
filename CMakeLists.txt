@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.19)
-project(FoxNAS LANGUAGES CXX)
+project(FoxNAS VERSION 0.1.0 LANGUAGES CXX)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network WebSockets LinguistTools Charts Svg Concurrent Multimedia MultimediaWidgets)
 
@@ -83,6 +83,9 @@ qt_add_executable(FoxNAS
     src/MainTabWidgets/InfoForm.h
     src/MainTabWidgets/InfoForm.cpp
     src/MainTabWidgets/InfoForm.ui
+
+    src/MainTabWidgets/SystemMonitorForm.h
+    src/MainTabWidgets/SystemMonitorForm.cpp
 
     src/MainTabWidgets/DDNSForm.h
     src/MainTabWidgets/DDNSForm.cpp

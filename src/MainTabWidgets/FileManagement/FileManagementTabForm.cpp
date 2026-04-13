@@ -25,6 +25,10 @@ FileManagementTabForm::FileManagementTabForm(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // TODO：先隐藏“打开”和“属性”按钮，下一主要版本实现
+    ui->pushButtonOpen->setVisible(false);
+    ui->pushButtonProperty->setVisible(false);
+
     iniTreeView();
     connectSlots();
     iniContextMenu();

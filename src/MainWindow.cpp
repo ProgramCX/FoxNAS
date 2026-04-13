@@ -4,6 +4,7 @@
 #include "MainTabWidgets/InfoForm.h"
 #include "MainTabWidgets/OverViewForm.h"
 #include "MainTabWidgets/SettingsForm.h"
+#include "MainTabWidgets/SystemMonitorForm.h"
 #include "MainTabWidgets/UserManagementForm.h"
 #include "ui_MainWindow.h"
 
@@ -86,6 +87,9 @@ void MainWindow::iniPermissionUi(QString &rawContent, bool hasError, qint16 stat
 
         SettingsForm *settingsForm = new SettingsForm(ui->tabWidget);
         ui->tabWidget->addTab(settingsForm, tr("系统设置"));
+
+        SystemMonitorForm *systemMonitorForm = new SystemMonitorForm(ui->tabWidget);
+        ui->tabWidget->addTab(systemMonitorForm, tr("系统监控"));
 
         InfoForm *infoForm = new InfoForm(ui->tabWidget);
         ui->tabWidget->addTab(infoForm, tr("系统信息"));

@@ -84,4 +84,6 @@ CMakeLists.txt.user*
 # CLION settings
 .idea/
 
+.trae/
+
 !icon.rc

@@ -9,7 +9,7 @@ void MultiButtonDelegate::paint(QPainter *painter,
                                 const QStyleOptionViewItem &option,
                                 const QModelIndex &index) const
 {
-    int btnWidth = 60;
+    int btnWidth = 110;
     int btnHeight = option.rect.height() - 6;
     int spacing = 8;
 

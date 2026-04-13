@@ -3,6 +3,8 @@
 
 #include <QString>
 const QString NASSTATUSAPI = "/api/status/status";
+const QString NASMONITORRECENT = "/api/monitor/getRecentStatistics";
+const QString NASMONITORBYRANGE = "/api/monitor/getByMillRange";
 const QString NASLOGINAPI = "/api/auth/login";
 const QString NASINIADMIN = "/api/auth/iniAdmin";
 const QString NASPERMISSIONAPI = "/api/common/permissions";

@@ -685,139 +685,139 @@
         <location filename="../src/ErrorLogDialog.ui" line="14"/>
         <location filename="../src/ErrorLogDialog.cpp" line="21"/>
         <source>错误日志</source>
-        <translation type="unfinished"></translation>
+        <translation>Error Log</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="22"/>
         <source>模块名称：</source>
-        <translation type="unfinished"></translation>
+        <translation>Module Name:</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="29"/>
         <source>请输入模块名称</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter module name</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="36"/>
         <source>用户名：</source>
-        <translation type="unfinished">Username:</translation>
+        <translation>Username:</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="43"/>
         <source>请输入用户名</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter username</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="50"/>
         <source>异常类型：</source>
-        <translation type="unfinished"></translation>
+        <translation>Exception Type:</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="57"/>
         <source>请输入异常类型</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter exception type</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="68"/>
         <source>时间范围：</source>
-        <translation type="unfinished"></translation>
+        <translation>Time Range:</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="92"/>
         <source>至</source>
-        <translation type="unfinished"></translation>
+        <translation>to</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="119"/>
         <source>搜索</source>
-        <translation type="unfinished"></translation>
+        <translation>Search</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="126"/>
         <source>刷新</source>
-        <translation type="unfinished">Refresh</translation>
+        <translation>Refresh</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="148"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="153"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>模块名称</source>
-        <translation type="unfinished"></translation>
+        <translation>Module Name</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="158"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>用户名</source>
-        <translation type="unfinished"></translation>
+        <translation>Username</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="163"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>异常类型</source>
-        <translation type="unfinished"></translation>
+        <translation>Exception Type</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="168"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>错误信息</source>
-        <translation type="unfinished"></translation>
+        <translation>Error Message</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="173"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>创建时间</source>
-        <translation type="unfinished">Created time</translation>
+        <translation>Created time</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="178"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>操作</source>
-        <translation type="unfinished"></translation>
+        <translation>Operation</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="188"/>
         <source>首页</source>
-        <translation type="unfinished"></translation>
+        <translation>First Page</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="195"/>
         <source>上一页</source>
-        <translation type="unfinished"></translation>
+        <translation>Previous Page</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="202"/>
         <source>第 1 页 / 共 1 页</source>
-        <translation type="unfinished"></translation>
+        <translation>Page 1 / 1</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="209"/>
         <source>下一页</source>
-        <translation type="unfinished"></translation>
+        <translation>Next Page</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="216"/>
         <source>末页</source>
-        <translation type="unfinished"></translation>
+        <translation>Last Page</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="226"/>
         <source>清理此时间之前的日志：</source>
-        <translation type="unfinished"></translation>
+        <translation>Clear logs before this time:</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="250"/>
         <source>清理日志</source>
-        <translation type="unfinished"></translation>
+        <translation>Clear Logs</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="51"/>
         <source>正在加载日志...</source>
-        <translation type="unfinished"></translation>
+        <translation>Loading logs...</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="65"/>
@@ -826,83 +826,83 @@
         <location filename="../src/ErrorLogDialog.cpp" line="133"/>
         <location filename="../src/ErrorLogDialog.cpp" line="266"/>
         <source>错误</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="65"/>
         <source>获取日志列表失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to fetch log list:</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="73"/>
         <location filename="../src/ErrorLogDialog.cpp" line="133"/>
         <source>解析响应失败</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to parse response</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="94"/>
         <source>正在搜索日志...</source>
-        <translation type="unfinished"></translation>
+        <translation>Searching logs...</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="125"/>
         <source>搜索日志失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to search logs:</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="192"/>
         <source>详情</source>
-        <translation type="unfinished"></translation>
+        <translation>Details</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="245"/>
         <source>日志详情</source>
-        <translation type="unfinished"></translation>
+        <translation>Log Details</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="254"/>
         <source>正在清理日志...</source>
-        <translation type="unfinished"></translation>
+        <translation>Clearing logs...</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="266"/>
         <source>清理日志失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to clear logs:</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="270"/>
         <source>成功</source>
-        <translation type="unfinished">Success</translation>
+        <translation>Success</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="270"/>
         <source>日志清理成功！</source>
-        <translation type="unfinished"></translation>
+        <translation>Logs cleared successfully!</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="279"/>
         <source>第 %1 页 / 共 %2 页 (共 %3 条)</source>
-        <translation type="unfinished"></translation>
+        <translation>Page %1 / %2 (Total %3)</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="300"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>Prompt</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="300"/>
         <source>请选择日期时间</source>
-        <translation type="unfinished"></translation>
+        <translation>Please select date and time</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="306"/>
         <source>确认清理</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm Clear</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="307"/>
         <source>确定要删除 %1 之前的所有日志吗？</source>
-        <translation type="unfinished"></translation>
+        <translation>Are you sure you want to delete all logs before %1?</translation>
     </message>
 </context>
 <context>
@@ -1204,44 +1204,44 @@
         <translation>Delete file/folder</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="472"/>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="474"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="476"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="478"/>
         <source>文件</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="472"/>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="474"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="476"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="478"/>
         <source>文件夹</source>
         <translation>Folder</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="794"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="798"/>
         <source>选择保存位置</source>
         <translation>Select save location</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="807"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="811"/>
         <source>请选择类型</source>
         <translation>Please select type</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="808"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="812"/>
         <source>你要选择文件还是目录？</source>
         <translation>Do you want to select files or directories?</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="810"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="814"/>
         <source>选择文件</source>
         <translation>Select file</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="811"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="815"/>
         <source>选择目录</source>
         <translation>Select directory</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="812"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="816"/>
         <source>取消</source>
         <translation>Cancel</translation>
     </message>
@@ -1335,8 +1335,12 @@
     </message>
     <message>
         <location filename="../src/MainTabWidgets/UserManagement/FilePermissionManagmentDialog.cpp" line="127"/>
+        <source>修改目录权限失败！</source>
+        <translation>Failed to modify directory permissions!</translation>
+    </message>
+    <message>
         <source>修啊目录权限失败！</source>
-        <translation>Failed to modify directory permission!</translation>
+        <translation type="vanished">Failed to modify directory permission!</translation>
     </message>
     <message>
         <location filename="../src/MainTabWidgets/UserManagement/FilePermissionManagmentDialog.cpp" line="147"/>
@@ -1574,7 +1578,7 @@ Switch now?</translation>
     <message>
         <location filename="../src/MainTabWidgets/InfoForm.ui" line="96"/>
         <source>查看错误日志(&amp;L)</source>
-        <translation type="unfinished"></translation>
+        <translation>View Error Logs(&amp;L)</translation>
     </message>
     <message>
         <location filename="../src/MainTabWidgets/InfoForm.ui" line="109"/>
@@ -1806,32 +1810,37 @@ Password:</translation>
         <translation>FoxNAS Client</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="70"/>
+        <location filename="../src/MainWindow.cpp" line="71"/>
         <source>系统概览</source>
         <translation>System Overview</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="74"/>
+        <location filename="../src/MainWindow.cpp" line="75"/>
         <source>文件管理</source>
         <translation>File Management</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="79"/>
+        <location filename="../src/MainWindow.cpp" line="80"/>
         <source>动态域名解析</source>
         <translation>Dynamic DNS</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="84"/>
+        <location filename="../src/MainWindow.cpp" line="85"/>
         <source>用户管理</source>
         <translation>User Management</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="88"/>
+        <location filename="../src/MainWindow.cpp" line="89"/>
         <source>系统设置</source>
         <translation>System Settings</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="91"/>
+        <location filename="../src/MainWindow.cpp" line="92"/>
+        <source>系统监控</source>
+        <translation>System Monitor</translation>
+    </message>
+    <message>
+        <location filename="../src/MainWindow.cpp" line="95"/>
         <source>系统信息</source>
         <translation>System Info</translation>
     </message>
@@ -1867,12 +1876,12 @@ Password:</translation>
     <message>
         <location filename="../src/NASLoginDialog.ui" line="202"/>
         <source>忘记密码</source>
-        <translation type="unfinished"></translation>
+        <translation>Forgot password</translation>
     </message>
     <message>
         <location filename="../src/NASLoginDialog.ui" line="224"/>
         <source>忘记用户名</source>
-        <translation type="unfinished"></translation>
+        <translation>Forgot username</translation>
     </message>
     <message>
         <location filename="../src/NASLoginDialog.ui" line="297"/>
@@ -2339,22 +2348,22 @@ Password:</translation>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="14"/>
         <source>找回密码</source>
-        <translation type="unfinished"></translation>
+        <translation>Reset Password</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="27"/>
         <source>请输入注册时使用的邮箱地址</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter the email address used during registration</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="39"/>
         <source>邮箱地址：</source>
-        <translation type="unfinished"></translation>
+        <translation>Email:</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="46"/>
         <source>请输入邮箱地址</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter email address</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="70"/>
@@ -2362,57 +2371,57 @@ Password:</translation>
         <location filename="../src/ResetPasswordDialog.cpp" line="127"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="128"/>
         <source>发送验证码</source>
-        <translation type="unfinished">Send Code</translation>
+        <translation>Send Code</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="96"/>
         <source>请输入收到的验证码和新密码</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter the received verification code and new password</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="124"/>
         <source>验证码：</source>
-        <translation type="unfinished">Verification code:</translation>
+        <translation>Verification code:</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="134"/>
         <source>请输入6位验证码</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter 6-digit verification code</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="152"/>
         <source>新密码：</source>
-        <translation type="unfinished">New password:</translation>
+        <translation>New password:</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="162"/>
         <source>请输入新密码（至少6位）</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter new password (at least 6 characters)</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="173"/>
         <source>确认密码：</source>
-        <translation type="unfinished">Confirm password:</translation>
+        <translation>Confirm password:</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="183"/>
         <source>请再次输入新密码</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter new password again</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="223"/>
         <source>取消</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="230"/>
         <source>重置密码</source>
-        <translation type="unfinished"></translation>
+        <translation>Reset Password</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="20"/>
         <source>找回密码 - </source>
-        <translation type="unfinished"></translation>
+        <translation>Reset Password - </translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="62"/>
@@ -2423,101 +2432,101 @@ Password:</translation>
         <location filename="../src/ResetPasswordDialog.cpp" line="173"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="178"/>
         <source>警告</source>
-        <translation type="unfinished">Warning</translation>
+        <translation>Warning</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="62"/>
         <source>请输入邮箱地址！</source>
-        <translation type="unfinished">Please enter email address!</translation>
+        <translation>Please enter email address!</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="67"/>
         <source>请输入有效的邮箱地址！</source>
-        <translation type="unfinished">Please enter a valid email address!</translation>
+        <translation>Please enter a valid email address!</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="90"/>
         <source>正在发送验证码...</source>
-        <translation type="unfinished">Sending verification code...</translation>
+        <translation>Sending verification code...</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="104"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>Prompt</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="106"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="209"/>
         <source>成功</source>
-        <translation type="unfinished">Success</translation>
+        <translation>Success</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="106"/>
         <source>验证码已发送到您的邮箱！</source>
-        <translation type="unfinished">Verification code has been sent to your email!</translation>
+        <translation>Verification code has been sent to your email!</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="131"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="132"/>
         <source>重新发送(%1)</source>
-        <translation type="unfinished">Resend (%1)</translation>
+        <translation>Resend (%1)</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="139"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="214"/>
         <source>未知错误</source>
-        <translation type="unfinished">Unknown error</translation>
+        <translation>Unknown error</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="141"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="216"/>
         <source>失败</source>
-        <translation type="unfinished">Failed</translation>
+        <translation>Failed</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="141"/>
         <source>发送验证码失败：</source>
-        <translation type="unfinished">Failed to send verification code: </translation>
+        <translation>Failed to send verification code: </translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="158"/>
         <source>请输入验证码！</source>
-        <translation type="unfinished">Please enter verification code!</translation>
+        <translation>Please enter verification code!</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="163"/>
         <source>验证码长度为6位！</source>
-        <translation type="unfinished"></translation>
+        <translation>Verification code must be 6 digits!</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="168"/>
         <source>请输入新密码！</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter new password!</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="173"/>
         <source>密码长度至少6位！</source>
-        <translation type="unfinished">Password must be at least 6 characters!</translation>
+        <translation>Password must be at least 6 characters!</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="178"/>
         <source>两次输入的密码不一致！</source>
-        <translation type="unfinished">Passwords do not match!</translation>
+        <translation>Passwords do not match!</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="196"/>
         <source>正在重置密码...</source>
-        <translation type="unfinished"></translation>
+        <translation>Resetting password...</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="209"/>
         <source>密码重置成功！请使用新密码登录。</source>
-        <translation type="unfinished"></translation>
+        <translation>Password reset successful! Please log in with the new password.</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="216"/>
         <source>重置密码失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>Password reset failed:</translation>
     </message>
 </context>
 <context>
@@ -2525,53 +2534,53 @@ Password:</translation>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="14"/>
         <source>找回用户名</source>
-        <translation type="unfinished"></translation>
+        <translation>Retrieve Username</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="20"/>
         <source>请输入注册时使用的邮箱地址</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter the email address used during registration</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="32"/>
         <source>邮箱地址：</source>
-        <translation type="unfinished"></translation>
+        <translation>Email:</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="39"/>
         <source>请输入邮箱地址</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter email address</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="50"/>
         <source>验证码：</source>
-        <translation type="unfinished">Verification code:</translation>
+        <translation>Verification code:</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="63"/>
         <source>请输入6位验证码</source>
-        <translation type="unfinished"></translation>
+        <translation>Please enter 6-digit verification code</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="70"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="119"/>
         <source>发送验证码</source>
-        <translation type="unfinished">Send Code</translation>
+        <translation>Send Code</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="94"/>
         <source>取消</source>
-        <translation type="unfinished">Cancel</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="104"/>
         <source>提交</source>
-        <translation type="unfinished"></translation>
+        <translation>Submit</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="20"/>
         <source>找回用户名 - </source>
-        <translation type="unfinished"></translation>
+        <translation>Retrieve Username - </translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="58"/>
@@ -2579,85 +2588,85 @@ Password:</translation>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="146"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="151"/>
         <source>警告</source>
-        <translation type="unfinished">Warning</translation>
+        <translation>Warning</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="58"/>
         <source>请输入邮箱地址！</source>
-        <translation type="unfinished">Please enter email address!</translation>
+        <translation>Please enter email address!</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="63"/>
         <source>请输入有效的邮箱地址！</source>
-        <translation type="unfinished">Please enter a valid email address!</translation>
+        <translation>Please enter a valid email address!</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="86"/>
         <source>正在发送验证码...</source>
-        <translation type="unfinished">Sending verification code...</translation>
+        <translation>Sending verification code...</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="100"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>Prompt</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="102"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="181"/>
         <source>成功</source>
-        <translation type="unfinished">Success</translation>
+        <translation>Success</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="102"/>
         <source>验证码已发送到您的邮箱！</source>
-        <translation type="unfinished">Verification code has been sent to your email!</translation>
+        <translation>Verification code has been sent to your email!</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="122"/>
         <source>重新发送(%1)</source>
-        <translation type="unfinished">Resend (%1)</translation>
+        <translation>Resend (%1)</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="129"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="186"/>
         <source>未知错误</source>
-        <translation type="unfinished">Unknown error</translation>
+        <translation>Unknown error</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="131"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="188"/>
         <source>失败</source>
-        <translation type="unfinished">Failed</translation>
+        <translation>Failed</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="131"/>
         <source>发送验证码失败：</source>
-        <translation type="unfinished">Failed to send verification code: </translation>
+        <translation>Failed to send verification code: </translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="146"/>
         <source>请输入验证码！</source>
-        <translation type="unfinished">Please enter verification code!</translation>
+        <translation>Please enter verification code!</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="151"/>
         <source>验证码长度为6位！</source>
-        <translation type="unfinished"></translation>
+        <translation>Verification code must be 6 digits!</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="168"/>
         <source>正在找回用户名...</source>
-        <translation type="unfinished"></translation>
+        <translation>Retrieving username...</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="181"/>
         <source>用户名已发送到您的邮箱！请查收。</source>
-        <translation type="unfinished"></translation>
+        <translation>Username has been sent to your email! Please check.</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="188"/>
         <source>找回用户名失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>Failed to retrieve username:</translation>
     </message>
 </context>
 <context>
@@ -2725,6 +2734,196 @@ Password:</translation>
         <location filename="../src/MainTabWidgets/SettingsForm.cpp" line="25"/>
         <source>常用设置</source>
         <translation>General Settings</translation>
+    </message>
+</context>
+<context>
+    <name>SystemMonitorForm</name>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="65"/>
+        <source>监控查询</source>
+        <translation>Monitor Query</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="69"/>
+        <source>最近 5 分钟</source>
+        <translation>Last 5 minutes</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="70"/>
+        <source>最近 15 分钟</source>
+        <translation>Last 15 minutes</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="71"/>
+        <source>最近 30 分钟</source>
+        <translation>Last 30 minutes</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="72"/>
+        <source>最近 1 小时</source>
+        <translation>Last 1 hour</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="73"/>
+        <source>最近 6 小时</source>
+        <translation>Last 6 hours</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="74"/>
+        <source>最近 12 小时</source>
+        <translation>Last 12 hours</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="75"/>
+        <source>最近 1 天</source>
+        <translation>Last 1 day</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="76"/>
+        <source>最近 7 天</source>
+        <translation>Last 7 days</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="79"/>
+        <source>查询预设</source>
+        <translation>Query Preset</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="88"/>
+        <source>按时间范围查询</source>
+        <translation>Query by Time Range</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="90"/>
+        <source>准备就绪</source>
+        <translation>Ready</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="93"/>
+        <source>预设：</source>
+        <translation>Preset:</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="97"/>
+        <source>开始：</source>
+        <translation>Start:</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="99"/>
+        <source>结束：</source>
+        <translation>End:</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="123"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="152"/>
+        <source>CPU 使用率</source>
+        <translation>CPU Usage</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="124"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="162"/>
+        <source>内存使用率</source>
+        <translation>Memory Usage</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="125"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="172"/>
+        <source>网络速度</source>
+        <translation>Network Speed</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="126"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="198"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="199"/>
+        <source>系统负载</source>
+        <translation>System Load</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="127"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="208"/>
+        <source>磁盘使用率</source>
+        <translation>Disk Usage</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="153"/>
+        <source>CPU</source>
+        <translation>CPU</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="163"/>
+        <source>内存</source>
+        <translation>Memory</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="186"/>
+        <source>上传</source>
+        <translation>Upload</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="187"/>
+        <source>下载</source>
+        <translation>Download</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="200"/>
+        <source>Load</source>
+        <translation>Load</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="259"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="274"/>
+        <source>参数错误</source>
+        <translation>Parameter Error</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="259"/>
+        <source>预设参数解析失败</source>
+        <translation>Failed to parse preset parameter</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="274"/>
+        <source>开始时间必须小于结束时间</source>
+        <translation>Start time must be earlier than end time</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="289"/>
+        <source>加载中...</source>
+        <translation>Loading...</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="320"/>
+        <source>加载失败</source>
+        <translation>Load Failed</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="322"/>
+        <source>请求失败</source>
+        <translation>Request Failed</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="323"/>
+        <source>监控数据请求失败，状态码：%1</source>
+        <translation>Failed to request monitor data, status code: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="330"/>
+        <source>数据解析失败</source>
+        <translation>Data Parsing Failed</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="331"/>
+        <source>数据错误</source>
+        <translation>Data Error</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="331"/>
+        <source>监控数据解析失败</source>
+        <translation>Failed to parse monitor data</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="336"/>
+        <source>共 %1 条记录</source>
+        <translation>%1 records total</translation>
     </message>
 </context>
 <context>

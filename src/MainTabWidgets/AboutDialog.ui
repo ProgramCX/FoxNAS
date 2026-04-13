@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>554</width>
-    <height>391</height>
+    <width>563</width>
+    <height>436</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -119,7 +119,8 @@
       <string notr="true"/>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:700;&quot;&gt;FoxNAS&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;版本 0.1.0-alpha&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;© programcx.cn。保留所有权利。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 本程序是自由软件：你可以在 GNU 自由软件基金会发布的 GNU 通用公共许可证条款下重新分发和/或修改它，&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 该许可证可以是版本 3，或者（根据你的选择）任何更新的版本。*&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 本程序希望它能有用，但没有任何担保；甚至没有对适销性或特定用途适用性的默示担保。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 详细信息请参见 &lt;/span&gt;&lt;a href=&quot;https://github.com/ProgramCX/FoxNAS/blob/main/LICENSE&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#3760bf;&quot;&gt;GNU General Public License v3.0&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;客户端项目地址：&lt;/span&gt;&lt;a href=&quot;https://github.com/ProgramCX/FoxNAS&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3760bf;&quot;&gt;https://github.com/ProgramCX/FoxNAS&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;服务端项目地址：&lt;a href=&quot;https://github.com/ProgramCX/FoxNAServer/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3760bf;&quot;&gt;https://github.com/ProgramCX/FoxNAServer&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;注：本软件不提供更新功能，客户端必须和服务端匹配！&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:700;&quot;&gt;FoxNAS&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;版本 0.1.0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;© programcx.cn。保留所有权利。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 本程序是自由软件：你可以在 GNU 自由软件基金会发布的 GNU 通用公共许可证条款下重新分发和/或修改它，&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 该许可证可以是版本 3，或者（根据你的选择）任何更新的版本。*&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 本程序希望它能有用，但没有任何担保；甚至没有对适销性或特定用途适用性的默示担保。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 详细信息请参见 &lt;/span&gt;&lt;a href=&quot;https://github.com/ProgramCX/FoxNAS/blob/main/LICENSE&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#3760bf;&quot;&gt;GNU General Public License v3.0&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;客户端项目地址：&lt;/span&gt;&lt;a href=&quot;https://github.com/ProgramCX/FoxNAS&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3760bf;&quot;&gt;https://github.com/ProgramCX/FoxNAS&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;网页端项目地址：&lt;/span&gt;&lt;a href=&quot;https://github.com/ProgramCX/FoxNAS-Web&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3760bf;&quot;&gt;https://github.com/ProgramCX/FoxNAS-Web&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;服务端项目地址：&lt;a href=&quot;https://github.com/ProgramCX/FoxNAServer/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3760bf;&quot;&gt;https://github.com/ProgramCX/FoxNAServer&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;注：本软件不提供更新功能，客户端必须和服务端匹配！&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

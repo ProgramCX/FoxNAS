@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/MainTabWidgets/AboutDialog.ui" line="122"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:700;&quot;&gt;FoxNAS&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;版本 0.1.0-alpha&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;© programcx.cn。保留所有权利。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 本程序是自由软件：你可以在 GNU 自由软件基金会发布的 GNU 通用公共许可证条款下重新分发和/或修改它，&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 该许可证可以是版本 3，或者（根据你的选择）任何更新的版本。*&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 本程序希望它能有用，但没有任何担保；甚至没有对适销性或特定用途适用性的默示担保。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 详细信息请参见 &lt;/span&gt;&lt;a href=&quot;https://github.com/ProgramCX/FoxNAS/blob/main/LICENSE&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#3760bf;&quot;&gt;GNU General Public License v3.0&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;客户端项目地址：&lt;/span&gt;&lt;a href=&quot;https://github.com/ProgramCX/FoxNAS&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3760bf;&quot;&gt;https://github.com/ProgramCX/FoxNAS&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;服务端项目地址：&lt;a href=&quot;https://github.com/ProgramCX/FoxNAServer/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3760bf;&quot;&gt;https://github.com/ProgramCX/FoxNAServer&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;注：本软件不提供更新功能，客户端必须和服务端匹配！&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt; font-weight:700;&quot;&gt;FoxNAS&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;版本 0.1.0-alpha&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;© programcx.cn。保留所有權利。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 本程式是自由軟體：你可以在 GNU 自由軟體基金會發布的 GNU 通用公共授權條款下重新分發和/或修改它，&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 該授權可以是版本 3，或者（根據你的選擇）任何更新的版本。*&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 本程式希望它能有用，但沒有任何擔保；甚至沒有對適銷性或特定用途適用性的默示擔保。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;* 詳細資訊請參見 &lt;/span&gt;&lt;a href=&quot;https://github.com/ProgramCX/FoxNAS/blob/main/LICENSE&quot;&gt;&lt;span style=&quot; font-size:10pt; text-decoration: underline; color:#3760bf;&quot;&gt;GNU General Public License v3.0&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;客戶端專案位址：&lt;/span&gt;&lt;a href=&quot;https://github.com/ProgramCX/FoxNAS&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3760bf;&quot;&gt;https://github.com/ProgramCX/FoxNAS&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;伺服端專案位址：&lt;a href=&quot;https://github.com/ProgramCX/FoxNAServer/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#3760bf;&quot;&gt;https://github.com/ProgramCX/FoxNAServer&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;註：本軟體不提供更新功能，客戶端必須和伺服端匹配！&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/MainTabWidgets/AboutDialog.ui" line="159"/>
@@ -717,139 +717,139 @@
         <location filename="../src/ErrorLogDialog.ui" line="14"/>
         <location filename="../src/ErrorLogDialog.cpp" line="21"/>
         <source>错误日志</source>
-        <translation type="unfinished"></translation>
+        <translation>錯誤日誌</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="22"/>
         <source>模块名称：</source>
-        <translation type="unfinished"></translation>
+        <translation>模組名稱：</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="29"/>
         <source>请输入模块名称</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入模組名稱</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="36"/>
         <source>用户名：</source>
-        <translation type="unfinished">使用者名稱：</translation>
+        <translation>使用者名稱：</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="43"/>
         <source>请输入用户名</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="50"/>
         <source>异常类型：</source>
-        <translation type="unfinished"></translation>
+        <translation>異常類型：</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="57"/>
         <source>请输入异常类型</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入異常類型</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="68"/>
         <source>时间范围：</source>
-        <translation type="unfinished"></translation>
+        <translation>時間範圍：</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="92"/>
         <source>至</source>
-        <translation type="unfinished"></translation>
+        <translation>至</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="119"/>
         <source>搜索</source>
-        <translation type="unfinished"></translation>
+        <translation>搜尋</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="126"/>
         <source>刷新</source>
-        <translation type="unfinished">重新整理</translation>
+        <translation>重新整理</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="148"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="153"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>模块名称</source>
-        <translation type="unfinished"></translation>
+        <translation>模組名稱</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="158"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>用户名</source>
-        <translation type="unfinished"></translation>
+        <translation>使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="163"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>异常类型</source>
-        <translation type="unfinished"></translation>
+        <translation>異常類型</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="168"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>错误信息</source>
-        <translation type="unfinished"></translation>
+        <translation>錯誤資訊</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="173"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>创建时间</source>
-        <translation type="unfinished">建立時間</translation>
+        <translation>建立時間</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="178"/>
         <location filename="../src/ErrorLogDialog.cpp" line="25"/>
         <source>操作</source>
-        <translation type="unfinished">操作</translation>
+        <translation>操作</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="188"/>
         <source>首页</source>
-        <translation type="unfinished"></translation>
+        <translation>首頁</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="195"/>
         <source>上一页</source>
-        <translation type="unfinished"></translation>
+        <translation>上一頁</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="202"/>
         <source>第 1 页 / 共 1 页</source>
-        <translation type="unfinished"></translation>
+        <translation>第 1 頁 / 共 1 頁</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="209"/>
         <source>下一页</source>
-        <translation type="unfinished"></translation>
+        <translation>下一頁</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="216"/>
         <source>末页</source>
-        <translation type="unfinished"></translation>
+        <translation>末頁</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="226"/>
         <source>清理此时间之前的日志：</source>
-        <translation type="unfinished"></translation>
+        <translation>清理此時間之前的日誌：</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.ui" line="250"/>
         <source>清理日志</source>
-        <translation type="unfinished"></translation>
+        <translation>清理日誌</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="51"/>
         <source>正在加载日志...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在載入日誌...</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="65"/>
@@ -858,83 +858,83 @@
         <location filename="../src/ErrorLogDialog.cpp" line="133"/>
         <location filename="../src/ErrorLogDialog.cpp" line="266"/>
         <source>错误</source>
-        <translation type="unfinished">錯誤</translation>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="65"/>
         <source>获取日志列表失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>獲取日誌列表失敗：</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="73"/>
         <location filename="../src/ErrorLogDialog.cpp" line="133"/>
         <source>解析响应失败</source>
-        <translation type="unfinished"></translation>
+        <translation>解析回應失敗</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="94"/>
         <source>正在搜索日志...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在搜尋日誌...</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="125"/>
         <source>搜索日志失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>搜尋日誌失敗：</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="192"/>
         <source>详情</source>
-        <translation type="unfinished"></translation>
+        <translation>詳情</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="245"/>
         <source>日志详情</source>
-        <translation type="unfinished"></translation>
+        <translation>日誌詳情</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="254"/>
         <source>正在清理日志...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在清理日誌...</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="266"/>
         <source>清理日志失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>清理日誌失敗：</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="270"/>
         <source>成功</source>
-        <translation type="unfinished">成功</translation>
+        <translation>成功</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="270"/>
         <source>日志清理成功！</source>
-        <translation type="unfinished"></translation>
+        <translation>日誌清理成功！</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="279"/>
         <source>第 %1 页 / 共 %2 页 (共 %3 条)</source>
-        <translation type="unfinished"></translation>
+        <translation>第 %1 頁 / 共 %2 頁 (共 %3 條)</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="300"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>提示</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="300"/>
         <source>请选择日期时间</source>
-        <translation type="unfinished"></translation>
+        <translation>請選擇日期時間</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="306"/>
         <source>确认清理</source>
-        <translation type="unfinished"></translation>
+        <translation>確認清理</translation>
     </message>
     <message>
         <location filename="../src/ErrorLogDialog.cpp" line="307"/>
         <source>确定要删除 %1 之前的所有日志吗？</source>
-        <translation type="unfinished"></translation>
+        <translation>確定要刪除 %1 之前的所有日誌嗎？</translation>
     </message>
 </context>
 <context>
@@ -1236,44 +1236,44 @@
         <translation>刪除檔案/資料夾</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="472"/>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="474"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="476"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="478"/>
         <source>文件</source>
         <translation>檔案</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="472"/>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="474"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="476"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="478"/>
         <source>文件夹</source>
         <translation>資料夾</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="794"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="798"/>
         <source>选择保存位置</source>
         <translation>選擇儲存位置</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="807"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="811"/>
         <source>请选择类型</source>
         <translation>請選擇類型</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="808"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="812"/>
         <source>你要选择文件还是目录？</source>
         <translation>你要選擇檔案還是目錄？</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="810"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="814"/>
         <source>选择文件</source>
         <translation>選擇檔案</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="811"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="815"/>
         <source>选择目录</source>
         <translation>選擇目錄</translation>
     </message>
     <message>
-        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="812"/>
+        <location filename="../src/MainTabWidgets/FileManagement/FileManagementTabForm.cpp" line="816"/>
         <source>取消</source>
         <translation>取消</translation>
     </message>
@@ -1387,8 +1387,12 @@
     </message>
     <message>
         <location filename="../src/MainTabWidgets/UserManagement/FilePermissionManagmentDialog.cpp" line="127"/>
+        <source>修改目录权限失败！</source>
+        <translation>修改目录权限失败！</translation>
+    </message>
+    <message>
         <source>修啊目录权限失败！</source>
-        <translation>修改目錄權限失敗！</translation>
+        <translation type="vanished">修改目錄權限失敗！</translation>
     </message>
     <message>
         <location filename="../src/MainTabWidgets/UserManagement/FilePermissionManagmentDialog.cpp" line="147"/>
@@ -1630,7 +1634,7 @@
     <message>
         <location filename="../src/MainTabWidgets/InfoForm.ui" line="96"/>
         <source>查看错误日志(&amp;L)</source>
-        <translation type="unfinished"></translation>
+        <translation>查看錯誤日誌(&amp;L)</translation>
     </message>
     <message>
         <location filename="../src/MainTabWidgets/InfoForm.ui" line="109"/>
@@ -1810,7 +1814,9 @@ CPU廠商: %2
         <source>创建 NAS 管理员用户成功！
 用户名：admin
 密码：</source>
-        <translation type="unfinished"></translation>
+        <translation>建立 NAS 管理員使用者成功！
+    使用者名稱：admin
+    密碼：</translation>
     </message>
     <message>
         <location filename="../src/LoginDialog.cpp" line="135"/>
@@ -1867,32 +1873,37 @@ CPU廠商: %2
         <translation type="vanished">概覽</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="70"/>
+        <location filename="../src/MainWindow.cpp" line="71"/>
         <source>系统概览</source>
         <translation>系統概覽</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="74"/>
+        <location filename="../src/MainWindow.cpp" line="75"/>
         <source>文件管理</source>
         <translation>檔案管理</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="79"/>
+        <location filename="../src/MainWindow.cpp" line="80"/>
         <source>动态域名解析</source>
         <translation>動態網域解析</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="84"/>
+        <location filename="../src/MainWindow.cpp" line="85"/>
         <source>用户管理</source>
         <translation>使用者管理</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="88"/>
+        <location filename="../src/MainWindow.cpp" line="89"/>
         <source>系统设置</source>
         <translation>系統設定</translation>
     </message>
     <message>
-        <location filename="../src/MainWindow.cpp" line="91"/>
+        <location filename="../src/MainWindow.cpp" line="92"/>
+        <source>系统监控</source>
+        <translation>系統監控</translation>
+    </message>
+    <message>
+        <location filename="../src/MainWindow.cpp" line="95"/>
         <source>系统信息</source>
         <translation>系統資訊</translation>
     </message>
@@ -1940,12 +1951,12 @@ CPU廠商: %2
     <message>
         <location filename="../src/NASLoginDialog.ui" line="202"/>
         <source>忘记密码</source>
-        <translation type="unfinished"></translation>
+        <translation>忘記密碼</translation>
     </message>
     <message>
         <location filename="../src/NASLoginDialog.ui" line="224"/>
         <source>忘记用户名</source>
-        <translation type="unfinished"></translation>
+        <translation>忘記使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/NASLoginDialog.ui" line="297"/>
@@ -2432,22 +2443,22 @@ CPU廠商: %2
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="14"/>
         <source>找回密码</source>
-        <translation type="unfinished"></translation>
+        <translation>找回密碼</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="27"/>
         <source>请输入注册时使用的邮箱地址</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入註冊時使用的電子郵件地址</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="39"/>
         <source>邮箱地址：</source>
-        <translation type="unfinished"></translation>
+        <translation>電子郵件地址：</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="46"/>
         <source>请输入邮箱地址</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入電子郵件地址</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="70"/>
@@ -2455,57 +2466,57 @@ CPU廠商: %2
         <location filename="../src/ResetPasswordDialog.cpp" line="127"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="128"/>
         <source>发送验证码</source>
-        <translation type="unfinished">傳送驗證碼</translation>
+        <translation>傳送驗證碼</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="96"/>
         <source>请输入收到的验证码和新密码</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入收到的驗證碼和新密碼</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="124"/>
         <source>验证码：</source>
-        <translation type="unfinished">驗證碼：</translation>
+        <translation>驗證碼：</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="134"/>
         <source>请输入6位验证码</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入6位驗證碼</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="152"/>
         <source>新密码：</source>
-        <translation type="unfinished">新密碼：</translation>
+        <translation>新密碼：</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="162"/>
         <source>请输入新密码（至少6位）</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入新密碼（至少6位）</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="173"/>
         <source>确认密码：</source>
-        <translation type="unfinished">確認密碼：</translation>
+        <translation>確認密碼：</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="183"/>
         <source>请再次输入新密码</source>
-        <translation type="unfinished"></translation>
+        <translation>請再次輸入新密碼</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="223"/>
         <source>取消</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.ui" line="230"/>
         <source>重置密码</source>
-        <translation type="unfinished"></translation>
+        <translation>重設密碼</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="20"/>
         <source>找回密码 - </source>
-        <translation type="unfinished"></translation>
+        <translation>找回密碼 - </translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="62"/>
@@ -2516,101 +2527,101 @@ CPU廠商: %2
         <location filename="../src/ResetPasswordDialog.cpp" line="173"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="178"/>
         <source>警告</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="62"/>
         <source>请输入邮箱地址！</source>
-        <translation type="unfinished">請輸入電子郵件地址！</translation>
+        <translation>請輸入電子郵件地址！</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="67"/>
         <source>请输入有效的邮箱地址！</source>
-        <translation type="unfinished">請輸入有效的電子郵件地址！</translation>
+        <translation>請輸入有效的電子郵件地址！</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="90"/>
         <source>正在发送验证码...</source>
-        <translation type="unfinished">正在發送驗證碼...</translation>
+        <translation>正在發送驗證碼...</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="104"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>提示</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="106"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="209"/>
         <source>成功</source>
-        <translation type="unfinished">成功</translation>
+        <translation>成功</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="106"/>
         <source>验证码已发送到您的邮箱！</source>
-        <translation type="unfinished">驗證碼已發送到您的信箱！</translation>
+        <translation>驗證碼已發送到您的信箱！</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="131"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="132"/>
         <source>重新发送(%1)</source>
-        <translation type="unfinished">重新發送(%1)</translation>
+        <translation>重新發送(%1)</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="139"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="214"/>
         <source>未知错误</source>
-        <translation type="unfinished">未知錯誤</translation>
+        <translation>未知錯誤</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="141"/>
         <location filename="../src/ResetPasswordDialog.cpp" line="216"/>
         <source>失败</source>
-        <translation type="unfinished">失敗</translation>
+        <translation>失敗</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="141"/>
         <source>发送验证码失败：</source>
-        <translation type="unfinished">發送驗證碼失敗：</translation>
+        <translation>發送驗證碼失敗：</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="158"/>
         <source>请输入验证码！</source>
-        <translation type="unfinished">請輸入驗證碼！</translation>
+        <translation>請輸入驗證碼！</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="163"/>
         <source>验证码长度为6位！</source>
-        <translation type="unfinished"></translation>
+        <translation>驗證碼長度為6位！</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="168"/>
         <source>请输入新密码！</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入新密碼！</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="173"/>
         <source>密码长度至少6位！</source>
-        <translation type="unfinished">密碼長度至少6位！</translation>
+        <translation>密碼長度至少6位！</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="178"/>
         <source>两次输入的密码不一致！</source>
-        <translation type="unfinished">兩次輸入的密碼不一致！</translation>
+        <translation>兩次輸入的密碼不一致！</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="196"/>
         <source>正在重置密码...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在重設密碼...</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="209"/>
         <source>密码重置成功！请使用新密码登录。</source>
-        <translation type="unfinished"></translation>
+        <translation>密碼重設成功！請使用新密碼登入。</translation>
     </message>
     <message>
         <location filename="../src/ResetPasswordDialog.cpp" line="216"/>
         <source>重置密码失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>重設密碼失敗：</translation>
     </message>
 </context>
 <context>
@@ -2618,53 +2629,53 @@ CPU廠商: %2
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="14"/>
         <source>找回用户名</source>
-        <translation type="unfinished"></translation>
+        <translation>找回使用者名稱</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="20"/>
         <source>请输入注册时使用的邮箱地址</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入註冊時使用的電子郵件地址</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="32"/>
         <source>邮箱地址：</source>
-        <translation type="unfinished"></translation>
+        <translation>電子郵件地址：</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="39"/>
         <source>请输入邮箱地址</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入電子郵件地址</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="50"/>
         <source>验证码：</source>
-        <translation type="unfinished">驗證碼：</translation>
+        <translation>驗證碼：</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="63"/>
         <source>请输入6位验证码</source>
-        <translation type="unfinished"></translation>
+        <translation>請輸入6位驗證碼</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="70"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="119"/>
         <source>发送验证码</source>
-        <translation type="unfinished">傳送驗證碼</translation>
+        <translation>傳送驗證碼</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="94"/>
         <source>取消</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.ui" line="104"/>
         <source>提交</source>
-        <translation type="unfinished"></translation>
+        <translation>提交</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="20"/>
         <source>找回用户名 - </source>
-        <translation type="unfinished"></translation>
+        <translation>找回使用者名稱 - </translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="58"/>
@@ -2672,85 +2683,85 @@ CPU廠商: %2
         <location filename="../src/RetrieveUsernameDialog.cpp" line="146"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="151"/>
         <source>警告</source>
-        <translation type="unfinished">警告</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="58"/>
         <source>请输入邮箱地址！</source>
-        <translation type="unfinished">請輸入電子郵件地址！</translation>
+        <translation>請輸入電子郵件地址！</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="63"/>
         <source>请输入有效的邮箱地址！</source>
-        <translation type="unfinished">請輸入有效的電子郵件地址！</translation>
+        <translation>請輸入有效的電子郵件地址！</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="86"/>
         <source>正在发送验证码...</source>
-        <translation type="unfinished">正在發送驗證碼...</translation>
+        <translation>正在發送驗證碼...</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="100"/>
         <source>提示</source>
-        <translation type="unfinished"></translation>
+        <translation>提示</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="102"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="181"/>
         <source>成功</source>
-        <translation type="unfinished">成功</translation>
+        <translation>成功</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="102"/>
         <source>验证码已发送到您的邮箱！</source>
-        <translation type="unfinished">驗證碼已發送到您的信箱！</translation>
+        <translation>驗證碼已發送到您的信箱！</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="122"/>
         <source>重新发送(%1)</source>
-        <translation type="unfinished">重新發送(%1)</translation>
+        <translation>重新發送(%1)</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="129"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="186"/>
         <source>未知错误</source>
-        <translation type="unfinished">未知錯誤</translation>
+        <translation>未知錯誤</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="131"/>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="188"/>
         <source>失败</source>
-        <translation type="unfinished">失敗</translation>
+        <translation>失敗</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="131"/>
         <source>发送验证码失败：</source>
-        <translation type="unfinished">發送驗證碼失敗：</translation>
+        <translation>發送驗證碼失敗：</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="146"/>
         <source>请输入验证码！</source>
-        <translation type="unfinished">請輸入驗證碼！</translation>
+        <translation>請輸入驗證碼！</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="151"/>
         <source>验证码长度为6位！</source>
-        <translation type="unfinished"></translation>
+        <translation>驗證碼長度為6位！</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="168"/>
         <source>正在找回用户名...</source>
-        <translation type="unfinished"></translation>
+        <translation>正在找回使用者名稱...</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="181"/>
         <source>用户名已发送到您的邮箱！请查收。</source>
-        <translation type="unfinished"></translation>
+        <translation>使用者名稱已發送到您的信箱！請查收。</translation>
     </message>
     <message>
         <location filename="../src/RetrieveUsernameDialog.cpp" line="188"/>
         <source>找回用户名失败：</source>
-        <translation type="unfinished"></translation>
+        <translation>找回使用者名稱失敗：</translation>
     </message>
 </context>
 <context>
@@ -2822,6 +2833,196 @@ CPU廠商: %2
         <location filename="../src/MainTabWidgets/SettingsForm.ui" line="14"/>
         <source>Form</source>
         <translation>表單</translation>
+    </message>
+</context>
+<context>
+    <name>SystemMonitorForm</name>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="65"/>
+        <source>监控查询</source>
+        <translation>監控查詢</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="69"/>
+        <source>最近 5 分钟</source>
+        <translation>最近 5 分鐘</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="70"/>
+        <source>最近 15 分钟</source>
+        <translation>最近 15 分鐘</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="71"/>
+        <source>最近 30 分钟</source>
+        <translation>最近 30 分鐘</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="72"/>
+        <source>最近 1 小时</source>
+        <translation>最近 1 小時</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="73"/>
+        <source>最近 6 小时</source>
+        <translation>最近 6 小時</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="74"/>
+        <source>最近 12 小时</source>
+        <translation>最近 12 小時</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="75"/>
+        <source>最近 1 天</source>
+        <translation>最近 1 天</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="76"/>
+        <source>最近 7 天</source>
+        <translation>最近 7 天</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="79"/>
+        <source>查询预设</source>
+        <translation>查詢預設</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="88"/>
+        <source>按时间范围查询</source>
+        <translation>按時間範圍查詢</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="90"/>
+        <source>准备就绪</source>
+        <translation>準備就緒</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="93"/>
+        <source>预设：</source>
+        <translation>預設：</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="97"/>
+        <source>开始：</source>
+        <translation>開始：</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="99"/>
+        <source>结束：</source>
+        <translation>結束：</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="123"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="152"/>
+        <source>CPU 使用率</source>
+        <translation>CPU 使用率</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="124"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="162"/>
+        <source>内存使用率</source>
+        <translation>記憶體使用率</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="125"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="172"/>
+        <source>网络速度</source>
+        <translation>網路速度</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="126"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="198"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="199"/>
+        <source>系统负载</source>
+        <translation>系統負載</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="127"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="208"/>
+        <source>磁盘使用率</source>
+        <translation>磁碟使用率</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="153"/>
+        <source>CPU</source>
+        <translation>CPU</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="163"/>
+        <source>内存</source>
+        <translation>記憶體</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="186"/>
+        <source>上传</source>
+        <translation>上傳</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="187"/>
+        <source>下载</source>
+        <translation>下載</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="200"/>
+        <source>Load</source>
+        <translation>負載</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="259"/>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="274"/>
+        <source>参数错误</source>
+        <translation>參數錯誤</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="259"/>
+        <source>预设参数解析失败</source>
+        <translation>預設參數解析失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="274"/>
+        <source>开始时间必须小于结束时间</source>
+        <translation>開始時間必須小於結束時間</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="289"/>
+        <source>加载中...</source>
+        <translation>載入中...</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="320"/>
+        <source>加载失败</source>
+        <translation>載入失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="322"/>
+        <source>请求失败</source>
+        <translation>請求失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="323"/>
+        <source>监控数据请求失败，状态码：%1</source>
+        <translation>監控資料請求失敗，狀態碼：%1</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="330"/>
+        <source>数据解析失败</source>
+        <translation>資料解析失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="331"/>
+        <source>数据错误</source>
+        <translation>資料錯誤</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="331"/>
+        <source>监控数据解析失败</source>
+        <translation>監控資料解析失敗</translation>
+    </message>
+    <message>
+        <location filename="../src/MainTabWidgets/SystemMonitorForm.cpp" line="336"/>
+        <source>共 %1 条记录</source>
+        <translation>共 %1 條記錄</translation>
     </message>
 </context>
 <context>
